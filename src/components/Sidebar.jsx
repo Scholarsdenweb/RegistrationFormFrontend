@@ -48,13 +48,13 @@ const Sidebar = () => {
         </Link>
         <Link
           to={"/payment"}
-          className={`flex gap-3 rounded-l-full ml-16 p-3 ${
+          className={`flex gap-3 justify-center items-center rounded-l-full ml-16 p-3 ${
             location.pathname === "/payment"
               ? "text-red-600 bg-white "
               : "text-white"
           } `}
         >
-          <img
+          <img className="w-7 h-7"
             src={
               location.pathname === "/payment"
                 ? PaymentDarkMode
@@ -74,7 +74,7 @@ const Sidebar = () => {
         >
           <img
             src={
-              location.pathname === "/basicDetailsForm"
+              location.pathname === "/registration/basicDetailsForm" || location.pathname === "/registration/basicDetailsForm"
                 ? RegistrationDarkMode
                 : RegistrationLightMode
             }

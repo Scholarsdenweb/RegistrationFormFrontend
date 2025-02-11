@@ -19,7 +19,7 @@ const Login = () => {
     <Spinner />
   ) : (
     <div
-      className="grid grid-cols-12 justify-between items-center h-screen"
+      className="grid grid-cols-12 justify-between items-center h-screen overflow-scroll"
       style={{ backgroundColor: "#c61d23" }}
     >
       <div className="col-span-5 gap-3">

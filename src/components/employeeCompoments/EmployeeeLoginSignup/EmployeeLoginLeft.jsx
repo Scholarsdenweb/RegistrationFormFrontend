@@ -158,7 +158,7 @@ export default function EmployeeLoginLeft() {
           Login
         </button>
 
-        <div className="text-gray-300 mt-20 flex justify-between items-center">
+        {/* <div className="text-gray-300 mt-20 flex justify-between items-center">
           <p className="text-sm ">Don't have an account? </p>
 
           <button
@@ -168,7 +168,7 @@ export default function EmployeeLoginLeft() {
           >
             Sign up
           </button>
-        </div>
+        </div> */}
       </form>
 
       {/* {showErrorMessage && <ErrorMessage message={submitMessage} closeErrorPopup={setShowErrorMessage} /> }  */}
