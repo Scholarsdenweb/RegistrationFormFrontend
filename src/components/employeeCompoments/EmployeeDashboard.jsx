@@ -1,48 +1,8 @@
-// import React from 'react'
-// import Sidebar from './EmployeeeLoginSignup/Sidebar'
-// import Navbar from '../Form/Navbar';
-
-// const EmployeeDashboard = () => {
-//   return (
-//     <div
-//       className="w-full h-full overflow-auto rounded-3xl shadow-2xl "
-//       style={{ backgroundColor: "#c61d23" }}
-//     >
-//       <div className="grid grid-cols-5 h-full">
-//         {/* Spinner */}
-//         {/* {loading && (
-//         <div className="fixed inset-0 bg-opacity-50 z-50 flex justify-center items-center">
-//           <Spinner />
-//         </div>
-//       )} */}
-
-//         {/* Left Sidebar */}
-//         <div className="col-span-1">
-//           <Sidebar />
-//         </div>
-
-//         <div className="flex flex-col col-span-4 h-full ">
-//           <Navbar />
-
-//           {/* Main Content Area */}
-
-//           <div
-//             className={`col-span-6 px-9 py-8 mb-3 mr-5 h-full bg-gray-100 rounded-3xl flex flex-col items-end gap-4 overflow-auto`}
-//           >
-
-//           </div>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// }
-
-// export default EmployeeDashboard
 
 import React, { useState } from "react";
 import Sidebar from "./EmployeeeLoginSignup/Sidebar";
 import Navbar from "../Form/Navbar";
-import axios from "../../api/axios";
+import axios from "axios";
 
 const EmployeeDashboard = () => {
   const [file, setFile] = useState(null);
@@ -52,26 +12,32 @@ const EmployeeDashboard = () => {
     setFile(event.target.files[0]);
   };
 
+
+
   const handleUpload = async () => {
     if (!file) {
       setUploadStatus("Please select a file first.");
       return;
     }
-
-    const formData = await new FormData();
-
-    console.log("file", file);
-    await formData.append("csv", file);
-
-    console.log("file", formData);
+  
+    const formData = new FormData();
+    formData.append("csvFile", file);
+  
+    formData.forEach((value, key) => {
+      console.log("FormData Key:", key, "=>", value);
+    });
+  
     try {
-      const response = await axios.post("/employees/generateResult", formData);
-
-      if (response.ok) {
-        const data = await response.json();
-
-        console.log("Upload response:", data);
-        setUploadStatus(`Upload successful: ${data.message}`);
+      const response = await axios.post(
+        "http://localhost:5000/api/employees/generateResult",
+        formData,
+        {
+          headers: { "Content-Type": "multipart/form-data" },
+        }
+      );
+  
+      if (response.status === 200) {
+        setUploadStatus(`Upload successful: ${response.data.message}`);
       } else {
         setUploadStatus("Upload failed. Please try again.");
       }
@@ -80,6 +46,10 @@ const EmployeeDashboard = () => {
       setUploadStatus("Error uploading file.");
     }
   };
+  
+
+
+
 
   return (
     <div
