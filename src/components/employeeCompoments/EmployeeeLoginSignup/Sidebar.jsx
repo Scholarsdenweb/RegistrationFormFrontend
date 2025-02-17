@@ -29,7 +29,7 @@ const Sidebar = () => {
         </div>
 
         <Link
-          to={"/dashboard"}
+          to={"/employee/dashboard"}
           className={`flex gap-3 rounded-l-full ml-16 p-3 ${
             location.pathname === "/employee/dashboard"
               ? "text-red-600 bg-white "
