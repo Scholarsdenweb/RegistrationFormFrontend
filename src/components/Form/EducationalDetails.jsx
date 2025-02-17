@@ -272,14 +272,14 @@ const EducationalDetailsForm = () => {
 
   return (
     <div
-      className="w-full h-screen overflow-auto  rounded-3xl shadow-lg "
+      className="w-full h-screen overflow-auto  "
       style={{ backgroundColor: "#c61d23" }}
     >
-         <div className="grid grid-cols-5 ">
+         <div className="grid grid-cols-7 ">
         <div className="col-span-1">
           <Sidebar />
         </div>
-        <div className="flex flex-col col-span-4 h-screen overflow-auto">
+        <div className="flex flex-col col-span-6 ">
                     <Navbar />
 
           <div className="px-9 py-4 mb-3 mr-5 bg-gray-200 rounded-3xl  h-full overflow-auto">

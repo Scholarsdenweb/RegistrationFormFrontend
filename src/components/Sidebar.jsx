@@ -22,15 +22,17 @@ const Sidebar = () => {
       className="flex flex-col justify-between h-screen pt-4 md:w-full"
       style={{ backgroundColor: "#c61d23" }}
     >
-      <div className=" flex flex-col gap-8">
+      <div className=" flex flex-col gap-8 justify-center items-center">
         <div className="flex flex-col gap-1 items-center">
           <img className="w-16 h-16" src={ScholarsDenLogo} alt="" />
           <span className="text-white mt-3">Student Panel</span>
         </div>
 
+        <div className="flex flex-col gap-7 w-full justify-end items-end">
+
         <Link
           to={"/dashboard"}
-          className={`flex gap-3 rounded-l-full ml-16 p-3 ${
+          className={`flex gap-3 justify-end w-5/6 items-end rounded-l-full p-3  ${
             location.pathname === "/dashboard"
               ? "text-red-600 bg-white "
               : "text-white"
@@ -48,7 +50,7 @@ const Sidebar = () => {
         </Link>
         <Link
           to={"/payment"}
-          className={`flex gap-3 justify-center items-center rounded-l-full ml-16 p-3 ${
+          className={`flex gap-3 justify-end w-5/6 items-end rounded-l-full p-3 ${
             location.pathname === "/payment"
               ? "text-red-600 bg-white "
               : "text-white"
@@ -66,7 +68,7 @@ const Sidebar = () => {
         </Link>
         <Link
           to={"/registration/basicDetailsForm"}
-          className={`flex gap-3 rounded-l-full ml-16 p-3 ${
+          className={`flex gap-3 justify-end w-5/6 items-end rounded-l-full p-3 ${
             location.pathname.includes("/registration")
               ? "text-red-600 bg-white "
               : "text-white"
@@ -74,7 +76,7 @@ const Sidebar = () => {
         >
           <img
             src={
-              location.pathname === "/registration/basicDetailsForm" || location.pathname === "/registration/basicDetailsForm"
+              location.pathname === "/registration/basicDetailsForm" || location.pathname === "/registration/educationalDetailsForm"
                 ? RegistrationDarkMode
                 : RegistrationLightMode
             }
@@ -82,9 +84,9 @@ const Sidebar = () => {
           />
           <h4>Registration</h4>
         </Link>
-        <Link
+        {/* <Link
           to={"/result"}
-          className={`flex gap-3 rounded-l-full ml-16 p-3 ${
+          className={`flex gap-3 justify-end w-5/6 items-end rounded-l-full p-3 ${
             location.pathname.includes("/result")
               ? "text-red-600 bg-white "
               : "text-white"
@@ -100,10 +102,12 @@ const Sidebar = () => {
           />
           <h4>Result</h4>
           
-        </Link>
+        </Link> */}
+
+        </div>
       </div>
 
-      <div className={`flex gap-3  ml-16 mb-9 text-white cursor-pointer `}
+      <div className={`flex gap-3 justify-center mb-9 text-white cursor-pointer `}
       onClick={handleLogout}
       >
         <img src={LogoutLightMode} alt="" />
