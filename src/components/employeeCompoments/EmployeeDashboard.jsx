@@ -29,7 +29,7 @@ const EmployeeDashboard = () => {
   
     try {
       const response = await axios.post(
-        "http://localhost:5001/api/employees/generateResult",
+        "https://api.registration.scholarsden.in/api/employees/generateResult",
         formData,
         {
           headers: { "Content-Type": "multipart/form-data" },
