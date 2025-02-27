@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import Sidebar from "./EmployeeeLoginSignup/Sidebar";
 import Navbar from "../Form/Navbar";
-import axios from "axios";
+import axios from "../../api/axios";
 
 const EmployeeDashboard = () => {
   const [file, setFile] = useState(null);
@@ -29,7 +29,7 @@ const EmployeeDashboard = () => {
   
     try {
       const response = await axios.post(
-        "https://api.registration.scholarsden.in/api/employees/generateResult",
+        "/employees/generateResult",
         formData,
         {
           headers: { "Content-Type": "multipart/form-data" },
