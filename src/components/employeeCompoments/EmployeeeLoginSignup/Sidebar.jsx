@@ -49,20 +49,20 @@ const Sidebar = () => {
         <Link
           to={"/employee/allStudents"}
           className={`flex gap-3 rounded-l-full ml-16 p-3 ${
-            location.pathname === "/employee/dashboard"
+            location.pathname === "/employee/allStudents"
               ? "text-red-600 bg-white"
               : "text-white"
           } `}
         >
           <img
             src={
-              location.pathname === "/employee/dashboard"
+              location.pathname === "/employee/allStudents"
                 ? DashboardDarkMode
                 : DashboardLightMode
             }
             alt=""
           />
-          <h4>Upload Result</h4>
+          <h4>All Results</h4>
         </Link>
       
       </div>

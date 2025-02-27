@@ -8,7 +8,7 @@ import { AuthProvider } from "../context/AuthContext";
 import PrivateRoute from "./components/PrivateRoute";
 
 import EmployeeLogin from "./components/employeeCompoments/EmployeeeLoginSignup/EmployeeLogin";
-import EmployeeDashboard from "./components/employeeCompoments/EmployeeDashboard";  
+import EmployeeDashboard from "./components/employeeCompoments/EmployeeDashboard";
 
 import BasicDetailsForm from "./components/Form/BasicDetails";
 import BatchRelatedDetails from "./components/Form/BatchRelatedDetails";
@@ -24,8 +24,9 @@ import ResultPage from "./components/ResultPage";
 import FormDetailPage from "./components/FormDetailPage";
 import PaymentSuccessMessage from "./components/PaymentSuccessMessage";
 import Spinner from "./api/Spinner";
-import Payment from "./components/Payment"
+import Payment from "./components/Payment";
 import Result from "./components/Result";
+import AllStudentResult from "./components/employeeCompoments/AllStudentResult";
 
 function App() {
   return (
@@ -40,13 +41,18 @@ function App() {
                 path="/employee/dashboard"
                 element={<PrivateRoute component={EmployeeDashboard} />}
               />
+              <Route path="/employee/allStudents" element={<AllStudentResult />} />
+
               <Route path="/signup" element={<Signup />} />
               <Route
                 path="/registration/educationalDetailsForm"
-                element={< EducationalDetailsForm />}
+                element={<EducationalDetailsForm />}
               />
-              <Route path="/registration/basicDetailsForm" element={<BasicDetailsForm />} />
-             
+              <Route
+                path="/registration/basicDetailsForm"
+                element={<BasicDetailsForm />}
+              />
+
               <Route
                 path="/dashboard"
                 element={<PrivateRoute component={Dashboard} />}
@@ -72,7 +78,10 @@ function App() {
                 path="/payment/success/:payment_id"
                 element={<PrivateRoute component={PaymentSuccessMessage} />}
               /> */}
-              <Route path="/result" element={<PrivateRoute component={Result}/>} />
+              <Route
+                path="/result"
+                element={<PrivateRoute component={Result} />}
+              />
             </Routes>
           </div>
         </Router>
