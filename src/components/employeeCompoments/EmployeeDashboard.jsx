@@ -35,6 +35,8 @@ const EmployeeDashboard = () => {
           headers: { "Content-Type": "multipart/form-data" },
         }
       );
+
+      console.log("response from employee dashboard", response);
   
       if (response.status === 200) {
         setUploadStatus(`Upload successful: ${response.data.message}`);
@@ -53,7 +55,7 @@ const EmployeeDashboard = () => {
 
   return (
     <div
-      className="w-full h-full overflow-auto rounded-3xl shadow-2xl"
+      className="w-full h-full overflow-auto "
       style={{ backgroundColor: "#c61d23" }}
     >
       <div className="grid grid-cols-5 h-full">

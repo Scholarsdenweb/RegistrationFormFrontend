@@ -49,10 +49,14 @@ const PaymentSuccessMessage = () => {
 
       <div className="flex flex-col justify-center items-center shadow-lg p-6 rounded-lg">
         <img src={tickCircle} alt="" />
-        <div className="text-2xl p-10">
+        <div className="text-2xl px-10 py-2">
           {` Your Payment is Successfull. Order ID : ${paymentId ? paymentId : userData.paymentId}`}
         </div>
-        <span>Wait for a minute. Admit Card will be generated soon</span>
+       {userData.admitCard === "" ? <span>Wait for a minute. Admit Card will be generated soon</span>
+       :
+       <span>Admit Card generated</span>
+
+}
         <span>Thank you for your payment.</span>
       </div>
  

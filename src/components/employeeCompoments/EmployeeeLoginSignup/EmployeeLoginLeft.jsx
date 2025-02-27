@@ -68,6 +68,9 @@ export default function EmployeeLoginLeft() {
       try {
         const response = await axios.post("/auth/employee_login", formData);
         setSubmitMessage("Login successful!");
+        
+
+        console.log("rsponse from login", response);  
         login();
         document.cookie = `token=${response.data.token}`;
         navigate("/employee/dashboard");

@@ -25,14 +25,14 @@ const Sidebar = () => {
       <div className=" flex flex-col gap-8">
         <div className="flex flex-col gap-1 items-center">
           <img className="w-16 h-16" src={ScholarsDenLogo} alt="" />
-          <span className="text-white mt-3">Emplyee Panel</span>
+          <span className="text-white mt-3">Employee Panel</span>
         </div>
 
         <Link
           to={"/employee/dashboard"}
           className={`flex gap-3 rounded-l-full ml-16 p-3 ${
             location.pathname === "/employee/dashboard"
-              ? "text-red-600 bg-white "
+              ? "text-red-600 bg-white"
               : "text-white"
           } `}
         >

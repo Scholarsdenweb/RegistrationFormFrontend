@@ -32,12 +32,14 @@ const Sidebar = () => {
 
         <Link
           to={"/dashboard"}
-          className={`flex gap-3 justify-end w-5/6 items-end rounded-l-full p-3  ${
+          className={`flex gap-3 w-5/6 items-end rounded-l-full p-3  ${
             location.pathname === "/dashboard"
               ? "text-red-600 bg-white "
               : "text-white"
           } `}
         >
+          {/* <div className="flex justify-center items-center gap-3"> */}
+
           <img
             src={
               location.pathname === "/dashboard"
@@ -47,16 +49,20 @@ const Sidebar = () => {
             alt=""
           />
           <h4>Dashboard</h4>
+          {/* </div> */}
         </Link>
         <Link
           to={"/payment"}
-          className={`flex gap-3 justify-end w-5/6 items-end rounded-l-full p-3 ${
+          className={`flex gap-3 w-5/6 items-end rounded-l-full p-3 ${
             location.pathname === "/payment"
               ? "text-red-600 bg-white "
               : "text-white"
           } `}
         >
-          <img className="w-7 h-7"
+
+{/* <div className="flex justify-center items-center gap-3"> */}
+
+          <img 
             src={
               location.pathname === "/payment"
                 ? PaymentDarkMode
@@ -65,10 +71,11 @@ const Sidebar = () => {
             alt=""
           />
           <h4>Payment Info</h4>
+          {/* </div> */}
         </Link>
         <Link
           to={"/registration/basicDetailsForm"}
-          className={`flex gap-3 justify-end w-5/6 items-end rounded-l-full p-3 ${
+          className={`flex gap-3 w-5/6 items-end rounded-l-full p-3 ${
             location.pathname.includes("/registration")
               ? "text-red-600 bg-white "
               : "text-white"
