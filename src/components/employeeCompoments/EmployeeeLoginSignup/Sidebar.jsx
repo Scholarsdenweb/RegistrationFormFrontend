@@ -64,6 +64,24 @@ const Sidebar = () => {
           />
           <h4>All Results</h4>
         </Link>
+        <Link
+          to={"/employee/addExamDate"}
+          className={`flex gap-3 rounded-l-full ml-16 p-3 ${
+            location.pathname === "/employee/addExamDate"
+              ? "text-red-600 bg-white"
+              : "text-white"
+          } `}
+        >
+          <img
+            src={
+              location.pathname === "/employee/addExamDate"
+                ? DashboardDarkMode
+                : DashboardLightMode
+            }
+            alt=""
+          />
+          <h4>Add Exam Date</h4>
+        </Link>
       
       </div>
 
