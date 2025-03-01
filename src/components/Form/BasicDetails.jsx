@@ -16,11 +16,13 @@ import {
 import { use } from "react";
 import { fetchUserDetails } from "../../redux/slices/userDeailsSlice";
 import Navbar from "./Navbar";
-
+import dayjs from "dayjs";
 const BasicDetailsForm = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const location = useLocation();
+
+  const [allDates, setAllDates] = useState([]);
 
   const [basicDetailsError, setBasicDetailsError] = useState("");
   const [batchDetailsError, setBatchDetailsError] = useState("");
@@ -42,6 +44,30 @@ const BasicDetailsForm = () => {
   // Dropdown options
   const genderOptions = ["Male", "Female", "Other"];
   const examNameOptions = ["S.Dat", "Rise"];
+
+  const fetchAllDates = async () => {
+    try {
+      const response = await axios.get("/employees/getAllDates");
+
+      console.log("response fetchAllDates", response);
+
+      const filteredDates = response.data.filter(
+        (date) =>
+          dayjs(date.examDate).isAfter(dayjs().startOf("day")) &&
+          dayjs(date.examDate).isBefore(dayjs().add(3, "month"))
+      );
+      console.log("filteredDates", filteredDates);
+      setAllDates(filteredDates);
+    } catch (error) {
+      console.error("Error fetching dates:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchAllDates();
+  }, []);
+
+  // const examDateOptions =allDates;
   const examDateOptions = ["15/02/2025", "02/20/2025", "10/03/2025"];
 
   useEffect(() => {
@@ -74,7 +100,6 @@ const BasicDetailsForm = () => {
   };
 
   const basicFormHandleChange = (e) => {
-
     const { name, value } = e.target;
     console.log("name", name, "value", value);
     dispatch(updateBasicDetails({ [name]: value }));
@@ -82,7 +107,6 @@ const BasicDetailsForm = () => {
     if (value.trim()) {
       setErrors((prevErrors) => ({ ...prevErrors, [name]: "" }));
     }
-   
   };
 
   const batchDetailsHandleChange = (e) => {
@@ -160,7 +184,6 @@ const BasicDetailsForm = () => {
       await addAndUpdatebatchForm();
       await addAndUpdateBasicFrom();
     }
-    
   };
 
   const pathLocation = location.pathname;
@@ -288,7 +311,9 @@ const BasicDetailsForm = () => {
                         onChange={basicFormHandleChange}
                         className="border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-indigo-400 focus:outline-none"
                       >
-                        <option value="" disabled>Select Gender</option>
+                        <option value="" disabled>
+                          Select Gender
+                        </option>
                         {genderOptions.map((option, index) => (
                           <option key={index} value={option}>
                             {option}
@@ -317,7 +342,9 @@ const BasicDetailsForm = () => {
                         onChange={basicFormHandleChange}
                         className="border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-indigo-400 focus:outline-none"
                       >
-                        <option value="" disabled>Select Exam Name</option>
+                        <option value="" disabled>
+                          Select Exam Name
+                        </option>
                         {examNameOptions.map((option, index) => (
                           <option key={index} value={option}>
                             {option}
@@ -346,10 +373,12 @@ const BasicDetailsForm = () => {
                         onChange={basicFormHandleChange}
                         className="border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-indigo-400 focus:outline-none"
                       >
-                        <option value="" disabled>Select Exam Date</option>
-                        {examDateOptions.map((option, index) => (
-                          <option key={index} value={option}>
-                            {option}
+                        <option value="" disabled>
+                          Select Exam Date
+                        </option>
+                        {allDates.map((option, index) => (
+                          <option key={index} value={option.examDate}>
+                            {dayjs(option.examDate).format("DD MMM YYYY")}
                           </option>
                         ))}
                       </select>
