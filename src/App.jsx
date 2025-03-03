@@ -84,6 +84,11 @@ function App() {
                 path="/result"
                 element={<PrivateRoute component={Result} />}
               />
+
+                <Route
+                path="/spinner"
+                element={<Spinner/>}
+              />
             </Routes>
           </div>
         </Router>

@@ -15,6 +15,14 @@ import {
   updateUserDetails,
 } from "../redux/slices/userDeailsSlice";
 import Navbar from "./Form/Navbar";
+import { setLoading } from "../redux/slices/loadingSlice";
+import Spinner from "../api/Spinner";
+
+
+
+
+
+
 
 const payment = () => {
   const dispatch = useDispatch();
@@ -33,6 +41,8 @@ const payment = () => {
   const { dataExist: familyDetailsDataExist } = useSelector(
     (state) => state.familyDetails
   );
+
+  const [loading, setLoading] = useState(false);
 
   const { userData } = useSelector((state) => state.userDetails);
   const [paymentStatus, setPaymentStatus] = useState(
@@ -66,6 +76,12 @@ const payment = () => {
       // alert("Please fill all the details first");
       return;
     }
+
+    // dispatch(setLoading(true));
+
+
+
+    setLoading(true);
     const {
       data: { key },
     } = await axios.get("/payment/getKey");
@@ -117,7 +133,8 @@ const payment = () => {
 
     const razorpay = new window.Razorpay(options);
 
-    razorpay.open();
+    await razorpay.open();
+    setLoading(false);
 
     console.log("razorpay object", razorpay);
     // await axios("/payment/paymentverification", {});
@@ -142,14 +159,18 @@ const payment = () => {
             {paymentStatus ? (
               <PaymentSuccessMessage />
             ) : (
+
+
+              loading ? <Spinner /> : (
               <div className="ol-span-6 px-9 py-8 mb-3 mr-5 h-full bg-gray-100 rounded-3xl flex w-ful flex-col items-center justify-center gap-4 overflow-auto">
                 <div
-                  className="bg-[#c61d23] text-white p-3 rounded-lg"
+                  className="bg-[#c61d23] text-white p-3 rounded-lg cursor-pointer"
                   onClick={checkoutHandler}
                 >
                   Pay Now
                 </div>
               </div>
+              )
             )}
             {allFormNotAvailable && (
               <AllFormNotAvailable
