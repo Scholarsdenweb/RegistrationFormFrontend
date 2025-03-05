@@ -18,12 +18,14 @@ const AddExamDate = () => {
 
         const response = await axios.patch("/employees/editDate", {
           _id: editingDate._id,
-          changedDate: examDate,
+          changedDate: dayjs(examDate).format("DD-MM-YYYY"),
         });
         console.log("response", response);
         setEditingDate(null);
       } else {
-        await axios.post("/employees/addExamDate", { examDate });
+        await axios.post("/employees/addExamDate", {
+          examDate: dayjs(examDate).format("DD-MM-YYYY"),
+        });
       }
       setExamDate("");
       await fetchAllDates();
@@ -35,11 +37,17 @@ const AddExamDate = () => {
   const fetchAllDates = async () => {
     try {
       const response = await axios.get("/employees/getAllDates");
-      const filteredDates = response.data.filter(
-        (date) =>
-          dayjs(date.examDate).isAfter(dayjs().startOf("day")) &&
-          dayjs(date.examDate).isBefore(dayjs().add(3, "month"))
-      );
+      console.log("response", response);
+
+      console.log("response", response);
+      const filteredDates = response.data.filter((date) => {
+      
+        dayjs(date.examDate).examDate.isAfter(dayjs().startOf("day")) &&
+        dayjs(date.examDate).examDate.isBefore(dayjs().add(3, "months").endOf("day"))
+      
+      });
+
+      console.log("filteredDates", filteredDates);
 
       console.log("filteredDates form FetchAllDates", filteredDates);
       setAllDates(filteredDates);
@@ -59,8 +67,7 @@ const AddExamDate = () => {
     // setEditDatePopup(true);
   };
 
-
-  const deleteDate =async (id) => {
+  const deleteDate = async (id) => {
     const response = await axios.delete(`/employees/deleteDate/${id}`);
     console.log("response", response);
     await fetchAllDates();
@@ -114,7 +121,8 @@ const AddExamDate = () => {
                       className="flex justify-between items-center p-3 bg-white shadow rounded-md mt-2"
                     >
                       <p className="text-gray-700 font-medium">
-                        {dayjs(date.examDate).format("DD MMM YYYY")}
+                        {date.examDate}
+                        {/* {dayjs(date.examDate).format("DD-MM-YYYY")} */}
                       </p>
                       <div className="flex gap-4">
                         <button
