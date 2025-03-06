@@ -3,15 +3,14 @@ import axios from "../../api/axios";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../../context/AuthContext";
 import ScholarsDenLogo from "../../assets/scholarsDenLogo.png";
-import Spinner from "../../api/Spinner"; // Adjust the path as needed
-import { setLoading } from "../../redux/slices/loadingSlice";
-import { useDispatch } from "react-redux";
-import ErrorMessage from "../ErrorMessage";
+// import Spinner from "../../api/Spinner"; // Adjust the path as needed
+// import { setLoading } from "../../redux/slices/loadingSlice";
+// import { useDispatch } from "react-redux";
+// import ErrorMessage from "../ErrorMessage";
 
 export default function LoginRight() {
   const navigate = useNavigate();
   const { login } = useAuth();
-  const dispatch = useDispatch();
 
   const [formData, setFormData] = useState({
     email: "",
@@ -22,7 +21,7 @@ export default function LoginRight() {
     password: "",
   });
 
-  const [showErrorMessage, setShowErrorMessage] = useState(false);
+  // const [showErrorMessage, setShowErrorMessage] = useState(false);
 
   
   const [submitMessage, setSubmitMessage] = useState("");
@@ -76,7 +75,7 @@ export default function LoginRight() {
                 // dispatch(setLoading(false));
 
         setSubmitMessage(error?.response?.data || "An error occurred");
-        setShowErrorMessage(true);
+        // setShowErrorMessage(true);
 
         console.log("Error logging in", error.response.data);
       } finally {
