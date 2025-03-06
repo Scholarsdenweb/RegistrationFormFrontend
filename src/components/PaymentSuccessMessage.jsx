@@ -11,13 +11,17 @@ const PaymentSuccessMessage = () => {
   const [admitCardStatus, setAdmitCardStatus] = useState("Pending");
   const { userData } = useSelector((state) => state.userDetails);
 
+  const [loading, setLoading] = useState(true);
+
   const dispatch = useDispatch();
 
   const generateAdmitCard = async () => {
     try {
+      setLoading(true);
       const response = await axios.post("/payment/generateAdmitCard");
       console.log("response from generateAdmitCard", response);
       setAdmitCardStatus("Generated");
+      setLoading(false);
     } catch (error) {
       console.log("error", error);
     }
@@ -27,8 +31,6 @@ const PaymentSuccessMessage = () => {
     generateAdmitCard();
 
     const addPaymentId = async () => {
-
-
       console.log("ADD payment Id function is running now");
       try {
         const response = await axios.patch("/students/editStudent", {
@@ -44,22 +46,26 @@ const PaymentSuccessMessage = () => {
 
     dispatch(fetchUserDetails());
   }, []);
- 
+
   return (
 
-      <div className="flex flex-col justify-center items-center shadow-lg p-6 rounded-lg">
-        <img src={tickCircle} alt="" />
-        <div className="text-2xl px-10 py-2">
-          {` Your Payment is Successfull. Order ID : ${paymentId ? paymentId : userData.paymentId}`}
-        </div>
-       {userData.admitCard === "" ? <span>Wait for a minute. Admit Card will be generated soon</span>
-       :
-       <span>Admit Card generated</span>
+    loading ? <div className="flex justify-center items-center "><div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900"></div></div> :
 
-}
-        <span>Thank you for your payment.</span>
+
+    <div className="flex flex-col justify-center items-center shadow-lg p-6 rounded-lg">
+      <img src={tickCircle} alt="" />
+      <div className="text-2xl px-10 py-2">
+        {` Your Payment is Successfull. Order ID : ${
+          paymentId ? paymentId : userData.paymentId
+        }`}
       </div>
- 
+      {userData.admitCard === "" ? (
+        <span>Wait for a minute. Admit Card will be generated soon</span>
+      ) : (
+        <span>Admit Card generated</span>
+      )}
+      <span>Thank you for your payment.</span>
+    </div>
   );
 };
 export default PaymentSuccessMessage;
