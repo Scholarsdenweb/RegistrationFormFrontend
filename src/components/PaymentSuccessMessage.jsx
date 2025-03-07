@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from "react-router-dom";
+import {  useParams } from "react-router-dom";
 import tickCircle from "../assets/tickCircle.png";
 import { useEffect, useState } from "react";
 import axios from "../api/axios";
@@ -7,8 +7,8 @@ import { fetchUserDetails } from "../redux/slices/userDeailsSlice";
 
 const PaymentSuccessMessage = () => {
   const { paymentId } = useParams();
-  const navigate = useNavigate();
-  const [admitCardStatus, setAdmitCardStatus] = useState("Pending");
+  // const navigate = useNavigate();
+  // const [admitCardStatus, setAdmitCardStatus] = useState("Pending");
   const { userData } = useSelector((state) => state.userDetails);
 
   const [loading, setLoading] = useState(true);
@@ -20,7 +20,7 @@ const PaymentSuccessMessage = () => {
       setLoading(true);
       const response = await axios.post("/payment/generateAdmitCard");
       console.log("response from generateAdmitCard", response);
-      setAdmitCardStatus("Generated");
+      // setAdmitCardStatus("Generated");
       setLoading(false);
     } catch (error) {
       console.log("error", error);

@@ -12,10 +12,8 @@ import AllFormNotAvailable from "./AllFormNotAvailable";
 import {
   fetchUserDetails,
   submitUserDetails,
-  updateUserDetails,
 } from "../redux/slices/userDeailsSlice";
 import Navbar from "./Form/Navbar";
-import { setLoading } from "../redux/slices/loadingSlice";
 import Spinner from "../api/Spinner";
 
 
@@ -24,7 +22,10 @@ import Spinner from "../api/Spinner";
 
 
 
-const payment = () => {
+const Payment = () => {
+
+
+
   const dispatch = useDispatch();
 
   const [allFormNotAvailable, setAllFormNotAvailable] = useState(false);
@@ -187,4 +188,4 @@ const payment = () => {
     </div>
   );
 };
-export default payment;
+export default Payment;

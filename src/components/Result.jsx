@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import Navbar from "./Form/Navbar";
 import Sidebar from "./Sidebar";
 import { useDispatch, useSelector } from "react-redux";
