@@ -59,11 +59,8 @@ const PaymentSuccessMessage = () => {
           paymentId ? paymentId : userData.paymentId
         }`}
       </div>
-      {userData.admitCard === "" ? (
-        <span>Wait for a minute. Admit Card will be generated soon</span>
-      ) : (
+     
         <span>Admit Card generated</span>
-      )}
       <span>Thank you for your payment.</span>
     </div>
   );

@@ -1,7 +1,6 @@
 import { useState } from "react";
 import axios from "../../api/axios";
 import { useNavigate, Link } from "react-router-dom";
-import Spinner from "../../api/Spinner";
 import ScholarsDenLogo from "../../assets/scholarsDenLogo.png";
 
 export default function SignupRight() {
@@ -10,7 +9,7 @@ export default function SignupRight() {
   // Regex pattern for phone number validation (+91 followed by 10 digits)
   const phoneRegex = /^\+91[0-9]{10}$/;
   const [codeVerified, setCodeVerified] = useState(true);
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
   // const [codeVerified, setCodeVerified] = useState(false);
 
   // State hooks
@@ -89,7 +88,7 @@ export default function SignupRight() {
   };
 
   const verifyPhoneNo = async () => {
-    setLoading(true);
+    // setLoading(true);
 
     try {
       setShowCodeBox(true);
@@ -102,8 +101,9 @@ export default function SignupRight() {
       // }
     } catch (error) {
       setSubmitMessage("Error verifying phone number");
+      console.log("Error verifying phone number", error);
     } finally {
-      setLoading(false);
+      // setLoading(false);
     }
   };
 
@@ -122,6 +122,7 @@ export default function SignupRight() {
         setShowCodeBox(false);
     } catch (error) {
       setSubmitMessage("Error verifying phone number");
+      console.log("Error verifying phone number", error);
     }
   };
 
@@ -135,7 +136,7 @@ export default function SignupRight() {
     >
       <img className="w-16 h-16" src={ScholarsDenLogo} alt="" />
       <div>
-        <h2 className="text-3xl font-bold text-white ">Signup</h2>
+        <h2 className="text-3xl font-bold text-white ">Sign up</h2>
         <p className="text-gray-300">Create your account</p>
       </div>
 
