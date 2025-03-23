@@ -23,6 +23,8 @@ const AllStudentResult = () => {
     }
   };
 
+  
+
   useEffect(() => {
     fetchAllDates();
   }, []);

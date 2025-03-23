@@ -28,6 +28,7 @@ import Payment from "./components/Payment";
 import Result from "./components/Result";
 import AllStudentResult from "./components/employeeCompoments/AllStudentResult";
 import AddExamDate from "./components/employeeCompoments/AddExamDate";
+import DownloadResult from "./components/employeeCompoments/DownloadResult";
 
 function App() {
   return (
@@ -44,6 +45,7 @@ function App() {
               />
               <Route path="/employee/allStudents" element={<AllStudentResult />} />
               <Route path="/employee/addExamDate" element={<AddExamDate />} />
+              <Route path="/employee/downloadResult" element={<DownloadResult />} />
 
               <Route path="/signup" element={<Signup />} />
               <Route

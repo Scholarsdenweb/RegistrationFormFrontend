@@ -1,11 +1,7 @@
-import React from "react";
 import ScholarsDenLogo from "../../../assets/scholarsDenLogo.png";
 import DashboardDarkMode from "../../../assets/DashboardDarkMode.png";
 import DashboardLightMode from "../../../assets/DashboardLightMode.png";
-import PaymentDarkMode from "../../../assets/PaymentDarkMode.png";
-import PaymentLightMode from "../../../assets/PaymentLightMode.png";
-import RegistrationDarkMode from "../../../assets/RegistrationDarkMode.png";
-import RegistrationLightMode from "../../../assets/RegistrationLightMode.png";
+
 import LogoutLightMode from "../../../assets/LogoutLightMode.png";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
@@ -81,6 +77,24 @@ const Sidebar = () => {
             alt=""
           />
           <h4>Add Exam Date</h4>
+        </Link>
+        <Link
+          to={"/employee/downloadResult"}
+          className={`flex gap-3 rounded-l-full ml-16 p-3 ${
+            location.pathname === "/employee/addExamDate"
+              ? "text-red-600 bg-white"
+              : "text-white"
+          } `}
+        >
+          <img
+            src={
+              location.pathname === "/employee/addExamDate"
+                ? DashboardDarkMode
+                : DashboardLightMode
+            }
+            alt=""
+          />
+          <h4>Download Result</h4>
         </Link>
       
       </div>
