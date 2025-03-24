@@ -81,14 +81,14 @@ const Sidebar = () => {
         <Link
           to={"/employee/downloadResult"}
           className={`flex gap-3 rounded-l-full ml-16 p-3 ${
-            location.pathname === "/employee/addExamDate"
+            location.pathname === "/employee/downloadResult"
               ? "text-red-600 bg-white"
               : "text-white"
           } `}
         >
           <img
             src={
-              location.pathname === "/employee/addExamDate"
+              location.pathname === "/employee/downloadResult"
                 ? DashboardDarkMode
                 : DashboardLightMode
             }

@@ -2,7 +2,6 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import "./App.css";
 import Login from "./components/LoginSugnup/Login";
 import EducationalDetailsForm from "./components/Form/EducationalDetails";
-import FamilyDetails from "./components/Form/FamilyDetails";
 
 import { AuthProvider } from "../context/AuthContext";
 import PrivateRoute from "./components/PrivateRoute";
@@ -11,7 +10,6 @@ import EmployeeLogin from "./components/employeeCompoments/EmployeeeLoginSignup/
 import EmployeeDashboard from "./components/employeeCompoments/EmployeeDashboard";
 
 import BasicDetailsForm from "./components/Form/BasicDetails";
-import BatchRelatedDetails from "./components/Form/BatchRelatedDetails";
 import Signup from "./components/LoginSugnup/Signup";
 import ExamDetails from "./components/ExamDetails";
 import ShowMessage from "./components/ShowMessage";
@@ -22,7 +20,6 @@ import ForgotPassword from "./components/ForgetPassword";
 import ResetPassword from "./components/ResetPassword";
 import ResultPage from "./components/ResultPage";
 import FormDetailPage from "./components/FormDetailPage";
-import PaymentSuccessMessage from "./components/PaymentSuccessMessage";
 import Spinner from "./api/Spinner";
 import Payment from "./components/Payment";
 import Result from "./components/Result";
