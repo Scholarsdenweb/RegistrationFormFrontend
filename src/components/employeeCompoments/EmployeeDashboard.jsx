@@ -66,7 +66,7 @@ const EmployeeDashboard = () => {
   };
 
   return (
-    <div className="w-full h-full overflow-auto bg-[#c61d23]">
+    <div className="w-full h-full bg-[#c61d23]">
       <div className="grid grid-cols-5 h-full">
         {/* Left Sidebar */}
         <div className="col-span-1">

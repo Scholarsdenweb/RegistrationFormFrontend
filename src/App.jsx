@@ -27,6 +27,7 @@ import AllStudentResult from "./components/employeeCompoments/AllStudentResult";
 import AddExamDate from "./components/employeeCompoments/AddExamDate";
 import DownloadResult from "./components/employeeCompoments/DownloadResult";
 import CloudinaryUpload from "./components/employeeCompoments/CloudinaryUpload";
+import CloudinaryComponent from "./components/employeeCompoments/CloudinaryComponent";
 
 function App() {
   return (
@@ -44,7 +45,8 @@ function App() {
               <Route path="/employee/allStudents" element={<AllStudentResult />} />
               <Route path="/employee/addExamDate" element={<AddExamDate />} />
               <Route path="/employee/downloadResult" element={<DownloadResult />} />
-              <Route path="/CloudinaryUpload" element={<CloudinaryUpload />} />
+              <Route path="/employee/CloudinaryUpload" element={<CloudinaryComponent
+               />} />
 
               <Route path="/signup" element={<Signup />} />
               <Route

@@ -1,3 +1,105 @@
-﻿Rank,Class,Roll No,Candidate Name,Father Name,Exam Date,PHYSICS(7),PHYSICS Average,PHYSICS_Highest Score,PHYSICS_Subjectwise_Rank,CHEMISTRY(7),CHEMISTRY Average,CHEMISTRY_Highest Score,CHEMISTRY_Subjectwise_Rank,BIOLOGY(6),BIOLOGY Average,BIOLOGY_Highest Score,BIOLOGY_Subjectwise_Rank,MATHEMATICS(15),MATHEMATICS Average,MATHEMATICS_Highest Score,MATHEMATICS_Subjectwise_Rank,SOCIAL SCIENCE(15),SOCIAL SCIENCE Average,SOCIAL SCIENCE_Highest Score,SOCIAL SCIENCE_Subjectwise_Rank,MENTAL ABILITY TEST(50),MENTAL ABILITY TEST Average,MENTAL ABILITY TEST_Highest Score,MENTAL ABILITY TEST_Subjectwise_Rank,Total(100),Scholarship
-61,10th,202510152,Himanshu Saini,Mr. Rajpal Singh,23-03-2025,3,5,7,58,4,4,7,41,3,4,6,55,4,6,15,59,7,12,15,72,31,32,47,45,52,50
-4,6th,202506014,Manit Rawat,Mr. Balvendra Singh Rawat,23-03-2025,5,6,6,4,2,4,5,4,6,5,6,1,8,9,10,3,8,9,12,2,11,21,33,4,40,40
+﻿Rank	Class	Roll No	Candidate Name	Father's Name	Exam Date	Phy(10)	Phy Average	Phy_Highest Score	Phy_Subjectwise_Rank	Chem(10)	Chem Average	Chem_Highest Score	Chem_Subjectwise_Rank	Bio(10)	Bio Average	Bio_Highest Score	Bio_Subjectwise_Rank	Math(15)	Math Average	Math_Highest Score	Math_Subjectwise_Rank	SST(15)	SST Average	SST_Highest Score	SST_Subjectwise_Rank	MAT(50)	MAT Average	MAT_Highest Score	MAT_Subjectwise_Rank	Total(100)	Scholarship
+1	5th	202505011	Vedant Gupta	Mr. Prateek Gupta	23.03.2025	6	6	6	1	4	4	4	1	5	5	5	1	9	9	9	1	6	6	6	1	9	9	9	1	39	40
+1	6th	202506013	Anika Sharma	Mr. Amit Sharma	23.03.2025	6	6	6	1	5	4	5	1	5	5	6	2	9	9	10	2	12	9	12	1	33	21	33	1	70	70
+2	6th	202506017	Jayditya Singh	Mr. Jay Pal Singh	23.03.2025	6	6	6	1	5	4	5	1	4	5	6	4	10	9	10	1	7	9	12	4	22	21	33	2	54	50
+3	6th	202506016	Sejal Singh	Mr. Vijay Pal Singh	23.03.2025	6	6	6	1	4	4	5	3	5	5	6	2	7	9	10	4	8	9	12	2	19	21	33	3	49	50
+4	6th	202506014	Manit Rawat	Mr. Balvendra Singh Rawat	23.03.2025	5	6	6	4	2	4	5	4	6	5	6	1	8	9	10	3	8	9	12	2	11	21	33	4	40	40
+1	7th	202507009	Jayditya	Late Pramod Kumar	23.03.2025	5	5	5	1	3	3	3	1	5	5	5	1	12	12	12	1	9	9	9	1	26	26	26	1	60	60
+1	8th	202508048	Amolika Sharma	Mr. Akshay Sharma 	23.03.2025	5	4	6	2	4	3	5	2	5	4	6	2	13	6	13	1	13	6	13	1	26	24	35	5	66	70
+2	8th	202508053	Himanshi	Mr. Charitra Kumar	23.03.2025	4	4	6	5	5	3	5	1	5	4	6	2	9	6	13	2	3	6	13	10	35	24	35	1	61	60
+3	8th	202508052	Darshil Kumar	Mr. Charitra Kumar	23.03.2025	5	4	6	2	2	3	5	10	6	4	6	1	4	6	13	8	8	6	13	2	30	24	35	2	55	60
+4	8th	202508057	Meet Deol	Mr. Kapil Kumar	23.03.2025	5	4	6	2	3	3	5	5	3	4	6	8	7	6	13	3	8	6	13	2	25	24	35	6	51	50
+5	8th	202508054	Smirti Raj	Mr. Giriraj Singh	23.03.2025	4	4	6	5	3	3	5	5	3	4	6	8	7	6	13	3	4	6	13	6	27	24	35	4	48	50
+5	8th	202508047	Aditya Vishnoi	Mr. Mohan Lal Vishnoi	23.03.2025	4	4	6	5	3	3	5	5	5	4	6	2	2	6	13	10	4	6	13	6	30	24	35	2	48	50
+7	8th	202508056	Harsh	Mr. Dhananya Kumar	23.03.2025	6	4	6	1	3	3	5	5	5	4	6	2	6	6	13	5	5	6	13	4	19	24	35	8	44	40
+8	8th	202508058	Sehal Ali	Mohd Imran	23.03.2025	3	4	6	8	3	3	5	5	4	4	6	6	4	6	13	8	4	6	13	6	20	24	35	7	38	40
+9	8th	202508050	Himanshu	Mr. Teer Singh	23.03.2025	3	4	6	8	4	3	5	2	4	4	6	6	6	6	13	5	5	6	13	4	15	24	35	9	37	40
+10	8th	202508059	Vivek	Mr. Rampal 	23.03.2025	2	4	6	10	4	3	5	2	1	4	6	10	5	6	13	7	4	6	13	6	15	24	35	9	31	30
+1	9th	202509039	Paras Vibhu	Mr. Satya Veer Singh	23.03.2025	3	3	5	3	2	2	3	3	4	3	4	1	7	6	8	3	9	6	10	2	29	20	29	1	54	50
+1	9th	202509035	Ishant Jayant	Mr. Arvind Kumar	23.03.2025	5	3	5	1	3	2	3	1	4	3	4	1	8	6	8	1	10	6	10	1	24	20	29	2	54	50
+3	9th	202509036	Shashank	Mr. Vijay Veer Singh Yadav	23.03.2025	3	3	5	3	1	2	3	6	4	3	4	1	8	6	8	1	7	6	10	3	19	20	29	3	42	40
+4	9th	202509040	Gaganraj Singh	Mr. Navin Kumar	23.03.2025	3	3	5	3	3	2	3	1	1	3	4	6	6	6	8	5	6	6	10	4	17	20	29	5	36	40
+5	9th	202509034	Riza Parveen	Mr. Idrish Ahmad	23.03.2025	2	3	5	6	2	2	3	3	3	3	4	4	3	6	8	7	4	6	10	5	19	20	29	3	33	30
+6	9th	202509042	Nishant Kumar	Mr. Sanjeev Kumar	23.03.2025	4	3	5	2	1	2	3	6	2	3	4	5	6	6	8	5	4	6	10	5	15	20	29	6	32	30
+7	9th	202509038	Abhilaksh Kumar	Mr. Jagatpal Singh	23.03.2025	2	3	5	6	2	2	3	3	1	3	4	6	7	6	8	3	4	6	10	5	15	20	29	6	31	30
+1	10th	202510172	Varnika Singh	Mr. Virendra Singh	23.03.2025	7	5	7	1	7	4	7	1	6	4	6	1	14	6	15	2	15	12	15	1	47	32	47	1	96	90
+2	10th	202510106	Ayushi Diwakar	Mr. Raj Kumar	23.03.2025	7	5	7	1	5	4	7	18	6	4	6	1	9	6	15	7	15	12	15	1	47	32	47	1	89	90
+3	10th	202510141	Parth Pratap Singh	Mr. Pankaj Singh	23.03.2025	7	5	7	1	7	4	7	1	6	4	6	1	15	6	15	1	15	12	15	1	37	32	47	25	87	90
+3	10th	202510146	Shaurya Tyagi	Mr. Pushpendra Kumar	23.03.2025	6	5	7	13	6	4	7	6	6	4	6	1	13	6	15	3	15	12	15	1	41	32	47	11	87	90
+5	10th	202510117	Daksh Kumar	Mr. Gajendra  Singh	23.03.2025	5	5	7	32	4	4	7	41	6	4	6	1	11	6	15	4	15	12	15	1	45	32	47	4	86	90
+6	10th	202510147	Nandini Varshney	Mr. Gagan Varshney	23.03.2025	7	5	7	1	6	4	7	6	6	4	6	1	10	6	15	5	15	12	15	1	41	32	47	11	85	90
+7	10th	202510157	Darsh Agarwal	Mr. Rahul Agarwal	23.03.2025	7	5	7	1	5	4	7	18	6	4	6	1	7	6	15	17	14	12	15	16	45	32	47	4	84	80
+7	10th	202510120	Daksh Saxena	Mr. Nishant Saxena	23.03.2025	7	5	7	1	5	4	7	18	6	4	6	1	7	6	15	17	13	12	15	33	46	32	47	3	84	80
+9	10th	202510101	Rohan Arya Prasad	Mr. Mukesh Kumar Prasad	23.03.2025	7	5	7	1	5	4	7	18	6	4	6	1	10	6	15	5	14	12	15	16	40	32	47	16	82	80
+10	10th	202510148	Pranjali Gupta	Mr. Gaurav Gupta	23.03.2025	7	5	7	1	6	4	7	6	4	4	6	42	9	6	15	7	14	12	15	16	41	32	47	11	81	80
+11	10th	202509041	Anant Agarwal	Mr. Abhinav	23.03.2025	6	5	7	13	5	4	7	18	6	4	6	1	7	6	15	17	14	12	15	16	42	32	47	10	80	80
+12	10th	202510144	Tanvi Sharma	Mr. Sunil Kumar Sharma	23.03.2025	4	5	7	49	5	4	7	18	6	4	6	1	5	6	15	45	15	12	15	1	44	32	47	6	79	80
+12	10th	202501066	Nitya Aasthan	Mr. Anurag Yadav	23.03.2025	6	5	7	13	6	4	7	6	5	4	6	24	8	6	15	10	13	12	15	33	41	32	47	11	79	80
+14	10th	202510165	Lalit Saini	Mr. Vinod Kumar	23.03.2025	5	5	7	32	7	4	7	1	6	4	6	1	8	6	15	10	12	12	15	47	40	32	47	16	78	80
+14	10th	202510088	Kittu Goswami	Mr. Kuldeep Goswami	23.03.2025	6	5	7	13	5	4	7	18	5	4	6	24	6	6	15	31	13	12	15	33	43	32	47	7	78	80
+16	10th	202510177	Siddharth Bhambee	Mr. Nitin Bhambee	23.03.2025	4	5	7	49	7	4	7	1	4	4	6	42	7	6	15	17	14	12	15	16	40	32	47	16	76	80
+16	10th	202510109	Kavneet Kaur Chhabra 	Mr. Amandeep Singh	23.03.2025	5	5	7	32	5	4	7	18	3	4	6	55	6	6	15	31	14	12	15	16	43	32	47	7	76	80
+16	10th	202510142	Tejasvini Varshney	Mr. Pradeep Varshney	23.03.2025	6	5	7	13	4	4	7	41	6	4	6	1	7	6	15	17	14	12	15	16	39	32	47	21	76	80
+19	10th	202510131	Priyansh Singh	Mr. Jitendra Kumar	23.03.2025	6	5	7	13	2	4	7	66	5	4	6	24	8	6	15	10	15	12	15	1	39	32	47	21	75	80
+19	10th	202510125	Sanchi Saxena	Mr. Vishal Saxena	23.03.2025	6	5	7	13	3	4	7	60	3	4	6	55	7	6	15	17	13	12	15	33	43	32	47	7	75	80
+21	10th	202510089	Areeb Khan	Mr. Shuaib Khan	23.03.2025	6	5	7	13	5	4	7	18	6	4	6	1	8	6	15	10	15	12	15	1	32	32	47	38	72	70
+21	10th	202510145	Aditya Saxena	Mr. Prabhat Saxena	23.03.2025	5	5	7	32	4	4	7	41	6	4	6	1	9	6	15	7	14	12	15	16	34	32	47	30	72	70
+21	10th	202510127	Shrishti	Mr. Alok Kumar	23.03.2025	7	5	7	1	4	4	7	41	5	4	6	24	6	6	15	31	15	12	15	1	35	32	47	29	72	70
+24	10th	202510111	Aarohi Yadav	Mr. Gulashan Yadav	23.03.2025	5	5	7	32	6	4	7	6	6	4	6	1	8	6	15	10	12	12	15	47	34	32	47	30	71	70
+24	10th	202510094	Aradhya Chikara	Mr. Pushpendra Kumar	23.03.2025	3	5	7	58	6	4	7	6	5	4	6	24	6	6	15	31	11	12	15	56	40	32	47	16	71	70
+26	10th	202510139	Aarish Javed	Mohd Javed Ansari	23.03.2025	6	5	7	13	6	4	7	6	6	4	6	1	6	6	15	31	14	12	15	16	32	32	47	38	70	70
+26	10th	202510098	Mohak Gupta	Mr. Saurabh Gupta	23.03.2025	5	5	7	32	5	4	7	18	3	4	6	55	7	6	15	17	11	12	15	56	39	32	47	21	70	70
+26	10th	202510162	Atharv Awasthi	Dr. Pratosh Kuar Awasthi	23.03.2025	4	5	7	49	4	4	7	41	4	4	6	42	8	6	15	10	13	12	15	33	37	32	47	25	70	70
+29	10th	202510166	Tabish Ameen	Mr. Noorul Amin	23.03.2025	5	5	7	32	6	4	7	6	5	4	6	24	7	6	15	17	14	12	15	16	32	32	47	38	69	70
+29	10th	202510179	Shourya Pratap Singh	Mr. Vimal Singh	23.03.2025	2	5	7	68	4	4	7	41	5	4	6	24	7	6	15	17	13	12	15	33	38	32	47	24	69	70
+29	10th	202510116	Kartik Saxena	Mr. Shekhar Saxena	23.03.2025	2	5	7	68	4	4	7	41	4	4	6	42	5	6	15	45	13	12	15	33	41	32	47	11	69	70
+32	10th	202510114	Aryan Varshney	Mr. Sumit Varshney	23.03.2025	6	5	7	13	6	4	7	6	4	4	6	42	6	6	15	31	9	12	15	66	37	32	47	25	68	70
+32	10th	202510121	Yug Kapoor	Mr. Manoj Kapoor	23.03.2025	5	5	7	32	5	4	7	18	5	4	6	24	6	6	15	31	15	12	15	1	32	32	47	38	68	70
+34	10th	202501060	Harsh Maurya	Mr. Nagendra Prasad Maurya	23.03.2025	6	5	7	13	6	4	7	6	5	4	6	24	2	6	15	76	15	12	15	1	32	32	47	38	66	70
+34	10th	202510112	Akshara Vishnoi	Mr. Vikas Kumar Vishnoi	23.03.2025	4	5	7	49	4	4	7	41	6	4	6	1	6	6	15	31	13	12	15	33	33	32	47	35	66	70
+36	10th	202510104	Bhavya Yadav	Mr. Susheel Yadav	23.03.2025	4	5	7	49	5	4	7	18	2	4	6	72	7	6	15	17	13	12	15	33	34	32	47	30	65	70
+36	10th	202510136	Madhav Agarwal	Mr. Monoj Agarwal	23.03.2025	7	5	7	1	3	4	7	60	2	4	6	72	5	6	15	45	14	12	15	16	34	32	47	30	65	70
+36	10th	202510178	Ayush Kumar Singh	Mr.Rajesh kumar	23.03.2025	6	5	7	13	5	4	7	18	4	4	6	42	2	6	15	76	15	12	15	1	33	32	47	35	65	70
+36	10th	202510174	Akshita Saxena	Mr. Vishal Saxena	23.03.2025	6	5	7	13	6	4	7	6	6	4	6	1	6	6	15	31	12	12	15	47	29	32	47	49	65	70
+40	10th	202510163	Neerav Agarwal	Mr. Sachin Agarwal	23.03.2025	1	5	7	78	3	4	7	60	3	4	6	55	3	6	15	71	14	12	15	16	40	32	47	16	64	60
+40	10th	202510093	Mahika Parmar	Mr. Matank Pawar	23.03.2025	7	5	7	1	6	4	7	6	3	4	6	55	6	6	15	31	13	12	15	33	29	32	47	49	64	60
+40	10th	202510159	Arush Agarwal	Mr. Anuj Agarwal	23.03.2025	4	5	7	49	5	4	7	18	4	4	6	42	7	6	15	17	12	12	15	47	32	32	47	38	64	60
+40	10th	202510156	Saransh Gupta	Mr Amit Gupta	23.03.2025	6	5	7	13	5	4	7	18	6	4	6	1	6	6	15	31	12	12	15	47	29	32	47	49	64	60
+44	10th	202510118	Gaurangi Kaushik	Mr. Subodh Kaushik	23.03.2025	6	5	7	13	4	4	7	41	6	4	6	1	4	6	15	59	14	12	15	16	29	32	47	49	63	60
+44	10th	202510175	Prisha Katyal	Mr. Sindhu Katyal	23.03.2025	6	5	7	13	4	4	7	41	3	4	6	55	7	6	15	17	14	12	15	16	29	32	47	49	63	60
+44	10th	202510143	Siddhvin Singh	Mr. Amit Singhal	23.03.2025	2	5	7	68	4	4	7	41	2	4	6	72	4	6	15	59	14	12	15	16	37	32	47	25	63	60
+47	10th	202510095	Peehu Saxena	Mr. Brijesh Saxena	23.03.2025	5	5	7	32	5	4	7	18	3	4	6	55	4	6	15	59	13	12	15	33	32	32	47	38	62	60
+47	10th	202510155	Arnav Chitransh	Mr. Anuj Kumar Saxena	23.03.2025	5	5	7	32	5	4	7	18	6	4	6	1	3	6	15	71	12	12	15	47	31	32	47	45	62	60
+49	10th	202510096	Ananyaka Singh	Mr. Sachin Kumar Singh	23.03.2025	5	5	7	32	5	4	7	18	4	4	6	42	2	6	15	76	12	12	15	47	33	32	47	35	61	60
+50	10th	202510138	Suditi Rawat	Mr. Balwendra Singh Rawat	23.03.2025	3	5	7	58	2	4	7	66	5	4	6	24	3	6	15	71	13	12	15	33	34	32	47	30	60	60
+50	10th	202501081	Lakshya Rathore	Mr. Shailendra Kumar	23.03.2025	6	5	7	13	7	4	7	1	3	4	6	55	5	6	15	45	11	12	15	56	28	32	47	56	60	60
+52	10th	202510176	Divya  	Mr. Lokman Singh	23.03.2025	6	5	7	13	4	4	7	41	5	4	6	24	5	6	15	45	14	12	15	16	24	32	47	66	58	60
+52	10th	202510083	Tanisha Rastogi	Mr. Nishan Rastogi	23.03.2025	3	5	7	58	2	4	7	66	5	4	6	24	6	6	15	31	13	12	15	33	29	32	47	49	58	60
+54	10th	202510129	Shrishti Jain	Mr.Praveen Jain	23.03.2025	4	5	7	49	3	4	7	60	5	4	6	24	5	6	15	45	10	12	15	62	30	32	47	47	57	60
+54	10th	202510124	Amogh Bhardwaj	Mr. Satish Bhardwaj	23.03.2025	5	5	7	32	5	4	7	18	2	4	6	72	4	6	15	59	11	12	15	56	30	32	47	47	57	60
+56	10th	202510122	Kavyansh Yadav	Mr. Tej Pal Singh Yadav	23.03.2025	5	5	7	32	2	4	7	66	4	4	6	42	5	6	15	45	15	12	15	1	25	32	47	62	56	60
+57	10th	202510149	Aditi Mehta	Mr. Pushkar Singh Mehta	23.03.2025	3	5	7	58	4	4	7	41	3	4	6	55	7	6	15	17	14	12	15	16	24	32	47	66	55	60
+58	10th	202510091	Sparsh Rastogi	Mr. Rajat Rastogi	23.03.2025	4	5	7	49	3	4	7	60	2	4	6	72	5	6	15	45	11	12	15	56	28	32	47	56	53	50
+58	10th	202510154	Prekshit Chauhan	Mr. Anil Kumar	23.03.2025	2	5	7	68	5	4	7	18	4	4	6	42	6	6	15	31	7	12	15	72	29	32	47	49	53	50
+58	10th	202510082	Abhinav Pratap Singh	Mr. Gulab Singh	23.03.2025	6	5	7	13	4	4	7	41	3	4	6	55	5	6	15	45	9	12	15	66	26	32	47	60	53	50
+61	10th	202510152	Himanshu Saini	Mr. Rajpal Singh	23.03.2025	3	5	7	58	4	4	7	41	3	4	6	55	4	6	15	59	7	12	15	72	31	32	47	45	52	50
+62	10th	202510150	Aadrika Verma	Mr. Ajay Verma	23.03.2025	3	5	7	58	2	4	7	66	5	4	6	24	3	6	15	71	13	12	15	33	25	32	47	62	51	50
+62	10th	202510171	Aryan Gupta	Mr. Nishant Gupta	23.03.2025	4	5	7	49	5	4	7	18	4	4	6	42	3	6	15	71	15	12	15	1	20	32	47	75	51	50
+64	10th	202510123	Jatin Singh	Mr. Rajveer Singh	23.03.2025	5	5	7	32	5	4	7	18	5	4	6	24	4	6	15	59	11	12	15	56	20	32	47	75	50	50
+64	10th	202510161	Shourya Kumar	Late. Pravin Kumar	23.03.2025	3	5	7	58	5	4	7	18	5	4	6	24	5	6	15	45	5	12	15	78	27	32	47	58	50	50
+66	10th	202510085	Harsh Vardhan	Mr. Chandra Pal Singh	23.03.2025	5	5	7	32	4	4	7	41	5	4	6	24	8	6	15	10	12	12	15	47	15	32	47	79	49	50
+67	10th	202510084	Aryan Yadav	Mr. Sanjeev Kumar	23.03.2025	3	5	7	58	4	4	7	41	5	4	6	24	5	6	15	45	12	12	15	47	19	32	47	77	48	50
+67	10th	202510173	Devang Chauhan	Mr. Nitin Rajput	23.03.2025	5	5	7	32	3	4	7	60	3	4	6	55	5	6	15	45	10	12	15	62	22	32	47	70	48	50
+69	10th	202510153	Smita Mandal	Mr. Sanjay Mandal	23.03.2025	2	5	7	68	4	4	7	41	1	4	6	78	2	6	15	76	9	12	15	66	27	32	47	58	45	50
+70	10th	202510140	Manya Agarwal	Mr. Rajat Agarwal	23.03.2025	2	5	7	68	2	4	7	66	3	4	6	55	5	6	15	45	7	12	15	72	25	32	47	62	44	40
+70	10th	202510169	Darshika Singh	Mr. Jai Prakash Singh	23.03.2025	1	5	7	78	2	4	7	66	3	4	6	55	7	6	15	17	8	12	15	70	23	32	47	69	44	40
+72	10th	202510110	Wajeeha Tanveer	Mr. Tanveer Abbas	23.03.2025	2	5	7	68	2	4	7	66	3	4	6	55	2	6	15	76	8	12	15	70	26	32	47	60	43	40
+72	10th	202510160	Manya Dhingra	Mr. Dilip Dhingra	23.03.2025	1	5	7	78	2	4	7	66	4	4	6	42	5	6	15	45	10	12	15	62	21	32	47	73	43	40
+72	10th	202501408	Mohd Arsh	Mr. Naseem Ahmad	23.03.2025	5	5	7	32	4	4	7	41	4	4	6	42	4	6	15	59	10	12	15	62	16	32	47	78	43	40
+75	10th	202510135	Zainab Anjum	Mohd Aqueel Saifi	23.03.2025	1	5	7	78	1	4	7	78	6	4	6	1	4	6	15	59	7	12	15	72	22	32	47	70	41	40
+76	10th	202510170	Tushant Chaudhary	Mr. Damodar Singh	23.03.2025	3	5	7	58	0	4	7	81	3	4	6	55	4	6	15	59	9	12	15	66	21	32	47	73	40	40
+77	10th	202510168	Vyom Kumar Pal	Mr. Neeraj Kumar Pal	23.03.2025	2	5	7	68	2	4	7	66	2	4	6	72	4	6	15	59	7	12	15	72	22	32	47	70	39	40
+77	10th	202510151	Ankit Yadav	Mr. Suresh Chandra	23.03.2025	2	5	7	68	1	4	7	78	1	4	6	78	4	6	15	59	7	12	15	72	24	32	47	66	39	40
+77	10th	202510133	Karnika Choudhary	Mr. Karamveer Singh	23.03.2025	2	5	7	68	2	4	7	66	3	4	6	55	4	6	15	59	3	12	15	81	25	32	47	62	39	40
+80	10th	202510092	Naman Saini	Mr. Braj Pal Singh	23.03.2025	7	5	7	1	2	4	7	66	1	4	6	78	1	6	15	81	5	12	15	78	15	32	47	79	31	30
+81	10th	202510126	Aditya chaudhary	Mr. Dharmendra kumar singh	23.03.2025	3	5	7	58	1	4	7	78	1	4	6	78	6	6	15	31	4	12	15	80	9	32	47	81	24	20

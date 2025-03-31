@@ -28,6 +28,7 @@ const CloudinaryUpload = () => {
       const formData = new FormData();
       formData.append("file", file);
       formData.append("upload_preset", uploadPreset);
+      formData.append("folder", "Student_Pictures"); // Optional: specify a folder in Cloudinary
   
       // Log to verify
       console.log("Uploading:", file.name);
@@ -60,7 +61,7 @@ const CloudinaryUpload = () => {
   
 
   return (
-    <div className="p-5">
+    <div className="p-5 bg-white rounded-2xl text-center shadow-md w-full h-full m-auto mt-10">
       <h2 className="text-xl font-bold">Upload Files to Cloudinary</h2>
       
       <input
@@ -78,7 +79,7 @@ const CloudinaryUpload = () => {
         {uploading ? "Uploading..." : "Upload All"}
       </button>
 
-      {uploadedUrls.length > 0 && (
+      {/* {uploadedUrls.length > 0 && (
         <div className="mt-4">
           <h3 className="text-lg font-semibold">Uploaded Files:</h3>
           {uploadedUrls.map((url, index) => (
@@ -87,7 +88,7 @@ const CloudinaryUpload = () => {
             </div>
           ))}
         </div>
-      )}
+      )} */}
     </div>
   );
 };

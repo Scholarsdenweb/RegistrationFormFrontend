@@ -96,6 +96,24 @@ const Sidebar = () => {
           />
           <h4>Download Result</h4>
         </Link>
+        <Link
+          to={"/employee/CloudinaryUpload"}
+          className={`flex gap-3 rounded-l-full ml-16 p-3 ${
+            location.pathname === "/employee/CloudinaryUpload"
+              ? "text-red-600 bg-white"
+              : "text-white"
+          } `}
+        >
+          <img
+            src={
+              location.pathname === "/employee/CloudinaryUpload"
+                ? DashboardDarkMode
+                : DashboardLightMode
+            }
+            alt=""
+          />
+          <h4>Upload Student Pictures</h4>
+        </Link>
       
       </div>
 
