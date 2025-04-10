@@ -100,7 +100,7 @@ const BasicDetailsForm = () => {
     const formErrors = {};
     let isValid = true;
 
-    ["dob", "gender", "examName", "examDate", "name", "email"].forEach(
+    ["dob", "gender", "examDate", "name", "email"].forEach(
       (field) => {
         if (field === "name" || field === "email") {
           if (!field) {
@@ -120,6 +120,8 @@ const BasicDetailsForm = () => {
         }
       }
     );
+
+    console.log("formErrors in vaaalidation", formErrors);
 
     setBasicDetailsError(formErrors);
     return isValid;
@@ -197,7 +199,6 @@ const BasicDetailsForm = () => {
           : "Basic details submitted successfully!"
       );
 
-      navigate("/registration/batchDetailsForm");
     } catch (error) {
       console.log("Error submitting form:", error);
       setSubmitMessage("Error submitting form. Please try again.");
