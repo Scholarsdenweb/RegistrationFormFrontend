@@ -28,6 +28,8 @@ import AddExamDate from "./components/employeeCompoments/AddExamDate";
 import DownloadResult from "./components/employeeCompoments/DownloadResult";
 import CloudinaryUpload from "./components/employeeCompoments/CloudinaryUpload";
 import CloudinaryComponent from "./components/employeeCompoments/CloudinaryComponent";
+import BatchRelatedDetailsForm from "./components/Form/BatchRelatedDetails";
+import FamilyDetails from "./components/Form/FamilyDetails";
 
 function App() {
   return (
@@ -36,19 +38,27 @@ function App() {
         <Router>
           <div className="p-0 m-0">
             <Routes>
-              <Route path="/" element={<Login />} />
+              {/* <Route path="/" element={<Login />} /> */}
               <Route path="/employee" element={<EmployeeLogin />} />
               <Route
                 path="/employee/dashboard"
                 element={<PrivateRoute component={EmployeeDashboard} />}
               />
-              <Route path="/employee/allStudents" element={<AllStudentResult />} />
+              <Route
+                path="/employee/allStudents"
+                element={<AllStudentResult />}
+              />
               <Route path="/employee/addExamDate" element={<AddExamDate />} />
-              <Route path="/employee/downloadResult" element={<DownloadResult />} />
-              <Route path="/employee/CloudinaryUpload" element={<CloudinaryComponent
-               />} />
+              <Route
+                path="/employee/downloadResult"
+                element={<DownloadResult />}
+              />
+              <Route
+                path="/employee/CloudinaryUpload"
+                element={<CloudinaryComponent />}
+              />
 
-              <Route path="/signup" element={<Signup />} />
+              <Route path="/" element={<Signup />} />
               <Route
                 path="/registration/educationalDetailsForm"
                 element={<EducationalDetailsForm />}
@@ -56,6 +66,14 @@ function App() {
               <Route
                 path="/registration/basicDetailsForm"
                 element={<BasicDetailsForm />}
+              />
+              <Route
+                path="/registration/batchDetailsForm"
+                element={<BatchRelatedDetailsForm />}
+              />
+              <Route
+                path="/registration/familyDetailsForm"
+                element={<FamilyDetails />}
               />
 
               <Route
@@ -78,7 +96,7 @@ function App() {
                 path="/resultDetails"
                 element={<PrivateRoute component={ResultPage} />}
               />
-              <Route path="/payment" element={<Payment />} />
+              <Route path="/registration/payment" element={<Payment />} />
               {/* <Route
                 path="/payment/success/:payment_id"
                 element={<PrivateRoute component={PaymentSuccessMessage} />}
@@ -88,10 +106,7 @@ function App() {
                 element={<PrivateRoute component={Result} />}
               />
 
-                <Route
-                path="/spinner"
-                element={<Spinner/>}
-              />
+              <Route path="/spinner" element={<Spinner />} />
             </Routes>
           </div>
         </Router>

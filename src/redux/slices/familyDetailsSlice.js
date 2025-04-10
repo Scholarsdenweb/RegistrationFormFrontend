@@ -64,11 +64,14 @@ export const submitFamilyDetails = createAsyncThunk(
       const response = await method(endpoint, familyFormData);
 
       setFamilyFormSubmit(true); // Execute the callback to indicate submission status
-      return familyDataExist
-        ? "Form updated successfully!"
-        : "Form submitted successfully!";
+      return true;
+      // return familyDataExist
+      //   ? "Form updated successfully!"
+      //   : "Form submitted successfully!";
     } catch (error) {
-      return rejectWithValue("Submission error. Please try again.");
+      console.log("error", error);
+      return false;
+      // return rejectWithValue("Submission error. Please try again.");
     }
   }
 );

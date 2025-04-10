@@ -15,6 +15,7 @@ import {
 } from "../redux/slices/userDeailsSlice";
 import Navbar from "./Form/Navbar";
 import Spinner from "../api/Spinner";
+import FormHeader from "./LoginSugnup/FormHeader";
 
 
 
@@ -142,17 +143,15 @@ const Payment = () => {
   };
 
   return (
-    <div
-      className="w-full h-screen overflow-auto "
-      style={{ backgroundColor: "#c61d23" }}
-    >
-      <div className="grid grid-cols-7 h-full">
-        <div className="col-span-1">
-          <Sidebar />
-        </div>
+    <div className="min-h-screen w-full bg-[#c61d23] px-2 md:px-8 py-2 overflow-auto">
+    {/* {loading && <Spinner />} */}
 
-        <div className="flex flex-col col-span-6 h-full ">
-          <Navbar />
+    <div className="flex flex-col gap-6 max-w-screen-md mx-auto">
+      <div>
+        <FormHeader />
+      </div>
+
+    
 
           <div
             className={`col-span-6 px-9 py-8 mb-3 mr-5 h-full bg-gray-100 rounded-3xl flex flex-col items-center justify-center gap-4 overflow-auto`}
@@ -185,7 +184,7 @@ const Payment = () => {
           </div>
         </div>
       </div>
-    </div>
+
   );
 };
 export default Payment;

@@ -9,7 +9,7 @@ export const fetchEducationalDetails = createAsyncThunk(
       const response = await axios.get("/form/educationalDetails/getForm");
       const data = response.data;
       console.log("data", data);
-      
+
       if (data.length > 0) {
         return {
           dataExist: true,
@@ -33,7 +33,9 @@ export const fetchEducationalDetails = createAsyncThunk(
         },
       };
     } catch (error) {
-      return rejectWithValue(error.response?.data || "Failed to fetch educational details");
+      return rejectWithValue(
+        error.response?.data || "Failed to fetch educational details"
+      );
     }
   }
 );
@@ -46,11 +48,36 @@ export const fetchBoards = createAsyncThunk(
       const response = await axios.get("/board");
       console.log("boards response data", response);
       return {
-        boards: response.data
-      }
-      
+        boards: response.data,
+      };
     } catch (error) {
       return rejectWithValue(error.response?.data || "Failed to fetch boards");
+    }
+  }
+);
+
+export const submitEducationalDetails = createAsyncThunk(
+  "educationalDetails/submitEducationalDetails",
+  async (
+    {  educationalFormData, educationalDataExist, setEducationalFormSubmit },
+    { rejectWithValue }
+  ) => {
+    try {
+      console.log("educationalFormData", educationalFormData);
+      console.log("educationalDataExist", educationalDataExist);
+      console.log("setEducationalFormSubmit", setEducationalFormSubmit);
+      const endpoint = educationalDataExist
+      ? "/form/educationalDetails/updateForm"
+      : "/form/educationalDetails/addForm";
+      const method = educationalDataExist ? axios.patch : axios.post;
+      const response = await method(endpoint, educationalFormData);
+
+      setEducationalFormSubmit(true); // Execute the callback to indicate submission status
+      return true;
+    } catch (error) {
+      console.log("error", error);
+      return false;
+      // return rejectWithValue("Submission error. Please try again.");
     }
   }
 );
@@ -116,9 +143,7 @@ const educationalDetailsSlice = createSlice({
       .addCase(fetchBoards.rejected, (state, action) => {
         state.loading = false;
         state.error = { fetchBoardsError: action.payload };
-      })
-
-     
+      });
   },
 });
 
