@@ -175,7 +175,7 @@ const BasicDetailsForm = () => {
       );
       console.log("CHECKurl", checkUrl);
  
-        navigate("/educationalDetailsForm");
+        navigate("/registration/educationalDetailsForm");
   
     } catch (error) {
       console.error("Error submitting form:", error);
