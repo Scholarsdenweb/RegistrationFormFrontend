@@ -48,14 +48,15 @@ const BasicDetailsForm = () => {
   const fetchAllDates = async () => {
     try {
       const response = await axios.get("/employees/getAllDates");
-
       console.log("response fetchAllDates", response);
-
-      const filteredDates = response.data.filter(
-        (date) =>
-          dayjs(date.examDate).isAfter(dayjs().startOf("day")) &&
-          dayjs(date.examDate).isBefore(dayjs().add(3, "month"))
-      );
+  
+      const today = dayjs().startOf("day");
+  
+      const filteredDates = response.data.filter((date) => {
+        const parsedDate = dayjs(date.examDate, "DD-MM-YYYY");
+        return !parsedDate.isBefore(today); // includes today and future dates
+      });
+  
       console.log("filteredDates", filteredDates);
       setAllDates(filteredDates);
     } catch (error) {
@@ -376,11 +377,20 @@ const BasicDetailsForm = () => {
                         <option value="" disabled>
                           Select Exam Date
                         </option>
-                        {allDates.map((option, index) => (
-                          <option key={index} value={option.examDate}>
-                            {dayjs(option.examDate).format("DD MMM YYYY")}
-                          </option>
-                        ))}
+                        {console.log("allDates allDates", allDates)}
+                        {allDates?.map((option, index) => {
+                          const parsedDate = dayjs(
+                            option.examDate,
+                            "DD-MM-YYYY"
+                          );
+                          return (
+                            <option key={index} value={option._id}>
+                              {parsedDate.isValid()
+                                ? parsedDate.format("DD MMM YYYY")
+                                : "Invalid Date"}
+                            </option>
+                          );
+                        })}
                       </select>
                       {basicDetailsError.examDate && (
                         <p className="text-red-500 text-xs mt-1">
