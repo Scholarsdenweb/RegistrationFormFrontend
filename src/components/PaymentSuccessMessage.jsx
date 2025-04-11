@@ -79,9 +79,8 @@ const PaymentSuccessMessage = () => {
       {userData.admitCard ? (
         <a
           href={userData.admitCard} // Link to the PDF
-          download="AdmitCard.pdf" // Suggest a default filename
+          download={`${userData.admitCard}AdmitCard.pdf`} // Suggest a default filename
           target="_blank" // Open in a new tab
-          rel="noopener noreferrer" // Security best practice
           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
           style={{ backgroundColor: "#c61d23" }}
         >

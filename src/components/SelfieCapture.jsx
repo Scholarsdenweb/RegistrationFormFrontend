@@ -48,6 +48,7 @@ const SelfieCapture = () => {
     const context = canvas.getContext("2d");
     context.drawImage(video, 0, 0, canvas.width, canvas.height);
     const image = canvas.toDataURL("image/png");
+
     setCapturedImage(image);
 
     uploadToCloudinary(image);
@@ -66,9 +67,10 @@ const SelfieCapture = () => {
     try {
       const blob = await (await fetch(dataUrl)).blob();
       const formData = new FormData();
-      formData.append("file", blob);
+      formData.append("file", blob, userDetails.name );
       formData.append("upload_preset", "ProfilePictures");
       formData.append("cloud_name", "dtytgoj3f");
+      formData.append("folder", "SDAT130425Image")
   
       const response = await fetch(
         `https://api.cloudinary.com/v1_1/dtytgoj3f/image/upload`,

@@ -28,7 +28,7 @@ const CloudinaryUpload = () => {
       const formData = new FormData();
       formData.append("file", file);
       formData.append("upload_preset", uploadPreset);
-      formData.append("folder", "Student_Pictures"); // Optional: specify a folder in Cloudinary
+      formData.append("folder", "SDAT130425Image"); // Optional: specify a folder in Cloudinary
   
       // Log to verify
       console.log("Uploading:", file.name);

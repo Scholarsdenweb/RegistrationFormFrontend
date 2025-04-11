@@ -108,7 +108,7 @@ const FamilyDetails = () => {
         })
       ).unwrap();
 
-
+      
       if (result) {
         navigate("/registration/selfieCapture");
       }
