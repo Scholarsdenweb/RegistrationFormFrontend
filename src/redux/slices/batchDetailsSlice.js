@@ -10,6 +10,8 @@ export const fetchBatchDetails = createAsyncThunk(
       const data = response.data;
       console.log("BatchDetails Form Data", data[0]);
       if (data.length > 0) {
+
+        console.log("this is working find ")
         return {
           dataExist: true,
           formData: {
@@ -28,6 +30,7 @@ export const fetchBatchDetails = createAsyncThunk(
         },
       };
     } catch (error) {
+      console.log("error in fetchBatchDetails", error);
       return rejectWithValue(error.response?.data || "Failed to fetch data");
     }
   }

@@ -55,8 +55,7 @@ const DownloadResult = () => {
 }, [hasMore]);
 
   return (
-    <div className="w-full h-full bg-[#c61d23] overflow-auto ">
-
+    <div className="w-full max-h-screen bg-[#c61d23]">
       <div className="grid grid-cols-5 h-full">
         {/* Left Sidebar */}
         <div className="col-span-1">
@@ -64,11 +63,8 @@ const DownloadResult = () => {
         </div>
 
         {/* Right Content Area */}
-        <div className="flex flex-col col-span-4 h-full py-6">
-          {/* <Navbar /> */}
-
-          {/* Main Content */}
-          <div className="col-span-6 px-9 py-8 mb-3 mr-5 h-full bg-white rounded-3xl flex flex-col items-center justify-center gap-6 shadow-lg">
+        <div className="flex flex-col col-span-4 py-6">
+          <div className="col-span-6 px-9 py-9 mb-3 mr-5 bg-white rounded-3xl flex flex-col items-center justify-center gap-6 shadow-lg max-h-[90vh] overflow-y-auto pt-6">
             <h1 className="text-3xl font-bold text-gray-700">Download Results</h1>
 
             {Object.keys(groupedResults).map((examDate) => (
@@ -77,16 +73,15 @@ const DownloadResult = () => {
                 <div className="grid grid-cols-4 gap-6">
                   {groupedResults[examDate].map((result) => (
                     <div key={result._id} className="p-4 border rounded-lg shadow-md flex flex-col items-center">
-                      {/* PDF Preview */}
-                      <iframe 
-                        src={result.resultUrl} 
-                        className="w-40 h-40 border rounded-md" 
+                      <iframe
+                        src={result.resultUrl}
+                        className="w-40 h-40 border rounded-md"
                         title="PDF Preview"
                       />
                       <p className="mt-2 text-gray-700 text-sm">Student ID: {result.StudentId}</p>
-                      <a 
-                        href={result.resultUrl} 
-                        download 
+                      <a
+                        href={result.resultUrl}
+                        download
                         className="mt-2 text-blue-500 hover:underline"
                       >
                         Download
@@ -97,18 +92,14 @@ const DownloadResult = () => {
               </div>
             ))}
 
+            {/* Loading indicator at the bottom */}
             {hasMore && <div ref={loader} className="text-center text-gray-500 mt-4">Loading...</div>}
-          
-            {hasMore && <div ref={loader}>Loading...</div>}
-            <div>
-           
-        </div>
-           
           </div>
         </div>
       </div>
     </div>
-  );
+);
 };
+ 
 
 export default DownloadResult;

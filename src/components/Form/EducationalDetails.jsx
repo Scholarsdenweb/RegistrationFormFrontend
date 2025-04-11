@@ -6,6 +6,7 @@ import {
   fetchEducationalDetails,
   fetchBoards,
   updateEducationalDetails,
+  submitEducationalDetails,
 } from "../../redux/slices/educationalDetailsSlice";
 import { fetchUserDetails } from "../../redux/slices/userDeailsSlice";
 import Sidebar from "../Sidebar";
@@ -15,6 +16,7 @@ import {
   submitFamilyDetails,
   updateFamilyDetails,
 } from "../../redux/slices/familyDetailsSlice";
+import FormHeader from "../LoginSugnup/FormHeader";
 
 const EducationalDetailsForm = () => {
   const dispatch = useDispatch();
@@ -27,17 +29,16 @@ const EducationalDetailsForm = () => {
   const [educationalFormSubmit, setEducationalFormSubmit] = useState(false);
   const [familyFormSubmit, setFamilyFormSubmit] = useState(false);
 
-  // Redux state selectors
-  const {
-    formData: educationalFormData,
-    boards,
-    loading,
-    dataExist: educationalDataExist,
-  } = useSelector((state) => state.educationalDetails);
+  const [yearList, setYearList] = useState([]);
 
-  const { formData: familyFormData, dataExist: familyDataExist } = useSelector(
-    (state) => state.familyDetails
+  // Redux state selectors
+  const { formData, boards, loading, dataExist } = useSelector(
+    (state) => state.educationalDetails
   );
+
+  // const { formData: familyFormData, dataExist: familyDataExist } = useSelector(
+  //   (state) => state.familyDetails
+  // );
 
   const { userData } = useSelector((state) => state.userDetails);
 
@@ -66,6 +67,8 @@ const EducationalDetailsForm = () => {
 
   useEffect(() => {
     dispatch(fetchBoards());
+    yearGeneration();
+    console.log("YearList", yearList)
   }, []);
 
   useEffect(() => {
@@ -140,57 +143,91 @@ const EducationalDetailsForm = () => {
     return isValid;
   };
 
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+
+  //   const isEducationalValid = validateForm(
+  //     formData,
+  //     setEducationalErrors
+  //   );
+  //   // const isFamilyValid = validateForm(familyFormData, setFamilyErrors, {
+  //   //   FatherContactNumber: (value) => phoneRegex.test(value),
+  //   //   MotherContactNumber: (value) => phoneRegex.test(value),
+  //   // });
+
+  //   if (isEducationalValid) {
+  //     try {
+  //       const url = educationalDataExist
+  //         ? "/form/educationalDetails/updateForm"
+  //         : "/form/educationalDetails/addForm";
+  //       const method = educationalDataExist ? axios.patch : axios.post;
+
+  //       await method(url, formData);
+
+  //       setSubmitMessage(
+  //         educationalDataExist
+  //           ? "Educational details updated successfully!"
+  //           : "Educational details submitted successfully!"
+  //       );
+
+  //       setEducationalFormSubmit(true);
+  //     } catch (error) {
+  //       console.error("Error submitting form:", error);
+  //       setSubmitMessage("Error submitting form. Please try again.");
+  //     }
+  //   }
+
+  //   if (validateForm()) {
+  //     dispatch(
+  //       submitEducationalDetails(formData, dataExist, setEducationalFormSubmit)
+  //     );
+  //     if (educationalFormSubmit) {
+  //       navigate("/registration/familyForm");
+  //     }
+  //   }
+
+  //   // if (isFamilyValid) {
+  //   //   console.log("familyFormData", familyFormData);
+  //   //   dispatch(
+  //   //     submitFamilyDetails({
+  //   //       familyFormData,
+  //   //       familyDataExist,
+  //   //       setFamilyFormSubmit,
+  //   //     })
+  //   //   );
+
+  //   //   //   // Family details submission logic
+  //   // }
+  //   if (educationalFormSubmit) {
+  //     console.log("DAta submited successfully");
+  //     navigate("/registration/familyDetailsForm");
+  //   }
+  // };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const isEducationalValid = validateForm(
-      educationalFormData,
-      setEducationalErrors
-    );
-    const isFamilyValid = validateForm(familyFormData, setFamilyErrors, {
-      FatherContactNumber: (value) => phoneRegex.test(value),
-      MotherContactNumber: (value) => phoneRegex.test(value),
-    });
+    const isEducationalValid = validateForm(formData, setEducationalErrors);
 
     if (isEducationalValid) {
       try {
-        const url = educationalDataExist
-          ? "/form/educationalDetails/updateForm"
-          : "/form/educationalDetails/addForm";
-        const method = educationalDataExist ? axios.patch : axios.post;
+        const result = await dispatch(
+          submitEducationalDetails({
+            educationalFormData: formData,
+            educationalDataExist: dataExist,
+            setEducationalFormSubmit,
+          })
+        ).unwrap();
 
-        await method(url, educationalFormData);
-
-        setSubmitMessage(
-          educationalDataExist
-            ? "Educational details updated successfully!"
-            : "Educational details submitted successfully!"
-        );
-
-        setEducationalFormSubmit(true);
+        console.log("Submission result:", result);
+        if (result) {
+          navigate("/registration/familyDetailsForm");
+        }
       } catch (error) {
-        console.error("Error submitting form:", error);
+        console.error("Error submitting educational details:", error);
         setSubmitMessage("Error submitting form. Please try again.");
       }
     }
-
-    if (isFamilyValid) {
-      console.log("familyFormData", familyFormData);
-      dispatch(
-        submitFamilyDetails({
-          familyFormData,
-          familyDataExist,
-          setFamilyFormSubmit
-        }
-        )
-      );
-
-      //   // Family details submission logic
-    }
-    if(familyFormSubmit && educationalFormSubmit){
-      navigate("/payment");
-    }
-
   };
 
   const convertToRoman = (num) => {
@@ -216,8 +253,8 @@ const EducationalDetailsForm = () => {
     const isPercentage = key === "Percentage";
 
     return (
-      <div className="flex flex-col w-1/2 px-2" key={key}>
-        <label htmlFor={key} className="text-sm font-medium text-gray-600 mb-1">
+      <div className="flex flex-col px-2" key={key}>
+        <label htmlFor={key} className="text-sm font-medium text-white mb-1">
           {key.replace(/([A-Z])/g, " $1")}
         </label>
         <input
@@ -228,14 +265,38 @@ const EducationalDetailsForm = () => {
           onChange={handleChange}
           placeholder={`Enter ${key.replace(/([A-Z])/g, " $1")}`}
           className="border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-indigo-400 focus:outline-none w-full"
+          min={0}
+          max={100}
+          step="0.01" // Optional: allows for decimal precision up to 2 decimal places
           {...additionalProps}
+          onInput={(e) => {
+            let newValue = e.target.value;
+            console.log("name of the ", e.target.name);
+            if (e.target.name === "Percentage") {
+              if (newValue > 100) {
+                e.target.value = 100;
+              } else if (newValue < 0) {
+                e.target.value = 0;
+              }
+            }
+          }}
         />
+
         {errorsState[key] && (
-          <p className="text-red-500 text-xs mt-1">{errorsState[key]}</p>
+          <p className="text-black text-xs mt-1">{errorsState[key]}</p>
         )}
       </div>
     );
   };
+
+  const yearGeneration = () => {
+    const currentYear = new Date().getFullYear();
+    console.log("CURRENT YEAR", currentYear);
+  
+    for (let i = 0; i < 3; i++) {
+      setYearList((prev) => [...prev, currentYear - i]);
+    }
+  }
 
   const renderSelectField = (
     key,
@@ -245,8 +306,8 @@ const EducationalDetailsForm = () => {
     errorsState
   ) => {
     return (
-      <div className="flex flex-col w-1/2 px-2" key={key}>
-        <label htmlFor={key} className="text-sm font-medium text-gray-600 mb-1">
+      <div className="flex flex-col px-2" key={key}>
+        <label htmlFor={key} className="text-sm font-medium text-white mb-1">
           {console.log("key", key)}
           {key.replace(/([A-Z])/g, " $1")}
         </label>
@@ -256,7 +317,10 @@ const EducationalDetailsForm = () => {
           onChange={handleChange}
           className="border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-indigo-400 focus:outline-none w-full"
         >
-          <option value="" disabled >{`Select ${key.replace(/([A-Z])/g, " $1")}`}</option>
+          <option value="" disabled>{`Select ${key.replace(
+            /([A-Z])/g,
+            " $1"
+          )}`}</option>
           {options.map((option) => (
             <option key={option} value={option}>
               {option}
@@ -264,131 +328,198 @@ const EducationalDetailsForm = () => {
           ))}
         </select>
         {errorsState[key] && (
-          <p className="text-red-500 text-xs mt-1">{errorsState[key]}</p>
+          <p className="text-black text-xs mt-1">{errorsState[key]}</p>
         )}
       </div>
     );
   };
+  const currentYear = new Date().getFullYear();
+
 
   return (
-    <div
-      className="w-full h-screen overflow-auto  "
-      style={{ backgroundColor: "#c61d23" }}
-    >
-         <div className="grid grid-cols-7 ">
-        <div className="col-span-1">
-          <Sidebar />
+    <div className="min-h-screen w-full bg-[#c61d23] px-2 md:px-8 py-2 overflow-auto">
+      {/* {loading && <Spinner />} */}
+
+      <div className="flex flex-col gap-6 max-w-screen-md mx-auto">
+        <div>
+          <FormHeader />
         </div>
-        <div className="flex flex-col col-span-6 ">
-                    <Navbar />
 
-          <div className="px-9 py-4 mb-3 mr-5 bg-gray-200 rounded-3xl  h-full overflow-auto">
-            <h3 className="text-2xl font-extrabold">User Details</h3>
-
-            <form
-              className="bg-white shadow-lg p-4 rounded-2xl"
-              onSubmit={handleSubmit}
+        {/* <h1 className="text-3xl md:text-4xl font-semibold text-white text-center">
+          Enquiry Form
+        </h1> */}
+        <form
+          autoComplete="off"
+          className="flex flex-col gap-4  w-full"
+          onSubmit={handleSubmit}
+        >
+          {/* <div className="flex flex-wrap"> */}
+          {Object.keys(formData).map((key) =>
+            key === "Class" || key === "YearOfPassing" || key === "Board"
+              ? renderSelectField(
+                  key,
+                  formData[key],
+                  (e) => handleChange(e, updateEducationalDetails, formData),
+                  key === "YearOfPassing"
+                    ? ["2025", "2024", "2023"]
+                    
+                    : key === "Class"
+                    ? Array.from({ length: 7 }, (_, i) => i + 6).map(
+                        (classNum) => convertToRoman(classNum)
+                      )
+                    : boards
+                    ? boards.map((board) => board.name)
+                    : [],
+                  educationalErrors
+                )
+              : renderInputField(
+                  key,
+                  formData[key],
+                  (e) => handleChange(e, updateEducationalDetails, formData),
+                  {},
+                  educationalErrors
+                )
+          )}
+          {/* </div> */}
+          <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mt-6">
+            <button
+              onClick={() => navigate(-1)}
+              type="button"
+              className="w-full sm:w-1/3 border bg-yellow-500 hover:bg-yellow-600 rounded-xl text-black  py-2 px-4 "
             >
-              <h1 className="text-xl font-bold text-white bg-red-600 p-2 rounded-t-2xl">
-                Educational Details
-              </h1>
-              <div className="flex flex-wrap">
-                {Object.keys(educationalFormData).map((key) =>
-                  key === "Class" || key === "YearOfPassing" || key === "Board"
-                    ? renderSelectField(
-                        key,
-                        educationalFormData[key],
-                        (e) =>
-                          handleChange(
-                            e,
-                            updateEducationalDetails,
-                            educationalFormData
-                          ),
-                        key === "YearOfPassing"
-                          ? [2024]
-                          : key === "Class"
-                          ? Array.from({ length: 7 }, (_, i) => i + 6).map(
-                              (classNum) => convertToRoman(classNum)
-                            )
-                          : boards
-                          ? boards.map((board) => board.name)
-                          : [],
-                        educationalErrors
-                      )
-                    : renderInputField(
-                        key,
-                        educationalFormData[key],
-                        (e) =>
-                          handleChange(
-                            e,
-                            updateEducationalDetails,
-                            educationalFormData
-                          ),
-                        {},
-                        educationalErrors
-                      )
-                )}
-              </div>
-
-              <h1 className="text-xl font-bold text-white bg-red-600 p-2 rounded-t-2xl mt-4">
-                Family Details
-              </h1>
-              <div className="flex flex-wrap">
-                {Object.keys(familyFormData).map((key) =>
-                  key === "FamilyIncome"
-                    ? renderSelectField(
-                        key,
-                        familyFormData[key],
-                        (e) =>
-                          handleChange(e, updateFamilyDetails, familyFormData),
-                        incomeRanges,
-                        familyErrors
-                      )
-                    : renderInputField(
-                        key,
-                        familyFormData[key],
-                        (e) =>
-                          handleChange(e, updateFamilyDetails, familyFormData),
-                        {},
-                        familyErrors
-                      )
-                )}
-              </div>
-
-              {submitMessage && (
-                <p
-                  className={`text-sm text-center mt-4 ${
-                    submitMessage.includes("successfully")
-                      ? "text-green-500"
-                      : "text-red-500"
-                  }`}
-                >
-                  {submitMessage}
-                </p>
-              )}
-            </form>
-            <div className="flex justify-end mt-4">
-              {pathLocation === "/batchDetailsForm" && (
-                <button
-                  type="button"
-                  onClick={() => navigate(-1)}
-                  className="w-1/3 bg-gray-500 hover:bg-gray-600 text-white py-2 rounded-lg"
-                >
-                  Previous
-                </button>
-              )}
-              <button
-                onClick={handleSubmit}
-                className={` bg-red-600 hover:bg-red-700 text-white py-2 px-9 rounded-full`}
-              >
-                {checkUrl ? "Next" : "Update"}
-              </button>
-            </div>
+              Back
+            </button>
+            <button
+              type="submit"
+              className="w-full sm:w-2/3 border bg-yellow-500 hover:bg-yellow-600 text-black py-2 rounded-xl transition-all"
+            >
+              Next
+            </button>
           </div>
-        </div>
+        </form>
       </div>
     </div>
   );
 };
 
 export default EducationalDetailsForm;
+
+// return (
+//   <div
+//     className="w-full h-screen overflow-auto  "
+//     style={{ backgroundColor: "#c61d23" }}
+//   >
+//        <div className="grid grid-cols-7 ">
+//       <div className="col-span-1">
+//         <Sidebar />
+//       </div>
+//       <div className="flex flex-col col-span-6 ">
+//                   <Navbar />
+
+//         <div className="px-9 py-4 mb-3 mr-5 bg-gray-200 rounded-3xl  h-full overflow-auto">
+//           <h3 className="text-2xl font-extrabold">User Details</h3>
+
+//           <form
+//             className="bg-white shadow-lg p-4 rounded-2xl"
+//             onSubmit={handleSubmit}
+//           >
+//             <h1 className="text-xl font-bold text-white bg-red-600 p-2 rounded-t-2xl">
+//               Educational Details
+//             </h1>
+//             <div className="flex flex-wrap">
+//               {Object.keys(educationalFormData).map((key) =>
+//                 key === "Class" || key === "YearOfPassing" || key === "Board"
+//                   ? renderSelectField(
+//                       key,
+//                       educationalFormData[key],
+//                       (e) =>
+//                         handleChange(
+//                           e,
+//                           updateEducationalDetails,
+//                           educationalFormData
+//                         ),
+//                       key === "YearOfPassing"
+//                         ? [2024]
+//                         : key === "Class"
+//                         ? Array.from({ length: 7 }, (_, i) => i + 6).map(
+//                             (classNum) => convertToRoman(classNum)
+//                           )
+//                         : boards
+//                         ? boards.map((board) => board.name)
+//                         : [],
+//                       educationalErrors
+//                     )
+//                   : renderInputField(
+//                       key,
+//                       educationalFormData[key],
+//                       (e) =>
+//                         handleChange(
+//                           e,
+//                           updateEducationalDetails,
+//                           educationalFormData
+//                         ),
+//                       {},
+//                       educationalErrors
+//                     )
+//               )}
+//             </div>
+
+//             <h1 className="text-xl font-bold text-white bg-red-600 p-2 rounded-t-2xl mt-4">
+//               Family Details
+//             </h1>
+//             <div className="flex flex-wrap">
+//               {Object.keys(familyFormData).map((key) =>
+//                 key === "FamilyIncome"
+//                   ? renderSelectField(
+//                       key,
+//                       familyFormData[key],
+//                       (e) =>
+//                         handleChange(e, updateFamilyDetails, familyFormData),
+//                       incomeRanges,
+//                       familyErrors
+//                     )
+//                   : renderInputField(
+//                       key,
+//                       familyFormData[key],
+//                       (e) =>
+//                         handleChange(e, updateFamilyDetails, familyFormData),
+//                       {},
+//                       familyErrors
+//                     )
+//               )}
+//             </div>
+
+//             {submitMessage && (
+//               <p
+//                 className={`text-sm text-center mt-4 ${
+//                   submitMessage.includes("successfully")
+//                     ? "text-green-500"
+//                     : "text-red-500"
+//                 }`}
+//               >
+//                 {submitMessage}
+//               </p>
+//             )}
+//           </form>
+//           <div className="flex justify-end mt-4">
+//             {pathLocation === "/batchDetailsForm" && (
+//               <button
+//                 type="button"
+//                 onClick={() => navigate(-1)}
+//                 className="w-1/3 bg-gray-500 hover:bg-gray-600 text-white py-2 rounded-lg"
+//               >
+//                 Previous
+//               </button>
+//             )}
+//             <button
+//               onClick={handleSubmit}
+//               className={` bg-red-600 hover:bg-red-700 text-white py-2 px-9 rounded-full`}
+//             >
+//               {checkUrl ? "Next" : "Update"}
+//             </button>
+//           </div>
+//         </div>
+//       </div>
+//     </div>
+//   </div>
+// );

@@ -5,8 +5,10 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   fetchFamilyDetails,
   submitFamilyDetails,
+  updateFamilyDetails,
 } from "../../redux/slices/familyDetailsSlice";
 import Spinner from "../../api/Spinner";
+import FormHeader from "../LoginSugnup/FormHeader";
 
 const FamilyDetails = () => {
   const navigate = useNavigate();
@@ -20,6 +22,7 @@ const FamilyDetails = () => {
 
   const [checkUrl, setCheckUrl] = useState("");
   const [errors, setErrors] = useState({});
+  const [familyFormSubmit, setFamilyFormSubmit] = useState(false);
 
   const phoneRegex = /^[0-9]{10}$/;
 
@@ -42,10 +45,13 @@ const FamilyDetails = () => {
       }
     }
 
-    dispatch({
-      type: "familyDetails/setFormData",
-      payload: { ...formData, [name]: value },
-    });
+    console.log("handle change function is working", name, value);
+
+    dispatch(
+      updateFamilyDetails({
+        [name]: value,
+      })
+    );
 
     if (name === "MotherContactNumber" || name === "FatherContactNumber") {
       if (!phoneRegex.test(value)) {
@@ -94,10 +100,17 @@ const FamilyDetails = () => {
   const onSubmit = async (e) => {
     e.preventDefault();
     if (validateForm()) {
-      dispatch(submitFamilyDetails(formData, dataExist));
-      if (checkUrl) {
-        navigate("/educationalDetailsForm");
-        
+    const result = await dispatch(
+        submitFamilyDetails({
+          familyFormData: formData,
+          familyDataExist: dataExist,
+          setFamilyFormSubmit,
+        })
+      ).unwrap();
+
+
+      if (result) {
+        navigate("/registration/payment");
       }
     }
   };
@@ -108,29 +121,36 @@ const FamilyDetails = () => {
   }, [dispatch, pathLocation]);
 
   return (
-    <div
-      className={`${
-        pathLocation === "/familyDetailsForm" && "min-h-screen"
-      } flex items-center justify-center bg-gradient-to-r from-blue-50 to-indigo-50`}
-    >
-      {loading ? (
-        <Spinner />
-      ) : (
+    <div className="min-h-screen w-full bg-[#c61d23] px-2 md:px-8 py-2 overflow-auto">
+      {/* {loading && <Spinner />} */}
+
+      <div className="flex flex-col gap-6 max-w-screen-md mx-auto">
+        <div>
+          <FormHeader />
+        </div>
+
+        {/* <h1 className="text-3xl md:text-4xl font-semibold text-white text-center">
+          Registration Form for SDAT
+        </h1> */}
         <form
-          className="w-full max-w-lg bg-white shadow-lg rounded-lg p-6 space-y-6"
+          autoComplete="off"
+          className="flex flex-col gap-4  w-full"
           onSubmit={onSubmit}
         >
-          <h1 className="text-2xl font-bold text-center " style={{ color: "#c61d23" }}>
+          <h1
+            className="text-2xl font-bold text-center "
+            style={{ color: "#c61d23" }}
+          >
             Family Details Form
           </h1>
 
           {Object.keys(formData).map((key) => {
             if (key === "FamilyIncome") {
               return (
-                <div className="flex flex-col" key={key}>
+                <div className="flex flex-col w-full" key={key}>
                   <label
                     htmlFor={key}
-                    className="text-sm font-medium text-gray-600 mb-1"
+                    className="text-sm font-medium text-white mb-1"
                   >
                     Family Income
                   </label>
@@ -149,19 +169,17 @@ const FamilyDetails = () => {
                     ))}
                   </select>
                   {errors[key] && (
-                    <p className="text-red-500 text-xs mt-1">{errors[key]}</p>
+                    <p className="text-black text-xs mt-1">{errors[key]}</p>
                   )}
                 </div>
               );
             }
 
             return (
-              
-
               <div className="flex flex-col" key={key}>
                 <label
                   htmlFor={key}
-                  className="text-sm font-medium text-gray-600 mb-1"
+                  className="text-sm font-medium text-white mb-1"
                 >
                   {key.replace(/([A-Z])/g, " $1")}
                 </label>
@@ -169,7 +187,7 @@ const FamilyDetails = () => {
                   type={
                     key === "FatherContactNumber" ||
                     key === "MotherContactNumber"
-                      ? "tel"
+                      ? "number"
                       : "text"
                   }
                   id={key}
@@ -178,37 +196,47 @@ const FamilyDetails = () => {
                   onChange={handleChange}
                   placeholder={`Enter ${key.replace(/([A-Z])/g, " $1")}`}
                   className="border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-indigo-400 focus:outline-none"
+                  maxLength={
+                    (key === "FatherContactNumber" ||
+                      key === "MotherContactNumber") &&
+                    10
+                  }
+                  pattern={
+                    (key === "FatherContactNumber" ||
+                      key === "MotherContactNumber") &&
+                    "[0-9]{10}"
+                  }
+                  inputMode={
+                    (key === "FatherContactNumber" ||
+                      key === "MotherContactNumber") &&
+                    "numeric"
+                  }
                 />
+
                 {errors[key] && (
-                  <p className="text-red-500 text-xs mt-1">{errors[key]}</p>
+                  <p className="text-black text-xs mt-1">{errors[key]}</p>
                 )}
               </div>
             );
           })}
 
-          <div className="flex justify-between items-center">
-            {pathLocation === "/familyDetailsForm" && (
-              <button
-                type="button"
-                onClick={() => navigate(-1)}
-                className="w-1/3 bg-gray-500 hover:bg-gray-600 text-white font-semibold py-2 rounded-lg transition duration-200"
-              >
-                Previous
-              </button>
-            )}
+          <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mt-6">
+            <button
+              onClick={() => navigate(-1)}
+              type="button"
+              className="w-full sm:w-1/3 border bg-yellow-500 hover:bg-yellow-600 rounded-xl text-black  py-2 px-4 "
+            >
+              Back
+            </button>
             <button
               type="submit"
-              className={`${
-                pathLocation === "/familyDetailsForm" ? "w-2/3" : "w-full"
-              }  text-white font-semibold py-2 rounded-lg transition duration-200 ml-2`}
-
-              style={{backgroundColor: "#c61d23"}}
-            > 
-              {checkUrl ? "Next" : "Update"}
+              className="w-full sm:w-2/3 border bg-yellow-500 hover:bg-yellow-600 text-black py-2 rounded-xl transition-all"
+            >
+              Next
             </button>
           </div>
 
-          {submitMessage && (
+          {/* {submitMessage && (
             <p
               className={`text-sm text-center mt-4 ${
                 submitMessage.includes("successfully")
@@ -218,9 +246,9 @@ const FamilyDetails = () => {
             >
               {submitMessage}
             </p>
-          )}
+          )} */}
         </form>
-      )}
+      </div>
     </div>
   );
 };

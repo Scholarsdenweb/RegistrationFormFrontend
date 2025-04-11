@@ -40,6 +40,7 @@ export const submitUserDetails = createAsyncThunk(
     'userDetails/updateUserDetails',
     async ( formData , { rejectWithValue }) => {
         try {
+            
             console.log("formData from submitUserDetails", formData);
             const response = await axios.patch('/students/editStudent', formData);
             console.log("response from submitsuserDetails", response);
