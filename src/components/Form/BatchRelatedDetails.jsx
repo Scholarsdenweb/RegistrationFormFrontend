@@ -33,6 +33,7 @@ const BatchRelatedDetailsForm = () => {
   const validateForm = () => {
     let formErrors = {};
     let isValid = true;
+    console.log("FormData", formData);
 
     Object.keys(formData).forEach((key) => {
       if (!(key === "subjectCombination" && formData.classForAdmission <= 10)) {
@@ -102,9 +103,9 @@ const BatchRelatedDetailsForm = () => {
     "JEE(Main & Adv.)": [
       "XI Engineering",
       "XII Engineering",
-      "XII Pass Engineering",
+      "XII Passed Engineering",
     ],
-    "NEET(UG)": ["XI Medical", "XII Medical", "XII Pass Medical"],
+    "NEET(UG)": ["XI Medical", "XII Medical", "XII Passed Medical"],
   };
 
   const convertToNumber = (romanNumeral) => {
@@ -183,7 +184,7 @@ const BatchRelatedDetailsForm = () => {
               htmlFor="subjectCombination"
               className="text-sm font-medium text-white mb-1"
             >
-              Subject Combination
+              Program
             </label>
             <select
               id="subjectCombination"
@@ -208,7 +209,7 @@ const BatchRelatedDetailsForm = () => {
               ))}
             </select>
             {errors.subjectCombination && (
-              <p className="text-red-500 text-xs mt-1">
+              <p className="text-black text-xs mt-1">
                 {errors.subjectCombination}
               </p>
             )}
@@ -247,14 +248,14 @@ const BatchRelatedDetailsForm = () => {
                 ))}
             </select>
             {errors.classForAdmission && (
-              <p className="text-red-500 text-xs mt-1">
+              <p className="text-black text-xs mt-1">
                 {errors.classForAdmission}
               </p>
             )}
           </div>
 
           {/* Preferred Batch */}
-          <div className="flex flex-col">
+          {/* <div className="flex flex-col">
             <label
               htmlFor="preferredBatch"
               className="text-sm font-medium text-white mb-1"
@@ -282,7 +283,7 @@ const BatchRelatedDetailsForm = () => {
                 {errors.preferredBatch}
               </p>
             )}
-          </div>
+          </div> */}
 
           {/* Submit and Previous Buttons */}
 

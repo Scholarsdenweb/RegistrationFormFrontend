@@ -110,7 +110,7 @@ const FamilyDetails = () => {
 
 
       if (result) {
-        navigate("/registration/payment");
+        navigate("/registration/selfieCapture");
       }
     }
   };
@@ -137,12 +137,12 @@ const FamilyDetails = () => {
           className="flex flex-col gap-4  w-full"
           onSubmit={onSubmit}
         >
-          <h1
+          {/* <h1
             className="text-2xl font-bold text-center "
             style={{ color: "#c61d23" }}
           >
             Family Details Form
-          </h1>
+          </h1> */}
 
           {Object.keys(formData).map((key) => {
             if (key === "FamilyIncome") {

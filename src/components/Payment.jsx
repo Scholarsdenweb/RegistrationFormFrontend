@@ -17,16 +17,7 @@ import Navbar from "./Form/Navbar";
 import Spinner from "../api/Spinner";
 import FormHeader from "./LoginSugnup/FormHeader";
 
-
-
-
-
-
-
 const Payment = () => {
-
-
-
   const dispatch = useDispatch();
 
   const [allFormNotAvailable, setAllFormNotAvailable] = useState(false);
@@ -81,8 +72,6 @@ const Payment = () => {
 
     // dispatch(setLoading(true));
 
-
-
     setLoading(true);
     const {
       data: { key },
@@ -136,6 +125,11 @@ const Payment = () => {
     const razorpay = new window.Razorpay(options);
 
     await razorpay.open();
+
+    const dataFormBasiDetails = await dispatch(fetchBasicDetails());
+
+    console.log("DataFormBasicDetails", dataFormBasiDetails);
+
     setLoading(false);
 
     console.log("razorpay object", razorpay);
@@ -144,47 +138,42 @@ const Payment = () => {
 
   return (
     <div className="min-h-screen w-full bg-[#c61d23] px-2 md:px-8 py-2 overflow-auto">
-    {/* {loading && <Spinner />} */}
+      {/* {loading && <Spinner />} */}
 
-    <div className="flex flex-col gap-6 max-w-screen-md mx-auto">
-      <div>
-        <FormHeader />
-      </div>
+      <div className="flex flex-col gap-6 max-w-screen-md mx-auto">
+        <div>
+          <FormHeader />
+        </div>
 
-    
-
-          <div
-            className={`col-span-6 px-9 py-8 mb-3 mr-5 h-full bg-gray-100 rounded-3xl flex flex-col items-center justify-center gap-4 overflow-auto`}
-          >
-            {paymentStatus ? (
-              <PaymentSuccessMessage />
-            ) : (
-
-
-              loading ? <Spinner /> : (
-              <div className="ol-span-6 px-9 py-8 mb-3 mr-5 h-full bg-gray-100 rounded-3xl flex w-ful flex-col items-center justify-center gap-4 overflow-auto">
-                <div
-                  className="bg-[#c61d23] text-white p-3 rounded-lg cursor-pointer"
-                  onClick={checkoutHandler}
-                >
-                  Pay Now
-                </div>
+        <div
+          className={`col-span-6 px-9 py-8 mb-3 mr-5 h-full bg-gray-100 rounded-3xl flex flex-col items-center justify-center gap-4 overflow-auto`}
+        >
+          {paymentStatus ? (
+            <PaymentSuccessMessage />
+          ) : loading ? (
+            <Spinner />
+          ) : (
+            <div className="ol-span-6 px-9 py-8 mb-3 mr-5 h-full bg-gray-100 rounded-3xl flex w-ful flex-col items-center justify-center gap-4 overflow-auto">
+              <div
+                className="bg-[#c61d23] text-white p-3 rounded-lg cursor-pointer"
+                onClick={checkoutHandler}
+              >
+                Pay Now
               </div>
-              )
-            )}
-            {allFormNotAvailable && (
-              <AllFormNotAvailable
-                setAllFormNotAvailable={setAllFormNotAvailable}
-                familyDetailsDataExist={familyDetailsDataExist}
-                educationalDetailsDataExist={educationalDetailsDataExist}
-                batchDetailsDataExist={batchDetailsDataExist}
-                basicDetailsDataExist={basicDetailsDataExist}
-              />
-            )}
-          </div>
+            </div>
+          )}
+          {allFormNotAvailable && (
+            <AllFormNotAvailable
+              setAllFormNotAvailable={setAllFormNotAvailable}
+              familyDetailsDataExist={familyDetailsDataExist}
+              educationalDetailsDataExist={educationalDetailsDataExist}
+              batchDetailsDataExist={batchDetailsDataExist}
+              basicDetailsDataExist={basicDetailsDataExist}
+            />
+          )}
         </div>
       </div>
-
+    </div>
   );
 };
 export default Payment;

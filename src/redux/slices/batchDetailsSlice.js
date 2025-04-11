@@ -10,12 +10,10 @@ export const fetchBatchDetails = createAsyncThunk(
       const data = response.data;
       console.log("BatchDetails Form Data", data[0]);
       if (data.length > 0) {
-
-        console.log("this is working find ")
+        console.log("this is working find ");
         return {
           dataExist: true,
           formData: {
-            preferredBatch: data[0]?.preferredBatch ,
             subjectCombination: data[0]?.subjectCombination || "",
             classForAdmission: data[0]?.classForAdmission || "",
           },
@@ -24,7 +22,6 @@ export const fetchBatchDetails = createAsyncThunk(
       return {
         dataExist: false,
         formData: {
-          preferredBatch: "",
           subjectCombination: "",
           classForAdmission: "",
         },
@@ -42,7 +39,6 @@ const batchDetailsSlice = createSlice({
   initialState: {
     formData: {
       classForAdmission: "",
-      preferredBatch: "",
       subjectCombination: "",
     },
     dataExist: false, // Flag to check if data exists in the database

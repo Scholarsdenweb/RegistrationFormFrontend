@@ -460,10 +460,10 @@ export default function SignupRight() {
               </button>
             )}
 
-            {errors.phone && (
-              <p className="text-white text-xs mt-1">{errors.phone}</p>
-            )}
           </div>
+            {errors.phone && (
+              <p className="text-white mt-1">{errors.phone && "Contact Number is required" }</p>
+            )}
         </div>
 
         {console.log("Data showCodeBox", showCodeBox)}

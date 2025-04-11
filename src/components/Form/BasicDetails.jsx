@@ -14,7 +14,7 @@ import {
   updateBatchDetails,
 } from "../../redux/slices/batchDetailsSlice"; // Adjust the path as necessary
 import { use } from "react";
-import { fetchUserDetails } from "../../redux/slices/userDeailsSlice";
+import { fetchUserDetails, updateUserDetails } from "../../redux/slices/userDeailsSlice";
 import Navbar from "./Navbar";
 import dayjs from "dayjs";
 import isSameOrAfter from "dayjs/plugin/isSameOrAfter";
@@ -53,20 +53,19 @@ const BasicDetailsForm = () => {
   // Dropdown options
   const genderOptions = ["Male", "Female"];
   const examNameOptions = ["S.Dat", "Rise"];
-  
 
   const fetchAllDates = async () => {
     try {
       const response = await axios.get("/employees/getAllDates");
       console.log("response fetchAllDates", response);
-  
+
       const today = dayjs().startOf("day");
-  
+
       const filteredDates = response.data.filter((date) => {
         const parsedDate = dayjs(date.examDate, "DD-MM-YYYY");
         return !parsedDate.isBefore(today); // includes today and future dates
       });
-  
+
       console.log("filteredDates", filteredDates);
       setAllDates(filteredDates);
     } catch (error) {
@@ -78,6 +77,10 @@ const BasicDetailsForm = () => {
     fetchAllDates();
   }, []);
 
+  useEffect(()=>{
+    console.log("userData", userData);
+  },[userData])
+
   // const examDateOptions =allDates;
   const examDateOptions = ["15/02/2025", "02/20/2025", "10/03/2025"];
 
@@ -88,20 +91,20 @@ const BasicDetailsForm = () => {
     dispatch(fetchUserDetails());
   }, [dispatch, location.pathname]);
 
-  useEffect(() => {
-    dispatch(setLoading(false));
+  // useEffect(() => {
+  //   dispatch(setLoading(false));
 
-    const examName = "examName";
-    dispatch(updateBasicDetails({ [examName]: "SDAT" }));
+  //   const examName = "examName";
+  //   dispatch(updateBasicDetails({ [examName]: "SDAT" }));
+  //   dispatch(fetchUserDetails())
+  // }, []);
 
-  }, []);
-
-  const validateBasicForm = async() => {
+  const validateBasicForm = async () => {
     const formErrors = {};
     let isValid = true;
 
-    ["dob", "gender", "examDate","examName", "name", "email"].forEach(
-      async(field) => {
+    ["dob", "gender", "examDate", "examName", "name", "email"].forEach(
+      async (field) => {
         if (field === "name" || field === "email") {
           if (!field) {
             formErrors[field] = `${field
@@ -109,13 +112,14 @@ const BasicDetailsForm = () => {
               .toUpperCase()} is required.`;
             isValid = false;
           }
-        } else if (field === "examName"){
-          const result = await dispatch(updateBasicDetails({ [field]: "SDAT" }));
+        } else if (field === "examName") {
+          const result = await dispatch(
+            updateBasicDetails({ [field]: "SDAT" })
+          );
 
           console.log("result form validationbasicform", result);
           console.log("basicFormData?.[field]", basicFormData?.[field]);
-
-        }else if (!basicFormData?.[field]?.trim()) {
+        } else if (!basicFormData?.[field]?.trim()) {
           formErrors[field] = `${field
             .replace(/([A-Z])/g, " $1")
             .toUpperCase()} is required.`;
@@ -132,6 +136,11 @@ const BasicDetailsForm = () => {
 
   const basicFormHandleChange = (e) => {
     const { name, value } = e.target;
+    if(name === "name"  || name === "email"){
+      dispatch(updateUserDetails({[name]: value}))
+      return;
+    }
+
     console.log("name", name, "value", value);
     dispatch(updateBasicDetails({ [name]: value }));
 
@@ -179,18 +188,16 @@ const BasicDetailsForm = () => {
           : "Batch related details submitted successfully!"
       );
       console.log("CHECKurl", checkUrl);
- 
-        navigate("/registration/educationalDetailsForm");
-  
+
+      navigate("/registration/batchDetailsForm");
     } catch (error) {
       console.error("Error submitting form:", error);
-      setSubmitMessage("Error submitting form. Please try again.");
+      setSubmitMessage(error.response.data);
     }
   };
 
   const addAndUpdateBasicFrom = async () => {
     try {
-
       console.log("basicFormData form addAndUpdateBasicFrom", basicFormData);
       const url = basicFormDataExist
         ? "/form/basicDetails/updateForm"
@@ -203,11 +210,18 @@ const BasicDetailsForm = () => {
           ? "Basic details updated successfully!"
           : "Basic details submitted successfully!"
       );
-      navigate("/registration/educationalDetailsForm");
+      const response = await axios.patch(
+        "/students/editStudent",
+        userData
+      );
 
+      console.log("response for onSubmit in BasicDetails", response);
+
+      console.log("response", response);
+      navigate("/registration/batchDetailsForm");
     } catch (error) {
       console.log("Error submitting form:", error);
-      setSubmitMessage("Error submitting form. Please try again.");
+      setSubmitMessage(error.response.data);
     }
   };
 
@@ -227,14 +241,7 @@ const BasicDetailsForm = () => {
       email,
     };
     try {
-      const response = await axios.patch(
-        "/students/editStudent",
-        studetnDetails
-      );
-
-      console.log("response for onSubmit in BasicDetails", response);
-
-      console.log("response", response);
+    
     } catch (error) {
       console.log("error", error);
     }
@@ -314,8 +321,9 @@ const BasicDetailsForm = () => {
               type="text"
               id="name"
               name="name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
+              value={userData.name}
+              onChange={basicFormHandleChange}
+              placeholder="Enter Your Name"
               className="border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-indigo-400 focus:outline-none"
             />
             {basicDetailsError.name && (
@@ -335,8 +343,9 @@ const BasicDetailsForm = () => {
               type="email"
               id="email"
               name="email"
-              value={userData.email ? userData.email : email}
-              onChange={(e) => setEmail(e.target.value)}
+              value={userData.email}
+              placeholder="Enter Your Email"
+              onChange={basicFormHandleChange}
               className="border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-indigo-400 focus:outline-none"
             />
             {basicDetailsError.email && (
@@ -446,24 +455,21 @@ const BasicDetailsForm = () => {
               onChange={basicFormHandleChange}
               className="border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-indigo-400 focus:outline-none"
             >
-              <option value="" disabled>
+              <option value=""  disabled>
                 Select Exam Date
               </option>
 
               {console.log("AllDates", allDates)}
               {allDates?.map((option, index) => {
-                          const parsedDate = dayjs(
-                            option.examDate,
-                            "DD-MM-YYYY"
-                          );
-                          return (
-                            <option key={index} value={option._id}>
-                              {parsedDate.isValid()
-                                ? parsedDate.format("DD MMM YYYY")
-                                : "Invalid Date"}
-                            </option>
-                          );
-                        })}
+                const parsedDate = dayjs(option.examDate, "DD-MM-YYYY");
+                return (
+                  <option key={index} value={option.examDate}>
+                    {parsedDate.isValid()
+                      ? parsedDate.format("DD MMM YYYY")
+                      : "Invalid Date"}
+                  </option>
+                );
+              })}
             </select>
             {basicDetailsError.examDate && (
               <p className="text-black text-xs mt-1">
@@ -471,6 +477,17 @@ const BasicDetailsForm = () => {
               </p>
             )}
           </div>
+
+              {/* Submit Message */}
+             <div className="w-full text-center">
+               {submitMessage && (
+                 <p
+                   className={`text-sm text-center text-white`}
+                 >
+                   {submitMessage}
+                 </p>
+               )}
+             </div>
 
           <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mt-6">
             <button

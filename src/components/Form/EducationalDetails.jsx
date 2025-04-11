@@ -255,7 +255,7 @@ const EducationalDetailsForm = () => {
     return (
       <div className="flex flex-col px-2" key={key}>
         <label htmlFor={key} className="text-sm font-medium text-white mb-1">
-          {key.replace(/([A-Z])/g, " $1")}
+          {key.replace(/([A-Z])/g, " $1") } Obtained
         </label>
         <input
           type={isPercentage ? "number" : "text"}

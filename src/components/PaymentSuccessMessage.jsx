@@ -1,4 +1,4 @@
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import tickCircle from "../assets/tickCircle.png";
 import { useEffect, useState } from "react";
 import axios from "../api/axios";
@@ -11,8 +11,7 @@ const PaymentSuccessMessage = () => {
   // const [admitCardStatus, setAdmitCardStatus] = useState("Pending");
   const { userData } = useSelector((state) => state.userDetails);
 
-
-
+  const navigate = useNavigate();
 
   const [loading, setLoading] = useState(true);
 
@@ -30,8 +29,16 @@ const PaymentSuccessMessage = () => {
     }
   };
 
+
+  const callPaymentFunction =async()=>{
+
+    await generateAdmitCard();
+    dispatch(fetchUserDetails());
+    navigate("/registration/payment");
+  }
+
   useEffect(() => {
-    generateAdmitCard();
+  
 
     const addPaymentId = async () => {
       console.log("ADD payment Id function is running now");
@@ -46,10 +53,13 @@ const PaymentSuccessMessage = () => {
     };
 
     addPaymentId();
-
-    dispatch(fetchUserDetails());
+    callPaymentFunction();
+  
   }, []);
 
+  useEffect(() => {
+    dispatch(fetchUserDetails());
+  }, []);
   return loading ? (
     <div className="flex justify-center items-center ">
       <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900"></div>

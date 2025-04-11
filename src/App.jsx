@@ -30,6 +30,7 @@ import CloudinaryUpload from "./components/employeeCompoments/CloudinaryUpload";
 import CloudinaryComponent from "./components/employeeCompoments/CloudinaryComponent";
 import BatchRelatedDetailsForm from "./components/Form/BatchRelatedDetails";
 import FamilyDetails from "./components/Form/FamilyDetails";
+import SelfieCapture from "./components/SelfieCapture";
 
 function App() {
   return (
@@ -74,6 +75,10 @@ function App() {
               <Route
                 path="/registration/familyDetailsForm"
                 element={<FamilyDetails />}
+              />
+              <Route
+                path="/registration/selfieCapture"
+                element={<SelfieCapture />}
               />
 
               <Route
