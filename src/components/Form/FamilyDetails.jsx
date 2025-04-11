@@ -196,21 +196,8 @@ const FamilyDetails = () => {
                   onChange={handleChange}
                   placeholder={`Enter ${key.replace(/([A-Z])/g, " $1")}`}
                   className="border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-indigo-400 focus:outline-none"
-                  maxLength={
-                    (key === "FatherContactNumber" ||
-                      key === "MotherContactNumber") &&
-                    10
-                  }
-                  pattern={
-                    (key === "FatherContactNumber" ||
-                      key === "MotherContactNumber") &&
-                    "[0-9]{10}"
-                  }
-                  inputMode={
-                    (key === "FatherContactNumber" ||
-                      key === "MotherContactNumber") &&
-                    "numeric"
-                  }
+               
+                
                 />
 
                 {errors[key] && (

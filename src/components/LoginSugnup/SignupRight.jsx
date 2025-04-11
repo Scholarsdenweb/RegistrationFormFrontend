@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "../../api/axios";
 import { useNavigate, Link } from "react-router-dom";
 // import ScholarsDenLogo from "../../assets/scholarsDenLogo.png";
@@ -20,6 +20,14 @@ export default function SignupRight() {
   const [errors, setErrors] = useState({
     phone: "",
   });
+  const handleLogout = async () => {
+    document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    navigate("/");
+  }
+
+  useEffect(()=>{
+    handleLogout();
+  },[])
 
   // name: "",
   // email: "",
@@ -31,6 +39,13 @@ export default function SignupRight() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+
+    if (name === "phone") {
+      if (value.length > 10) {
+        return;
+      }
+    }
+
     setFormData({ ...formData, [name]: value });
     setErrors((prevErrors) => ({
       ...prevErrors,
@@ -438,7 +453,7 @@ export default function SignupRight() {
           </label>
           <div className="flex flex-col md:flex-row gap-2">
             <input
-              type="tel"
+              type="number"
               id="phone"
               name="phone"
               value={formData.phone}
@@ -449,6 +464,10 @@ export default function SignupRight() {
               maxLength={10}
               pattern="[0-9]{10}"
               inputMode="numeric"
+
+
+
+
             />
             {!showCodeBox && !codeVerified && (
               <button

@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { submitUserDetails } from "../redux/slices/userDeailsSlice";
 
 const SelfieCapture = () => {
   const videoRef = useRef(null);
@@ -12,21 +13,31 @@ const SelfieCapture = () => {
   const [showError, setShowError] = useState("");
   const { userData: userDetails } = useSelector((state) => state.userDetails);
 
-  useEffect(() => {
-    const getCamera = async () => {
-      try {
-        const stream = await navigator.mediaDevices.getUserMedia({
-          video: { facingMode: "user" }, // Front camera
-        });
-        if (videoRef.current) {
-          videoRef.current.srcObject = stream;
-        }
-      } catch (err) {
-        console.error("Error accessing camera:", err);
+  const dispatch = useDispatch();
+
+
+
+  const getCamera = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: "user" }, // Front camera
+      });
+      if (videoRef.current) {
+        videoRef.current.srcObject = stream;
       }
-    };
+    } catch (err) {
+      console.error("Error accessing camera:", err);
+      setShowError("Could not access camera.");
+    }
+  };
+  
+  useEffect(() => {
     getCamera();
   }, []);
+
+  
+
+
 
   const handleCapture = async() => {
     const canvas =  canvasRef.current;
@@ -46,45 +57,53 @@ const SelfieCapture = () => {
     profilePicture: userDetails?.profilePicture || null,
   });
 
-  const uploadToCloudinary = async (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setUploading(true);
-      try {
-        const formData = new FormData();
-        formData.append("file", file);
-        formData.append("upload_preset", "ProfilePictures");
-        formData.append("cloud_name", "dtytgoj3f");
 
-        const response = await fetch(
-          `https://api.cloudinary.com/v1_1/dtytgoj3f/image/upload`,
-          {
-            method: "POST",
-            body: formData,
-          }
-        );
 
-        console.log("response", response);
 
-        const data = await response.json();
-        console.log("data", data);
-        if (data.secure_url) {
-          setFormData((prev) => ({
-            ...prev,
-            profilePicture: data.secure_url,
-          }));
+
+  const uploadToCloudinary = async (dataUrl) => {
+    setUploading(true);
+    try {
+      const blob = await (await fetch(dataUrl)).blob();
+      const formData = new FormData();
+      formData.append("file", blob);
+      formData.append("upload_preset", "ProfilePictures");
+      formData.append("cloud_name", "dtytgoj3f");
+  
+      const response = await fetch(
+        `https://api.cloudinary.com/v1_1/dtytgoj3f/image/upload`,
+        {
+          method: "POST",
+          body: formData,
         }
-        navigate("/registration/payment");
-      } catch (error) {
-        setShowError("Something went wrong");
+      );
+  
+      const data = await response.json();
+      if (data.secure_url) {
+        const updatedFormData = {
+          ...formData,
+          profilePicture: data.secure_url,
+        };
 
-        console.error("Error uploading to Cloudinary:", error);
-      } finally {
-        setUploading(false);
+        console.log("Data.secure_url", data.secure_url)
+
+        console.log("updatedForm", updatedFormData);
+  
+        setFormData(updatedFormData);
+        dispatch(submitUserDetails(updatedFormData));
+        setUploadedUrl(data.secure_url);
+        navigate("/registration/payment");
+      } else {
+        setShowError("Upload failed. Please try again.");
       }
+    } catch (error) {
+      console.error("Error uploading to Cloudinary:", error);
+      setShowError("Something went wrong");
+    } finally {
+      setUploading(false);
     }
   };
-
+  
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 p-4">
       <div className="w-full max-w-sm bg-white rounded-2xl shadow-md p-4">
@@ -131,6 +150,7 @@ const SelfieCapture = () => {
               onClick={() => {
                 setCapturedImage(null);
                 setUploadedUrl("");
+                getCamera();
               }}
               className="mt-4 w-full bg-gray-600 text-white py-2 px-4 rounded-xl hover:bg-gray-700 transition"
             >

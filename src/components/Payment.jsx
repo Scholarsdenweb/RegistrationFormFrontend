@@ -22,16 +22,16 @@ const Payment = () => {
 
   const [allFormNotAvailable, setAllFormNotAvailable] = useState(false);
 
-  const { dataExist: basicDetailsDataExist } = useSelector(
+  const { userData: basicDetailsData ,dataExist: basicDetailsDataExist } = useSelector(
     (state) => state.basicDetails
   );
-  const { dataExist: batchDetailsDataExist } = useSelector(
+  const { userData: batchDetailsData, dataExist: batchDetailsDataExist } = useSelector(
     (state) => state.batchDetails
   );
-  const { dataExist: educationalDetailsDataExist } = useSelector(
+  const { userData: educationalDetailsData, dataExist: educationalDetailsDataExist } = useSelector(
     (state) => state.educationalDetails
   );
-  const { dataExist: familyDetailsDataExist } = useSelector(
+  const { userData: familyDetailsData, dataExist: familyDetailsDataExist } = useSelector(
     (state) => state.familyDetails
   );
 
@@ -57,6 +57,13 @@ const Payment = () => {
     dispatch(fetchFamilyDetails());
     dispatch(fetchUserDetails());
   }, [dispatch]);
+
+  useEffect(()=>{
+    console.log("basicDetailsDataExist",basicDetailsData)
+    console.log("batchDetailsData",batchDetailsData)
+    console.log("educationalDetailsData",educationalDetailsData)
+    console.log("familyDetailsData",familyDetailsData)
+  },[])
 
   const checkoutHandler = async () => {
     if (
