@@ -100,7 +100,7 @@ const BatchRelatedDetailsForm = () => {
 
   const programOptions = {
     Foundation: ["VI", "VII", "VIII", "IX", "X"],
-    "JEE(Main & Adv.)": [
+    "JEE(Main & Adv)": [
       "XI Engineering",
       "XII Engineering",
       "XII Passed Engineering",
@@ -194,7 +194,7 @@ const BatchRelatedDetailsForm = () => {
               className="border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-indigo-400 focus:outline-none"
             >
               <option disabled value="">
-                Select Subject Combination
+                Select Program
               </option>
               {console.log("subjectOptions", subjectOptions)}
 
