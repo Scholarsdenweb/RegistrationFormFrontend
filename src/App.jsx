@@ -34,7 +34,7 @@ import SelfieCapture from "./components/SelfieCapture";
 import TermsAndConditionPage from "./components/Policy/TermsAndConditionPage";
 import ContactUsPage from "./components/Policy/ContactUsPage";
 import PrivacyPolicy from "./components/Policy/PrivacyPolicy";
-import CancellationsAndRefunds from "./components/Policy/cancellationsAndRefunds";
+import CancellationsAndRefunds from "./components/Policy/CancellationsAndRefunds";
 
 function App() {
   return (

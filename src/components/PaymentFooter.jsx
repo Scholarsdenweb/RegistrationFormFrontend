@@ -11,25 +11,25 @@ const PaymentFooter = () => {
         {/* Terms, Privacy, Contact Buttons */}
         <div className="flex flex-wrap gap-4">
           <button
-            onClick={() => navigate('/terms-and-conditions')}
+            onClick={() => navigate('/registration/termsAndCondition')}
             className="border border-white px-4 py-1 rounded hover:bg-white hover:text-[#c61d23] transition"
           >
             Terms & Conditions
           </button>
           <button
-            onClick={() => navigate('/privacy-policy')}
+            onClick={() => navigate('/registration/privacyPolicy')}
             className="border border-white px-4 py-1 rounded hover:bg-white hover:text-[#c61d23] transition"
           >
             Privacy Policy
           </button>
           <button
-            onClick={() => navigate('/contact-us')}
+            onClick={() => navigate('/registration/contactUsPage')}
             className="border border-white px-4 py-1 rounded hover:bg-white hover:text-[#c61d23] transition"
           >
             Contact Us
           </button>
           <button
-            onClick={() => navigate('/contact-us')}
+            onClick={() => navigate('/registration/cancellationsAndRefunds')}
             className="border border-white px-4 py-1 rounded hover:bg-white hover:text-[#c61d23] transition"
           >
             Cancellations & Refunds
