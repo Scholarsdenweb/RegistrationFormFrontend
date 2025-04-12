@@ -67,7 +67,7 @@ const SelfieCapture = () => {
     try {
       const blob = await (await fetch(dataUrl)).blob();
       const formData = new FormData();
-      formData.append("file", blob, userDetails.name );
+      formData.append("file", blob, userDetails.StudentsId + ".png");
       formData.append("upload_preset", "ProfilePictures");
       formData.append("cloud_name", "dtytgoj3f");
       formData.append("folder", "SDAT130425Image")

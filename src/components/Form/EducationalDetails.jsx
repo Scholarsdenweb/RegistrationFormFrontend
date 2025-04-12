@@ -68,7 +68,7 @@ const EducationalDetailsForm = () => {
   useEffect(() => {
     dispatch(fetchBoards());
     yearGeneration();
-    console.log("YearList", yearList)
+    console.log("YearList", yearList);
   }, []);
 
   useEffect(() => {
@@ -255,31 +255,32 @@ const EducationalDetailsForm = () => {
     return (
       <div className="flex flex-col px-2" key={key}>
         <label htmlFor={key} className="text-sm font-medium text-white mb-1">
-          {key.replace(/([A-Z])/g, " $1") } {isPercentage &&" Obtained" } 
+          {key.replace(/([A-Z])/g, " $1")} {isPercentage && " Obtained"}
         </label>
         <input
           type={isPercentage ? "number" : "text"}
           id={key}
           name={key}
           value={value}
-          onChange={handleChange}
-          placeholder={`Enter ${key.replace(/([A-Z])/g, " $1")}`}
-          className="border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-indigo-400 focus:outline-none w-full"
-          min={0}
-          max={100}
-          step="0.01" // Optional: allows for decimal precision up to 2 decimal places
-          {...additionalProps}
-          onInput={(e) => {
-            let newValue = e.target.value;
-            console.log("name of the ", e.target.name);
-            if (e.target.name === "Percentage") {
-              if (newValue > 100) {
-                e.target.value = 100;
-              } else if (newValue < 0) {
-                e.target.value = 0;
+          onChange={(e) => {
+            const newValue = e.target.value;
+            console.log("newValue", newValue);
+          
+            if (isPercentage) {
+              // Allow only numbers and up to two decimal places, block 'e', '+', '-'
+              const isValid = /^(\d{0,3})(\.\d{0,2})?$/.test(newValue) || newValue === "";
+          
+              if (isValid && (newValue === "" || Number(newValue) <= 100 && Number(newValue) >= 0)) {
+                handleChange(e);
               }
+            } else {
+              handleChange(e);
             }
           }}
+          placeholder={`Enter ${key.replace(/([A-Z])/g, " $1")}`}
+          className="border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-indigo-400 focus:outline-none w-full"
+          step="0.01" // Optional: allows for decimal precision up to 2 decimal places
+          {...additionalProps}
         />
 
         {errorsState[key] && (
@@ -292,11 +293,11 @@ const EducationalDetailsForm = () => {
   const yearGeneration = () => {
     const currentYear = new Date().getFullYear();
     console.log("CURRENT YEAR", currentYear);
-  
+
     for (let i = 0; i < 3; i++) {
       setYearList((prev) => [...prev, currentYear - i]);
     }
-  }
+  };
 
   const renderSelectField = (
     key,
@@ -335,7 +336,6 @@ const EducationalDetailsForm = () => {
   };
   const currentYear = new Date().getFullYear();
 
-
   return (
     <div className="min-h-screen w-full bg-[#c61d23] px-2 md:px-8 py-2 overflow-auto">
       {/* {loading && <Spinner />} */}
@@ -362,7 +362,6 @@ const EducationalDetailsForm = () => {
                   (e) => handleChange(e, updateEducationalDetails, formData),
                   key === "YearOfPassing"
                     ? ["2025", "2024", "2023"]
-                    
                     : key === "Class"
                     ? Array.from({ length: 7 }, (_, i) => i + 6).map(
                         (classNum) => convertToRoman(classNum)
