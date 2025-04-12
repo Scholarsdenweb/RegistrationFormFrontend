@@ -9,6 +9,7 @@ import {
 } from "../../redux/slices/familyDetailsSlice";
 import Spinner from "../../api/Spinner";
 import FormHeader from "../LoginSugnup/FormHeader";
+import PageNumberComponent from "../PageNumberComponent";
 
 const FamilyDetails = () => {
   const navigate = useNavigate();
@@ -100,7 +101,7 @@ const FamilyDetails = () => {
   const onSubmit = async (e) => {
     e.preventDefault();
     if (validateForm()) {
-    const result = await dispatch(
+      const result = await dispatch(
         submitFamilyDetails({
           familyFormData: formData,
           familyDataExist: dataExist,
@@ -108,7 +109,6 @@ const FamilyDetails = () => {
         })
       ).unwrap();
 
-      
       if (result) {
         navigate("/registration/selfieCapture");
       }
@@ -125,8 +125,10 @@ const FamilyDetails = () => {
       {/* {loading && <Spinner />} */}
 
       <div className="flex flex-col gap-6 max-w-screen-md mx-auto">
-        <div>
-          <FormHeader />
+        <div className="text-3xl text-center text-white">
+          {/* <FormHeader /> */}
+
+          SDAT Registration
         </div>
 
         {/* <h1 className="text-3xl md:text-4xl font-semibold text-white text-center">
@@ -143,6 +145,8 @@ const FamilyDetails = () => {
           >
             Family Details Form
           </h1> */}
+
+          <PageNumberComponent />
 
           {Object.keys(formData).map((key) => {
             if (key === "FamilyIncome") {
@@ -169,7 +173,7 @@ const FamilyDetails = () => {
                     ))}
                   </select>
                   {errors[key] && (
-                    <p className="text-black text-xs mt-1">{errors[key]}</p>
+                    <p className="text-[#ffdd00] text-xs mt-1">{errors[key]}</p>
                   )}
                 </div>
               );
@@ -196,12 +200,10 @@ const FamilyDetails = () => {
                   onChange={handleChange}
                   placeholder={`Enter ${key.replace(/([A-Z])/g, " $1")}`}
                   className="border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-indigo-400 focus:outline-none"
-               
-                
                 />
 
                 {errors[key] && (
-                  <p className="text-black text-xs mt-1">{errors[key]}</p>
+                  <p className="text-[#ffdd00] text-xs mt-1">{errors[key]}</p>
                 )}
               </div>
             );

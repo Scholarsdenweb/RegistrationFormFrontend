@@ -8,6 +8,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import axios from "../../api/axios";
 import Spinner from "../../api/Spinner";
 import FormHeader from "../LoginSugnup/FormHeader";
+import PageNumberComponent from "../PageNumberComponent";
 
 const BatchRelatedDetailsForm = () => {
   const navigate = useNavigate();
@@ -165,13 +166,21 @@ const BatchRelatedDetailsForm = () => {
       {/* {loading && <Spinner />} */}
 
       <div className="flex flex-col gap-6 max-w-screen-md mx-auto">
-        <div>
-          <FormHeader />
+        <div className="text-3xl text-center text-white">
+          {/* <FormHeader /> */}
+          SDAT Registration
         </div>
 
         {/* <h1 className="text-3xl md:text-4xl font-semibold text-white text-center">
           SDAT Registration Form
         </h1> */}
+        
+
+                <PageNumberComponent />
+
+
+
+      
         <form
           autoComplete="off"
           className="flex flex-col gap-4  w-full"
@@ -209,7 +218,7 @@ const BatchRelatedDetailsForm = () => {
               ))}
             </select>
             {errors.subjectCombination && (
-              <p className="text-black text-xs mt-1">
+              <p className="text-[#ffdd00] text-xs mt-1">
                 {errors.subjectCombination}
               </p>
             )}
@@ -248,7 +257,7 @@ const BatchRelatedDetailsForm = () => {
                 ))}
             </select>
             {errors.classForAdmission && (
-              <p className="text-black text-xs mt-1">
+              <p className="text-[#ffdd00] text-xs mt-1">
                 {errors.classForAdmission}
               </p>
             )}

@@ -31,6 +31,10 @@ import CloudinaryComponent from "./components/employeeCompoments/CloudinaryCompo
 import BatchRelatedDetailsForm from "./components/Form/BatchRelatedDetails";
 import FamilyDetails from "./components/Form/FamilyDetails";
 import SelfieCapture from "./components/SelfieCapture";
+import TermsAndConditionPage from "./components/Policy/TermsAndConditionPage";
+import ContactUsPage from "./components/Policy/ContactUsPage";
+import PrivacyPolicy from "./components/Policy/PrivacyPolicy";
+import CancellationsAndRefunds from "./components/Policy/cancellationsAndRefunds";
 
 function App() {
   return (
@@ -79,6 +83,22 @@ function App() {
               <Route
                 path="/registration/selfieCapture"
                 element={<SelfieCapture />}
+              />
+              <Route
+                path="/registration/termsAndCondition"
+                element={<TermsAndConditionPage />}
+              />
+              <Route
+                path="/registration/contactUsPage"
+                element={<ContactUsPage/>}
+              />
+              <Route
+                path="/registration/privacyPolicy"
+                element={<PrivacyPolicy/>}
+              />
+              <Route
+                path="/registration/cancellationsAndRefunds"
+                element={<CancellationsAndRefunds/>}
               />
 
               <Route

@@ -16,24 +16,23 @@ import {
 import Navbar from "./Form/Navbar";
 import Spinner from "../api/Spinner";
 import FormHeader from "./LoginSugnup/FormHeader";
+import PaymentFooter from "./PaymentFooter";
 
 const Payment = () => {
   const dispatch = useDispatch();
 
   const [allFormNotAvailable, setAllFormNotAvailable] = useState(false);
 
-  const { userData: basicDetailsData ,dataExist: basicDetailsDataExist } = useSelector(
-    (state) => state.basicDetails
-  );
-  const { userData: batchDetailsData, dataExist: batchDetailsDataExist } = useSelector(
-    (state) => state.batchDetails
-  );
-  const { userData: educationalDetailsData, dataExist: educationalDetailsDataExist } = useSelector(
-    (state) => state.educationalDetails
-  );
-  const { userData: familyDetailsData, dataExist: familyDetailsDataExist } = useSelector(
-    (state) => state.familyDetails
-  );
+  const { userData: basicDetailsData, dataExist: basicDetailsDataExist } =
+    useSelector((state) => state.basicDetails);
+  const { userData: batchDetailsData, dataExist: batchDetailsDataExist } =
+    useSelector((state) => state.batchDetails);
+  const {
+    userData: educationalDetailsData,
+    dataExist: educationalDetailsDataExist,
+  } = useSelector((state) => state.educationalDetails);
+  const { userData: familyDetailsData, dataExist: familyDetailsDataExist } =
+    useSelector((state) => state.familyDetails);
 
   const [loading, setLoading] = useState(false);
 
@@ -58,12 +57,12 @@ const Payment = () => {
     dispatch(fetchUserDetails());
   }, [dispatch]);
 
-  useEffect(()=>{
-    console.log("basicDetailsDataExist",basicDetailsData)
-    console.log("batchDetailsData",batchDetailsData)
-    console.log("educationalDetailsData",educationalDetailsData)
-    console.log("familyDetailsData",familyDetailsData)
-  },[])
+  useEffect(() => {
+    console.log("basicDetailsDataExist", basicDetailsData);
+    console.log("batchDetailsData", batchDetailsData);
+    console.log("educationalDetailsData", educationalDetailsData);
+    console.log("familyDetailsData", familyDetailsData);
+  }, []);
 
   const checkoutHandler = async () => {
     if (
@@ -98,11 +97,13 @@ const Payment = () => {
       name: "Acme Corp",
       description: "Test Payment",
       order_id: response.data.order.id,
-      callback_url: `${import.meta.env.VITE_APP_API_URL}/api/payment/paymentverification`,
+      callback_url: `${
+        import.meta.env.VITE_APP_API_URL
+      }/api/payment/paymentverification`,
       prefill: {
-        name: "jatin gupta",
-        email: "5Yt0d@example.com",
-        contact: "9999999999",
+        name: userData.name,
+        email: userData.email,
+        contact: userData.phone,
       },
       theme: {
         color: "#c61d23",
@@ -144,10 +145,10 @@ const Payment = () => {
   };
 
   return (
-    <div className="min-h-screen w-full bg-[#c61d23] px-2 md:px-8 py-2 overflow-auto">
+    <div className=" relative min-h-screen w-full bg-[#c61d23] px-2 md:px-8 py-2 overflow-auto">
       {/* {loading && <Spinner />} */}
 
-      <div className="flex flex-col gap-6 max-w-screen-md mx-auto">
+      <div className="flex flex-col gap-6 max-w-screen-md h-full mx-auto ">
         <div>
           <FormHeader />
         </div>
@@ -160,13 +161,23 @@ const Payment = () => {
           ) : loading ? (
             <Spinner />
           ) : (
-            <div className="ol-span-6 px-9 py-8 mb-3 mr-5 h-full bg-gray-100 rounded-3xl flex w-ful flex-col items-center justify-center gap-4 overflow-auto">
+            <div className="ol-span-6 px-9 py-8 mb-3 mr-5 h-full bg-gray-100 rounded-3xl flex flex-col items-center justify-between gap-4 overflow-auto">
+            <div className="flex flex-col gap-5">
+
+          
+              <h2 className="text-bold text-2xl ">
+                SDAT Registration Amount : <span>&#8377;500</span>{" "}
+              </h2>
+
               <div
-                className="bg-[#c61d23] text-white p-3 rounded-lg cursor-pointer"
+                className="bg-[#c61d23] text-white p-3 rounded-lg text-center cursor-pointer"
                 onClick={checkoutHandler}
               >
                 Pay Now
               </div>
+              </div>
+
+             
             </div>
           )}
           {allFormNotAvailable && (
@@ -179,7 +190,12 @@ const Payment = () => {
             />
           )}
         </div>
+
+
       </div>
+        <div className="absolute flex justify-center bottom-0 ">
+                <PaymentFooter />
+              </div> 
     </div>
   );
 };

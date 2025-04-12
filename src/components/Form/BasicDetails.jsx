@@ -19,6 +19,7 @@ import Navbar from "./Navbar";
 import dayjs from "dayjs";
 import isSameOrAfter from "dayjs/plugin/isSameOrAfter";
 import FormHeader from "../LoginSugnup/FormHeader";
+import PageNumberComponent from "../PageNumberComponent";
 
 dayjs.extend(isSameOrAfter);
 const BasicDetailsForm = () => {
@@ -297,13 +298,19 @@ const BasicDetailsForm = () => {
       {loading && <Spinner />}
 
       <div className="flex flex-col gap-6 max-w-screen-md mx-auto">
-        <div>
-          <FormHeader />
+        <div className="text-3xl text-white text-center">
+          {/* <FormHeader /> */}
+          SDAT Registration
         </div>
 
         {/* <h1 className="text-3xl md:text-4xl font-semibold text-white text-center">
           Registration Form For SDAT
         </h1> */}
+
+
+
+
+                <PageNumberComponent />
 
         <form
           autoComplete="off"

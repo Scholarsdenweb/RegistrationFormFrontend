@@ -72,6 +72,8 @@ export const submitEducationalDetails = createAsyncThunk(
       const method = educationalDataExist ? axios.patch : axios.post;
       const response = await method(endpoint, educationalFormData);
 
+      console.log("response from submitEducationalDetails", response);
+
       setEducationalFormSubmit(true); // Execute the callback to indicate submission status
       return true;
     } catch (error) {

@@ -17,6 +17,8 @@ import {
   updateFamilyDetails,
 } from "../../redux/slices/familyDetailsSlice";
 import FormHeader from "../LoginSugnup/FormHeader";
+import { fetchBatchDetails } from "../../redux/slices/batchDetailsSlice";
+import PageNumberComponent from "../PageNumberComponent";
 
 const EducationalDetailsForm = () => {
   const dispatch = useDispatch();
@@ -42,6 +44,10 @@ const EducationalDetailsForm = () => {
 
   const { userData } = useSelector((state) => state.userDetails);
 
+  const { formData: batchRelatedDetails } = useSelector(
+    (state) => state.batchDetails
+  );
+
   // Component state
   const [submitMessage, setSubmitMessage] = useState("");
   const [checkUrl, setCheckUrl] = useState(false);
@@ -62,6 +68,7 @@ const EducationalDetailsForm = () => {
     dispatch(fetchEducationalDetails());
     dispatch(fetchFamilyDetails());
     dispatch(fetchUserDetails());
+    dispatch(fetchBatchDetails());
     setCheckUrl(pathLocation === "/educationalDetailsForm");
   }, [dispatch, pathLocation]);
 
@@ -137,6 +144,15 @@ const EducationalDetailsForm = () => {
         formErrors[key] = `${key.replace(/([A-Z])/g, " $1")} is invalid`;
         isValid = false;
       }
+
+      if (key === "Percentage") {
+        const checkValueGreaterThenLimit = value > 50;
+
+        if (!checkValueGreaterThenLimit) {
+          formErrors[key] = `Percentage must be greater then 50`;
+          isValid = false;
+        }
+      }
     });
 
     setErrorState(formErrors);
@@ -211,6 +227,10 @@ const EducationalDetailsForm = () => {
 
     if (isEducationalValid) {
       try {
+       const response =  dispatch(updateEducationalDetails({ "Class": dataForClassInput()[0] }));
+        console.log("response", response);
+
+        console.log("FormData Before Reqyuest", formData);
         const result = await dispatch(
           submitEducationalDetails({
             educationalFormData: formData,
@@ -265,12 +285,17 @@ const EducationalDetailsForm = () => {
           onChange={(e) => {
             const newValue = e.target.value;
             console.log("newValue", newValue);
-          
+
             if (isPercentage) {
               // Allow only numbers and up to two decimal places, block 'e', '+', '-'
-              const isValid = /^(\d{0,3})(\.\d{0,2})?$/.test(newValue) || newValue === "";
-          
-              if (isValid && (newValue === "" || Number(newValue) <= 100 && Number(newValue) >= 0)) {
+              const isValid =
+                /^(\d{0,3})(\.\d{0,2})?$/.test(newValue) || newValue === "";
+
+              if (
+                isValid &&
+                (newValue === "" ||
+                  (Number(newValue) <= 100 && Number(newValue) >= 0))
+              ) {
                 handleChange(e);
               }
             } else {
@@ -284,7 +309,7 @@ const EducationalDetailsForm = () => {
         />
 
         {errorsState[key] && (
-          <p className="text-black text-xs mt-1">{errorsState[key]}</p>
+          <p className="text-[#ffdd00] text-xs mt-1">{errorsState[key]}</p>
         )}
       </div>
     );
@@ -298,6 +323,61 @@ const EducationalDetailsForm = () => {
       setYearList((prev) => [...prev, currentYear - i]);
     }
   };
+
+  // const dataForClassInput = () => {
+  //   const data = batchRelatedDetails?.classForAdmission;
+
+  //   console.log("Data for classInput", batchRelatedDetails);
+  //   console.log("Data for classInput", data);
+
+  // }
+
+  const romanClassLevels = [
+    "I",
+    "II",
+    "III",
+    "IV",
+    "V",
+    "VI",
+    "VII",
+    "VIII",
+    "IX",
+    "X",
+    "XI",
+    "XII",
+  ];
+
+  const dataForClassInput = () => {
+    const data = batchRelatedDetails?.classForAdmission.split(" ")[0];
+    const dataLength = batchRelatedDetails?.classForAdmission.split(" ").length;
+    console.log(
+      "batchRelatedDetails?.classForAdmission.split",
+      batchRelatedDetails?.classForAdmission.split(" ").length
+    );
+
+    console.log("Data for classInput", batchRelatedDetails);
+    console.log("Data for classInput", data);
+    const arrayofData = [];
+
+    if (data) {
+      const index = romanClassLevels.indexOf(data);
+      if (index > 0) {
+        const value = dataLength === 3 ? index : index - 1;
+        const oneLessClass = romanClassLevels[value];
+        console.log("One less class:", oneLessClass);
+        arrayofData.push(oneLessClass);
+      } else {
+        console.log("No lower class exists for:", data);
+        return null;
+      }
+    }
+
+    return arrayofData;
+  };
+
+  useEffect(() => {
+    dataForClassInput();
+  }, [batchRelatedDetails]);
 
   const renderSelectField = (
     key,
@@ -329,25 +409,29 @@ const EducationalDetailsForm = () => {
           ))}
         </select>
         {errorsState[key] && (
-          <p className="text-black text-xs mt-1">{errorsState[key]}</p>
+          <p className="text-[#ffdd00] text-xs mt-1">{errorsState[key]}</p>
         )}
       </div>
     );
   };
-  const currentYear = new Date().getFullYear();
 
   return (
     <div className="min-h-screen w-full bg-[#c61d23] px-2 md:px-8 py-2 overflow-auto">
       {/* {loading && <Spinner />} */}
 
       <div className="flex flex-col gap-6 max-w-screen-md mx-auto">
-        <div>
-          <FormHeader />
+        <div className="text-3xl text-center text-white">
+          {/* <FormHeader /> */}
+
+          SDAT Registration
         </div>
 
         {/* <h1 className="text-3xl md:text-4xl font-semibold text-white text-center">
           Enquiry Form
         </h1> */}
+
+        <PageNumberComponent />
+
         <form
           autoComplete="off"
           className="flex flex-col gap-4  w-full"
@@ -363,9 +447,7 @@ const EducationalDetailsForm = () => {
                   key === "YearOfPassing"
                     ? ["2025", "2024", "2023"]
                     : key === "Class"
-                    ? Array.from({ length: 7 }, (_, i) => i + 6).map(
-                        (classNum) => convertToRoman(classNum)
-                      )
+                    ? dataForClassInput()
                     : boards
                     ? boards.map((board) => board.name)
                     : [],
