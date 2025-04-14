@@ -107,12 +107,12 @@ const BasicDetailsForm = () => {
     ["dob", "gender", "examDate", "examName", "name", "email"].forEach(
       async (field) => {
         if (field === "name" || field === "email") {
-          if (!field) {
+      
             formErrors[field] = `${field
               .replace(/([A-Z])/g, " $1")
               .toUpperCase()} is required.`;
             isValid = false;
-          }
+        
         } else if (field === "examName") {
           const result = await dispatch(
             updateBasicDetails({ [field]: "SDAT" })
@@ -236,17 +236,11 @@ const BasicDetailsForm = () => {
       console.log("ITS workiong");
       await addAndUpdateBasicFrom();
     }
-
-    const studetnDetails = {
-      name,
-      email,
-    };
-    try {
-    
-    } catch (error) {
-      console.log("error", error);
-    }
   };
+
+
+
+
 
   const pathLocation = location.pathname;
 
@@ -486,7 +480,7 @@ const BasicDetailsForm = () => {
           </div>
 
               {/* Submit Message */}
-             <div className="w-full text-center">
+             {/* <div className="w-full text-center">
                {submitMessage && (
                  <p
                    className={`text-sm text-center text-white`}
@@ -494,7 +488,7 @@ const BasicDetailsForm = () => {
                    {submitMessage}
                  </p>
                )}
-             </div>
+             </div> */}
 
           <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mt-6">
             <button

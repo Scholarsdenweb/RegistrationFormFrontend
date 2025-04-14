@@ -31,7 +31,7 @@ const BatchRelatedDetailsForm = () => {
     setCheckUrl(pathLocation === "/batchDetailsForm");
   }, [dispatch, pathLocation]);
 
-  const validateForm = () => {
+  const  validateForm = () => {
     let formErrors = {};
     let isValid = true;
     console.log("FormData", formData);
