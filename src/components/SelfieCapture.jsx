@@ -142,7 +142,7 @@ const SelfieCapture = () => {
                   View Image
                 </a> */}
                   <button
-                    className="mt-4 w-full bg-[#ffdd00] text-black py-2 px-4 rounded-xl hover:bg-gray-700 transition"
+                    className="mt-4 w-full bg-[#ffdd00]  hover:bg-[#e2e242] text-black py-2 px-4 rounded-xl transition"
                     onClick={() => navigate("/registration/payment")}
                   >
                     Continue
@@ -157,7 +157,7 @@ const SelfieCapture = () => {
                   setUploadedUrl("");
                   getCamera();
                 }}
-                className="mt-4 w-full bg-[#ffdd00] text-black py-2 px-4 rounded-xl hover:bg-gray-700 transition"
+                className="mt-4 w-full bg-[#ffdd00] text-black py-2 px-4 rounded-xl hover:bg-[#e2e242] transition"
               >
                 Retake
               </button>

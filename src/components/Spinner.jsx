@@ -6,7 +6,7 @@ const Spinner = () => {
 
   return (
     <div
-      className="absolute h-full top-0 right-0 left-0 bottom-0 flex justify-center items-center w-full  backdrop-blur-sm "
+      className="absolute z-10 h-full top-0 right-0 left-0 bottom-0 flex justify-center items-center w-full  backdrop-blur-sm "
     >
       <BeatLoader
         color="black"

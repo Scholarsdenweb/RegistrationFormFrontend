@@ -14,7 +14,7 @@ export const fetchEducationalDetails = createAsyncThunk(
         return {
           dataExist: true,
           formData: {
-            LastSchoolName: data[0].LastSchoolName || "",
+            SchoolName: data[0].SchoolName || "",
             Class: data[0].Class || "",
             Percentage: data[0].Percentage || "",
             YearOfPassing: data[0].YearOfPassing || "",
@@ -25,7 +25,7 @@ export const fetchEducationalDetails = createAsyncThunk(
       return {
         dataExist: false,
         formData: {
-          LastSchoolName: "",
+          SchoolName: "",
           Class: "",
           Percentage: "",
           YearOfPassing: "",
@@ -103,7 +103,7 @@ const educationalDetailsSlice = createSlice({
   name: "educationalDetails",
   initialState: {
     formData: {
-      LastSchoolName: "",
+      SchoolName: "",
       Class: "",
       Percentage: "",
       YearOfPassing: "",

@@ -254,6 +254,7 @@ const EducationalDetailsForm = () => {
         setShowReloading(false);
       }
     }
+    setShowReloading(false);
   };
 
   const convertToRoman = (num) => {

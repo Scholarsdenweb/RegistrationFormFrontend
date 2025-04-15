@@ -36,7 +36,6 @@ const BasicDetailsForm = () => {
   const [batchDetailsError, setBatchDetailsError] = useState("");
   const [showReloading, setShowReloading] = useState(false);
 
-
   const {
     data: basicFormData,
     loading,
@@ -46,9 +45,6 @@ const BasicDetailsForm = () => {
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-
-  const { formData: batchFormData, dataExist: batchFormDataExist } =
-    useSelector((state) => state.batchDetails);
 
   const { userData } = useSelector((state) => state.userDetails);
 
@@ -112,10 +108,12 @@ const BasicDetailsForm = () => {
     ["dob", "gender", "examDate", "examName", "name", "email"].forEach(
       async (field) => {
         if (field === "name" || field === "email") {
-          formErrors[field] = `${field
-            .replace(/([A-Z])/g, " $1")
-            .toUpperCase()} is required.`;
-          isValid = false;
+          if (!userData?.[field]?.trim()) {
+            formErrors[field] = `${field
+              .replace(/([A-Z])/g, " $1")
+              .toUpperCase()} is required.`;
+            isValid = false;
+          }
         } else if (field === "examName") {
           const result = await dispatch(
             updateBasicDetails({ [field]: "SDAT" })
@@ -201,9 +199,7 @@ const BasicDetailsForm = () => {
   // };
 
   const addAndUpdateBasicFrom = async () => {
-
     setShowReloading(true);
-
 
     try {
       console.log("basicFormData form addAndUpdateBasicFrom", basicFormData);
@@ -226,8 +222,8 @@ const BasicDetailsForm = () => {
       navigate("/registration/batchDetailsForm");
     } catch (error) {
       console.log("Error submitting form:", error);
-      setSubmitMessage(error.response.data.message);
-    }finally {
+      if (errors.length === 0) setSubmitMessage(error.response.data.message);
+    } finally {
       setShowReloading(false);
     }
   };
@@ -260,17 +256,6 @@ const BasicDetailsForm = () => {
     return romanToNumber[romanNumeral];
   };
 
-  // Options for select dropdowns
-  const batchOptions =
-    batchFormData.classForAdmission <= 10
-      ? ["13/01/2025", "24/01/2025", "25/01/2025"]
-      : ["17/01/2025", "28/01/2025", "29/01/2025"];
-
-  let subjectOptions =
-    convertToNumber(batchFormData.classForAdmission) >= 6 &&
-    convertToNumber(batchFormData.classForAdmission) <= 10
-      ? ["Foundation"]
-      : ["Engineering", "Medical"];
   const convertToRoman = (num) => {
     const romanNumerals = {
       6: "VI",
@@ -285,9 +270,8 @@ const BasicDetailsForm = () => {
   };
 
   useEffect(() => {
-    console.log("batchFormData", batchFormData);
     console.log("basicFormData", basicFormData);
-  }, [batchFormData, basicFormData]);
+  }, [basicFormData]);
 
   return (
     <div className="min-h-screen w-full bg-[#c61d23] px-2 md:px-8 py-2 overflow-auto">
@@ -374,7 +358,9 @@ const BasicDetailsForm = () => {
               className="border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-indigo-400 focus:outline-none"
             />
             {basicDetailsError.dob && (
-              <p className="text-[#ffdd00] text-xs mt-1">{basicDetailsError.dob}</p>
+              <p className="text-[#ffdd00] text-xs mt-1">
+                {basicDetailsError.dob}
+              </p>
             )}
           </div>
 
@@ -478,23 +464,20 @@ const BasicDetailsForm = () => {
             )}
           </div>
 
-
           {showReloading && (
-          <div className="flex justify-center items-center">
-            <div className="animate-spin  rounded-full h-5 w-5 border-b-2 border-white"></div>
-          </div>
-        )}
+            <div className="flex justify-center items-center">
+              <div className="animate-spin  rounded-full h-5 w-5 border-b-2 border-white"></div>
+            </div>
+          )}
 
           {/* Submit Message */}
           <div className="w-full text-center">
-               {submitMessage && (
-                 <p
-                   className={`text-sm text-center text-white`}
-                 >
-                   {submitMessage}
-                 </p>
-               )}
-             </div>
+            {submitMessage && (
+              <p className={`text-sm text-center text-white`}>
+                {submitMessage}
+              </p>
+            )}
+          </div>
 
           <div className="flex flex-col-reverse sm:flex-row justify-between items-center gap-4 mt-6">
             <button
@@ -517,8 +500,6 @@ const BasicDetailsForm = () => {
       </div>
     </div>
   );
-
-
 };
 
 export default BasicDetailsForm;

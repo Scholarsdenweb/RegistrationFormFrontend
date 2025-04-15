@@ -136,6 +136,14 @@ export default function SignupRight() {
 
   const verifyPhoneNo = async () => {
     // setLoading(true);
+    if (formData.phone.length != 10) {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        "phone": `The length must be exactly 10.`,
+      }));
+      return;
+    }
+
     setShowReloading(true);
 
     try {
@@ -229,9 +237,11 @@ export default function SignupRight() {
               </button>
             )}
           </div>
-          {errors.phone && (
-            <p className="text-white mt-1">
-              {errors.phone && "Contact Number is required"}
+
+          {console.log("Error in phone number", errors.phone)}
+          {errors?.phone && (
+            <p className="text-[#ffdd00] mt-1">
+              {errors.phone }
             </p>
           )}
         </div>

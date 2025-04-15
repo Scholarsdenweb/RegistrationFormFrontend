@@ -193,7 +193,7 @@ const Payment = () => {
 
 
       </div>
-        <div className="absolute flex justify-center bottom-0 ">
+        <div className="fixed flex justify-center bottom-0 z-0">
                 <PaymentFooter />
               </div> 
     </div>

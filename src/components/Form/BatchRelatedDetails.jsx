@@ -95,6 +95,7 @@ const BatchRelatedDetailsForm = () => {
         setShowReloading(false);
       }
     }
+    setShowReloading(false);
   };
 
   useEffect(() => {
