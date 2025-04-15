@@ -154,14 +154,14 @@ const Payment = () => {
         </div>
 
         <div
-          className={`col-span-6 px-9 py-8 mb-3 mr-5 h-full bg-gray-100 rounded-3xl flex flex-col items-center justify-center gap-4 overflow-auto`}
+          className={`col-span-6 sm:px-9 sm:py-8 sm:mb-3 sm:mr-5 h-full bg-gray-100 rounded-3xl flex flex-col items-center justify-center gap-4 `}
         >
           {paymentStatus ? (
             <PaymentSuccessMessage />
           ) : loading ? (
             <Spinner />
           ) : (
-            <div className="ol-span-6 px-9 py-8 mb-3 mr-5 h-full bg-gray-100 rounded-3xl flex flex-col items-center justify-between gap-4 overflow-auto">
+            <div className="ol-span-6 px-9 py-8 mb-3 sm:mr-5 h-full bg-gray-100 rounded-3xl flex flex-col items-center justify-between gap-4 ">
             <div className="flex flex-col gap-5">
 
           
