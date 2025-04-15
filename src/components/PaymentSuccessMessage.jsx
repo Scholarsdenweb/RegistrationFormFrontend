@@ -61,19 +61,20 @@ const PaymentSuccessMessage = () => {
     dispatch(fetchUserDetails());
   }, []);
   return loading ? (
-    <div className="flex justify-center items-center ">
+    <div className="flex flex-col p-3 justify-center items-center ">
+      <h2> Your admit card is being generated</h2>
       <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900"></div>
     </div>
   ) : (
-    <div className="flex flex-col justify-center w-full h-full items-center shadow-lg p-6 rounded-lg">
+    <div className="flex flex-col justify-center gap-3 w-full h-full items-center p-6 rounded-lg">
       <img src={tickCircle} alt="" />
       <div className="text-sm px-10 py-2">
-        {` Your Payment is Successfull. Order ID : ${
+        {` Your payment was successful. Order ID : ${
           paymentId ? paymentId : userData.paymentId
         }`}
       </div>
 
-      <span>Admit Card generated</span>
+      <span>Admit Card has been generated successfully.</span>
       <span>Thank you for your payment.</span>
 
       {userData.admitCard ? (

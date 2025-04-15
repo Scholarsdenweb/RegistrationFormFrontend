@@ -24,7 +24,7 @@ const FamilyDetails = () => {
   const [checkUrl, setCheckUrl] = useState("");
   const [errors, setErrors] = useState({});
   const [familyFormSubmit, setFamilyFormSubmit] = useState(false);
-
+  const [showReloading, setShowReloading] = useState(false);
   const phoneRegex = /^[0-9]{10}$/;
 
   // Income options
@@ -100,18 +100,25 @@ const FamilyDetails = () => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    if (validateForm()) {
-      const result = await dispatch(
-        submitFamilyDetails({
-          familyFormData: formData,
-          familyDataExist: dataExist,
-          setFamilyFormSubmit,
-        })
-      ).unwrap();
+    setShowReloading(true);
+    try {
+      if (validateForm()) {
+        const result = await dispatch(
+          submitFamilyDetails({
+            familyFormData: formData,
+            familyDataExist: dataExist,
+            setFamilyFormSubmit,
+          })
+        ).unwrap();
 
-      if (result) {
-        navigate("/registration/selfieCapture");
+        if (result) {
+          navigate("/registration/selfieCapture");
+        }
       }
+    } catch (error) {
+      console.log("error  ", error);
+    } finally {
+      setShowReloading(false);
     }
   };
 
@@ -127,8 +134,7 @@ const FamilyDetails = () => {
       <div className="flex flex-col gap-6 max-w-screen-md mx-auto">
         <div className="text-3xl text-center text-white">
           {/* <FormHeader /> */}
-
-          SDAT Registration
+          S.DAT Registration
         </div>
 
         {/* <h1 className="text-3xl md:text-4xl font-semibold text-white text-center">
@@ -209,7 +215,13 @@ const FamilyDetails = () => {
             );
           })}
 
-          <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mt-6">
+          {showReloading && (
+            <div className="flex justify-center items-center">
+              <div className="animate-spin  rounded-full h-5 w-5 border-b-2 border-white"></div>
+            </div>
+          )}
+
+          <div className="flex flex-col-reverse sm:flex-row justify-between items-center gap-4 mt-6">
             <button
               onClick={() => navigate(-1)}
               type="button"

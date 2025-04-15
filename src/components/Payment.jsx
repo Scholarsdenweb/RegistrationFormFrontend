@@ -94,8 +94,8 @@ const Payment = () => {
       key,
       amount: response.data.order.amount,
       currency: response.data.order.currency,
-      name: "Acme Corp",
-      description: "Test Payment",
+      name: "Scholars Den",
+      description: "S.DAT Registration Fees",
       order_id: response.data.order.id,
       callback_url: `${
         import.meta.env.VITE_APP_API_URL

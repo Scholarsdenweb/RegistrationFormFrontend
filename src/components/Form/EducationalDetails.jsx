@@ -27,6 +27,8 @@ const EducationalDetailsForm = () => {
   const pathLocation = location.pathname;
 
   const [educationalErrors, setEducationalErrors] = useState({});
+
+  const [showReloading, setShowReloading] = useState(false);
   const [familyErrors, setFamilyErrors] = useState({});
   const [educationalFormSubmit, setEducationalFormSubmit] = useState(false);
   const [familyFormSubmit, setFamilyFormSubmit] = useState(false);
@@ -223,6 +225,8 @@ const EducationalDetailsForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    setShowReloading(true);
+
     const isEducationalValid = validateForm(formData, setEducationalErrors);
 
     if (isEducationalValid) {
@@ -246,6 +250,8 @@ const EducationalDetailsForm = () => {
       } catch (error) {
         console.error("Error submitting educational details:", error);
         setSubmitMessage("Error submitting form. Please try again.");
+      }finally{
+        setShowReloading(false);
       }
     }
   };
@@ -423,7 +429,7 @@ const EducationalDetailsForm = () => {
         <div className="text-3xl text-center text-white">
           {/* <FormHeader /> */}
 
-          SDAT Registration
+          S.DAT Registration
         </div>
 
         {/* <h1 className="text-3xl md:text-4xl font-semibold text-white text-center">
@@ -462,7 +468,15 @@ const EducationalDetailsForm = () => {
                 )
           )}
           {/* </div> */}
-          <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mt-6">
+
+          {showReloading && (
+          <div className="flex justify-center items-center">
+            <div className="animate-spin  rounded-full h-5 w-5 border-b-2 border-white"></div>
+          </div>
+        )}
+
+
+          <div className="flex flex-col-reverse sm:flex-row justify-between items-center gap-4 mt-6">
             <button
               onClick={() => navigate(-1)}
               type="button"

@@ -22,6 +22,10 @@ const BatchRelatedDetailsForm = () => {
     (state) => state.batchDetails
   );
 
+
+    const [showReloading, setShowReloading] = useState(false);
+  
+
   const [submitMessage, setSubmitMessage] = useState("");
   const [errors, setErrors] = useState({});
   const [checkUrl, setCheckUrl] = useState("");
@@ -64,6 +68,7 @@ const BatchRelatedDetailsForm = () => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
+    setShowReloading(true);
 
     if (validateForm()) {
       try {
@@ -86,6 +91,8 @@ const BatchRelatedDetailsForm = () => {
       } catch (error) {
         console.error("Error submitting form:", error);
         setSubmitMessage("Error submitting form. Please try again.");
+      }finally{
+        setShowReloading(false);
       }
     }
   };
@@ -168,7 +175,7 @@ const BatchRelatedDetailsForm = () => {
       <div className="flex flex-col gap-6 max-w-screen-md mx-auto">
         <div className="text-3xl text-center text-white">
           {/* <FormHeader /> */}
-          SDAT Registration
+          S.DAT Registration
         </div>
 
         {/* <h1 className="text-3xl md:text-4xl font-semibold text-white text-center">
@@ -263,6 +270,12 @@ const BatchRelatedDetailsForm = () => {
             )}
           </div>
 
+          {showReloading && (
+          <div className="flex justify-center items-center">
+            <div className="animate-spin  rounded-full h-5 w-5 border-b-2 border-white"></div>
+          </div>
+        )}
+
           {/* Preferred Batch */}
           {/* <div className="flex flex-col">
             <label
@@ -296,7 +309,7 @@ const BatchRelatedDetailsForm = () => {
 
           {/* Submit and Previous Buttons */}
 
-          <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mt-6">
+          <div className="flex flex-col-reverse sm:flex-row justify-between items-center gap-4 mt-6">
             <button
               onClick={() => navigate(-1)}
               type="button"
