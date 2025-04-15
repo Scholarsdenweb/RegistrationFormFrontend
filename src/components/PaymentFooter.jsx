@@ -5,32 +5,32 @@ const PaymentFooter = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="bg-[#c61d23] text-white py-6 sm:py-6 rounded-t-xl ">
+    <div className="bg-[#c61d23] text-white text-sm sm:text-lg sm:py-6 rounded-t-xl ">
       <div className="flex flex-col sm:flex-row items-center justify-cenmter ">
         
         {/* Terms, Privacy, Contact Buttons */}
-        <div className="flex flex-wrap gap-4">
+        <div className="flex flex-wrap gap-3 sm:gap-4">
           <button
             onClick={() => navigate('/registration/termsAndCondition')}
-            className="border border-white px-4 py-1 rounded hover:bg-white hover:text-[#c61d23] transition"
+            className="border border-white sm:px-3 px-4 py-1 rounded hover:bg-white hover:text-[#c61d23] transition"
           >
             Terms & Conditions
           </button>
           <button
             onClick={() => navigate('/registration/privacyPolicy')}
-            className="border border-white px-4 py-1 rounded hover:bg-white hover:text-[#c61d23] transition"
+            className="border border-white sm:px-3 px-4 py-1 rounded hover:bg-white hover:text-[#c61d23] transition"
           >
             Privacy Policy
           </button>
           <button
             onClick={() => navigate('/registration/contactUsPage')}
-            className="border border-white px-4 py-1 rounded hover:bg-white hover:text-[#c61d23] transition"
+            className="border border-white sm:px-3 px-4 py-1 rounded hover:bg-white hover:text-[#c61d23] transition"
           >
             Contact Us
           </button>
           <button
             onClick={() => navigate('/registration/cancellationsAndRefunds')}
-            className="border border-white px-4 py-1 rounded hover:bg-white hover:text-[#c61d23] transition"
+            className="border border-white sm:px-3 px-4 py-1 rounded hover:bg-white hover:text-[#c61d23] transition"
           >
             Cancellations & Refunds
           </button>
