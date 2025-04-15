@@ -327,7 +327,7 @@ const BasicDetailsForm = () => {
               className="border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-indigo-400 focus:outline-none"
             />
             {basicDetailsError.name && (
-              <p className="text-black text-xs mt-1">
+              <p className="text-[#ffdd00] text-xs mt-1">
                 {basicDetailsError.name}
               </p>
             )}
@@ -349,7 +349,7 @@ const BasicDetailsForm = () => {
               className="border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-indigo-400 focus:outline-none"
             />
             {basicDetailsError.email && (
-              <p className="text-black text-xs mt-1">
+              <p className="text-[#ffdd00] text-xs mt-1">
                 {basicDetailsError.email}
               </p>
             )}
@@ -374,7 +374,7 @@ const BasicDetailsForm = () => {
               className="border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-indigo-400 focus:outline-none"
             />
             {basicDetailsError.dob && (
-              <p className="text-black text-xs mt-1">{basicDetailsError.dob}</p>
+              <p className="text-[#ffdd00] text-xs mt-1">{basicDetailsError.dob}</p>
             )}
           </div>
 
@@ -403,7 +403,7 @@ const BasicDetailsForm = () => {
               ))}
             </select>
             {basicDetailsError.gender && (
-              <p className="text-black text-xs mt-1">
+              <p className="text-[#ffdd00] text-xs mt-1">
                 {basicDetailsError.gender}
               </p>
             )}
@@ -472,7 +472,7 @@ const BasicDetailsForm = () => {
               })}
             </select>
             {basicDetailsError.examDate && (
-              <p className="text-black text-xs mt-1">
+              <p className="text-[#ffdd00] text-xs mt-1">
                 {basicDetailsError.examDate}
               </p>
             )}

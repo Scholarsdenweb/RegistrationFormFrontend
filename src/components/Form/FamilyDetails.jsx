@@ -191,7 +191,10 @@ const FamilyDetails = () => {
                   htmlFor={key}
                   className="text-sm font-medium text-white mb-1"
                 >
-                  {key.replace(/([A-Z])/g, " $1")}
+                  {key
+                    .replace(/([A-Z])/g, " $1")
+                    .trim()
+                    .replace(/^(\w+)/, "$1's")}
                 </label>
                 <input
                   type={

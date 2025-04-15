@@ -118,7 +118,7 @@ const SelfieCapture = () => {
                 onClick={handleCapture}
                 className="mt-4 w-full bg-blue-600 text-white py-2 px-4 rounded-xl hover:bg-blue-700 transition"
               >
-                Capture Student Selfie
+                Capture the student's selfie.
               </button>
             </>
           ) : (
