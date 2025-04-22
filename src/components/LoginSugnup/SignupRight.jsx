@@ -1,16 +1,26 @@
 import { useEffect, useState } from "react";
 import axios from "../../api/axios";
 import { useNavigate, Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { updateExistingUserDetails } from "../../redux/slices/existingStudentSlice";
+
 // import ScholarsDenLogo from "../../assets/scholarsDenLogo.png";
 
 export default function SignupRight() {
   const navigate = useNavigate();
 
+  const dispatch = useDispatch();
+
+  const { userData } = useSelector((state) => state.existingStudentDetails);
+
+
+    // const { userData } = useSelector((state) => state.userDetails);
+
   // Regex pattern for phone number validation (+91 followed by 10 digits)
   const phoneRegex = /^\+91[0-9]{10}$/;
-  // const [codeVerified, setCodeVerified] = useState(true);
+  const [codeVerified, setCodeVerified] = useState(true);
   // const [loading, setLoading] = useState(false);
-  const [codeVerified, setCodeVerified] = useState(false);
+  // const [codeVerified, setCodeVerified] = useState(false);
   const [isSubmittingForm, setIsSubmittingForm] = useState(false);
 
   const [showReloading, setShowReloading] = useState(false);
@@ -30,6 +40,9 @@ export default function SignupRight() {
   useEffect(() => {
     handleLogout();
   }, []);
+  useEffect(() => {
+    console.log("userData", userData);
+  }, [userData]);
 
   // name: "",
   // email: "",
@@ -90,18 +103,18 @@ export default function SignupRight() {
     try {
       setIsSubmittingForm(true);
 
-      let codeChecked = await checkVerificationCode();
+      // let codeChecked = await checkVerificationCode();
 
-      console.log("codeChecked", codeChecked);
-      if (codeChecked === false) {
-        setShowCodeBox(false);
+      // console.log("codeChecked", codeChecked);
+      // if (codeChecked === false) {
+      //   setShowCodeBox(false);
 
-        // Remove OTP
-        setCodeVerified(false);
-        setSubmitMessage("Please Verify Your Phone Number");
-        setIsSubmittingForm(false); // ⬅️ reset if verification fails
-        return;
-      }
+      //   // Remove OTP
+      //   setCodeVerified(false);
+      //   setSubmitMessage("Please Verify Your Phone Number");
+      //   setIsSubmittingForm(false); // ⬅️ reset if verification fails
+      //   return;
+      // }
 
       setSubmitMessage("");
       console.log("Button Clicked");
@@ -118,12 +131,31 @@ export default function SignupRight() {
           console.log("Response", formData);
           const response = await axios.post("/auth/student_signup", formData);
 
+          console.log("response.message", response.data.message);
+
+          if (response.data.message === "Student Already Exist") {
+            console.log("response student data", response.data.student);
+
+            dispatch(updateExistingUserDetails({userData: response.data.student }));
+
+            navigate("/registration/existingStudent");
+          }
+          else if(response.data.message === "Student Exist in Enquiry Form"){
+
+
+            console.log("responseData student from enquiry form", response.data.student);
+            
+            dispatch(updateExistingUserDetails({userData: response.data.student }));
+
+            navigate("/registration/enquiryData");
+          }
+
           console.log("response", response);
           setSubmitMessage("Form submitted successfully!");
           document.cookie = `token=${response.data.token}`;
-          navigate("/registration/basicDetailsForm");
+          // navigate("/registration/basicDetailsForm");
         } catch (error) {
-          console.log("Error submitting form 2", error.response.data);
+          console.log("Error submitting form 2", error);
           setSubmitMessage(error.response.data);
 
           console.error("Error submitting form", error);
@@ -139,7 +171,7 @@ export default function SignupRight() {
     if (formData.phone.length != 10) {
       setErrors((prevErrors) => ({
         ...prevErrors,
-        "phone": `The length must be exactly 10.`,
+        phone: `The length must be exactly 10.`,
       }));
       return;
     }
@@ -240,9 +272,7 @@ export default function SignupRight() {
 
           {console.log("Error in phone number", errors.phone)}
           {errors?.phone && (
-            <p className="text-[#ffdd00] mt-1">
-              {errors.phone }
-            </p>
+            <p className="text-[#ffdd00] mt-1">{errors.phone}</p>
           )}
         </div>
 

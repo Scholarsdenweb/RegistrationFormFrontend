@@ -445,7 +445,7 @@ const BasicDetailsForm = () => {
                 Select Exam Date
               </option>
 
-              {console.log("AllDates", allDates)}
+              {/* {console.log("AllDates", allDates)} */}
               {allDates?.map((option, index) => {
                 const parsedDate = dayjs(option.examDate, "DD-MM-YYYY");
                 return (

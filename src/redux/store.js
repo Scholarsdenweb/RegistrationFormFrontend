@@ -1,12 +1,11 @@
-import { configureStore } from '@reduxjs/toolkit';
-import basicDetailsReducer from './slices/basicDetailsSlice';
-import batchDetailsReducer from './slices/batchDetailsSlice';
-import educationalDetailsReducer from './slices/educationalDetailsSlice';
-import familyDetailsReducer from './slices/familyDetailsSlice';
-import userDetailsReducer from './slices/userDeailsSlice';
-import loadingDetailsReducer from "./slices/loadingSlice"
-
-
+import { configureStore } from "@reduxjs/toolkit";
+import basicDetailsReducer from "./slices/basicDetailsSlice";
+import batchDetailsReducer from "./slices/batchDetailsSlice";
+import educationalDetailsReducer from "./slices/educationalDetailsSlice";
+import familyDetailsReducer from "./slices/familyDetailsSlice";
+import userDetailsReducer from "./slices/userDeailsSlice";
+import loadingDetailsReducer from "./slices/loadingSlice";
+import existingUserDetailsReducer from "./slices/existingStudentSlice";
 
 // Configure Redux Store
 const store = configureStore({
@@ -17,8 +16,8 @@ const store = configureStore({
     educationalDetails: educationalDetailsReducer,
     familyDetails: familyDetailsReducer,
     userDetails: userDetailsReducer,
-    loadingDetails : loadingDetailsReducer
-    
+    existingStudentDetails: existingUserDetailsReducer,
+    loadingDetails: loadingDetailsReducer,
   },
 });
 

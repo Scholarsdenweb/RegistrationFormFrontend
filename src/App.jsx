@@ -35,6 +35,8 @@ import TermsAndConditionPage from "./components/Policy/TermsAndConditionPage";
 import ContactUsPage from "./components/Policy/ContactUsPage";
 import PrivacyPolicy from "./components/Policy/PrivacyPolicy";
 import CancellationsAndRefunds from "./components/Policy/CancellationsAndRefunds";
+import ExistingStudent from "./components/ExistingStudent";
+import EnquiryData from "./components/EnquiryData";
 
 function App() {
   return (
@@ -100,6 +102,15 @@ function App() {
                 path="/registration/cancellationsAndRefunds"
                 element={<CancellationsAndRefunds/>}
               />
+              <Route
+                path="/registration/existingStudent"
+                element={<ExistingStudent/>}
+              />
+              <Route
+                path="/registration/enquiryData"
+                element={<EnquiryData/>}
+              />
+
 
               <Route
                 path="/dashboard"
