@@ -14,7 +14,7 @@ export const fetchUserDetails = createAsyncThunk(
                 return {
                     dataExist: true, // Indicate data exists
                     userData: {
-                        name: data?.name || '',
+                        studentName: data?.studentName || '',
                         StudentsId: data?.StudentsId || '',
                         email: data?.email || '',
                         admitCard: data?.admitCard || '',
@@ -49,7 +49,7 @@ export const submitUserDetails = createAsyncThunk(
                 return {
                     dataExist: true, // Indicate data exists
                     userData: {
-                        name: data?.name || '',
+                        studentName: data?.studentName || '',
                         StudentsId: data?.StudentsId || '',
                         email: data?.email || '',
                         admitCard: data?.admitCard || '',

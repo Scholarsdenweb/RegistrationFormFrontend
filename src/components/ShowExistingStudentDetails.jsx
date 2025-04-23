@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchExistingUserDetails } from "../redux/slices/existingStudentSlice";
+import axios from "../api/axios";
+import { useNavigate } from "react-router-dom";
 
 const ShowExistingStudentDetails = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { userData } = useSelector((state) => state.existingStudentDetails);
   const [selectedStudent, setSelectedStudent] = useState(null);
 
@@ -11,9 +14,24 @@ const ShowExistingStudentDetails = () => {
     dispatch(fetchExistingUserDetails());
   }, [dispatch]);
 
+  const createNewStudent = async () => {
+    const response = await axios.post("/students/createNewStudent");
+    console.log("response", response);
+    document.cookie = `token=${response.data.token}; path=/; max-age=3600`;
+    navigate("/registration/basicDetailsForm");
+  };
+
   return (
-    <div className="p-10 bg-gray-50 ">
-      <h2 className="text-3xl font-bold text-center mb-10 text-indigo-700">
+    <div className=" p-1 sm:p-10 bg-gray-50 overflow-auto">
+      <div className="w-full flex justify-end">
+        <button
+          className="border-2 shadow-lg p-3 rounded-xl"
+          onClick={createNewStudent}
+        >
+          Create New
+        </button>
+      </div>
+      <h2 className=" flex text-3xl font-bold text-center mb-10 text-black">
         Student Details
       </h2>
 
@@ -22,7 +40,7 @@ const ShowExistingStudentDetails = () => {
         {userData?.data?.map((student, index) => (
           <div
             key={index}
-            className="bg-white rounded-xl shadow-md p-4 sm:p-6 flex items-center gap-6 hover:shadow-xl transition duration-300 cursor-pointer"
+            className=" bg-white rounded-xl shadow-md p-4 sm:p-6 flex items-center justify-center gap-6 hover:shadow-xl transition duration-300 cursor-pointer"
             onClick={() => setSelectedStudent(student)}
           >
             <img
@@ -42,8 +60,6 @@ const ShowExistingStudentDetails = () => {
         ))}
       </div>
 
-
-    
       {/* Modal */}
       {selectedStudent && (
         <div
@@ -122,13 +138,6 @@ const ShowExistingStudentDetails = () => {
           </div>
         </div>
       )}
-
-
-
-
-
-
-
     </div>
   );
 };

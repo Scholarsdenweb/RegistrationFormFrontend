@@ -32,7 +32,7 @@ export const fetchExistingUserFormEnquiryDetails = createAsyncThunk(
         try {
 
             console.log("FetchExistingUserFormEnquiryDetails is calling")
-            const response = await axios.post('/students/continueWithExistingStudent');
+            const response = await axios.post('/students/fetchExistingUserFormEnquiryDetails');
             const data = response.data.data;
             console.log("Studennt  Data", data);
 

@@ -14,7 +14,7 @@ export const fetchBatchDetails = createAsyncThunk(
         return {
           dataExist: true,
           formData: {
-            subjectCombination: data[0]?.subjectCombination || "",
+            program: data[0]?.program || "",
             classForAdmission: data[0]?.classForAdmission || "",
           },
         };
@@ -22,7 +22,7 @@ export const fetchBatchDetails = createAsyncThunk(
       return {
         dataExist: false,
         formData: {
-          subjectCombination: "",
+          program: "",
           classForAdmission: "",
         },
       };
@@ -39,7 +39,7 @@ const batchDetailsSlice = createSlice({
   initialState: {
     formData: {
       classForAdmission: "",
-      subjectCombination: "",
+      program: "",
     },
     dataExist: false, // Flag to check if data exists in the database
     loading: false,

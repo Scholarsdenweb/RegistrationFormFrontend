@@ -13,8 +13,7 @@ export default function SignupRight() {
 
   const { userData } = useSelector((state) => state.existingStudentDetails);
 
-
-    // const { userData } = useSelector((state) => state.userDetails);
+  // const { userData } = useSelector((state) => state.userDetails);
 
   // Regex pattern for phone number validation (+91 followed by 10 digits)
   const phoneRegex = /^\+91[0-9]{10}$/;
@@ -90,8 +89,7 @@ export default function SignupRight() {
       isValid = false;
     }
 
-    console.log("CheckData", formErrors);
-    console.log("isValid", isValid);
+
 
     setErrors(formErrors);
     return isValid;
@@ -117,18 +115,13 @@ export default function SignupRight() {
       // }
 
       setSubmitMessage("");
-      console.log("Button Clicked");
-      console.log("setSubmitMessage3", submitMessage);
+ 
 
-      console.log(
-        "validationForm , codeVerified",
-        validateForm(),
-        codeVerified
-      );
+  
 
       if (validateForm()) {
         try {
-          console.log("Response", formData);
+          console.log("Response beforew auth", formData);
           const response = await axios.post("/auth/student_signup", formData);
 
           console.log("response.message", response.data.message);
@@ -136,24 +129,32 @@ export default function SignupRight() {
           if (response.data.message === "Student Already Exist") {
             console.log("response student data", response.data.student);
 
-            dispatch(updateExistingUserDetails({userData: response.data.student }));
+            dispatch(
+              updateExistingUserDetails({ userData: response.data.student })
+            );
 
             navigate("/registration/existingStudent");
-          }
-          else if(response.data.message === "Student Exist in Enquiry Form"){
+          } else if (
+            response.data.message === "Student Exist in Enquiry Form"
+          ) {
+            console.log(
+              "responseData student from enquiry form",
+              response.data.student
+            );
 
-
-            console.log("responseData student from enquiry form", response.data.student);
-            
-            dispatch(updateExistingUserDetails({userData: response.data.student }));
+            dispatch(
+              updateExistingUserDetails({ userData: response.data.student })
+            );
 
             navigate("/registration/enquiryData");
+          } else {
+            console.log("response", response);
+            setSubmitMessage("Form submitted successfully!");
+            document.cookie = `token=${response.data.token}`;
+            navigate("/registration/basicDetailsForm");
           }
-
-          console.log("response", response);
           setSubmitMessage("Form submitted successfully!");
           document.cookie = `token=${response.data.token}`;
-          // navigate("/registration/basicDetailsForm");
         } catch (error) {
           console.log("Error submitting form 2", error);
           setSubmitMessage(error.response.data);
@@ -197,31 +198,7 @@ export default function SignupRight() {
     }
   };
 
-  const checkVerificationCode = async () => {
-    try {
-      const response = await axios.post("/students/verifyNumber", {
-        mobileNumber: `${formData.phone}`,
-        otp: code,
-      });
-      if (response.status === 200) {
-        setSubmitMessage("Phone number verified successfully!");
 
-        console.log("ITs working ,,,,,,,,,,,,,");
-        setCodeVerified(true);
-        setShowCodeBox(false);
-      }
-      console.log("ITs working ,,,,,,,,,,,,,");
-
-      console.log("codeVerified form checkVerification", codeVerified);
-      // setCodeVerified(true);
-      // setShowCodeBox(false);
-      return true;
-    } catch (error) {
-      setSubmitMessage("Error verifying phone number");
-      console.log("Error verifying phone number", error);
-      return false;
-    }
-  };
 
   return (
     <div className=" w-full bg-[#c61d23] flex items-center justify-center px-4 py-1">
@@ -270,13 +247,11 @@ export default function SignupRight() {
             )}
           </div>
 
-          {console.log("Error in phone number", errors.phone)}
           {errors?.phone && (
             <p className="text-[#ffdd00] mt-1">{errors.phone}</p>
           )}
         </div>
 
-        {console.log("Data showCodeBox", showCodeBox)}
         {showCodeBox && (
           <div className="space-y-2">
             <label htmlFor="otp" className="block text-sm font-medium">

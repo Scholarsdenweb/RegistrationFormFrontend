@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "../api/axios";
 import { fetchExistingUserFormEnquiryDetails } from "../redux/slices/existingStudentSlice";
+import { useNavigate } from "react-router-dom";
 const EnquiryData = () => {
   const { userData } = useSelector((state) => state.existingStudentDetails);
 
@@ -12,13 +13,11 @@ const EnquiryData = () => {
     console.log("Enquiry userData", userData);
   }, [userData]);
 
+  const navigate = useNavigate();
+
   useEffect(() => {
     dispatch(fetchExistingUserFormEnquiryDetails());
   }, [dispatch]);
-
-
-
-
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -28,11 +27,31 @@ const EnquiryData = () => {
   };
 
   const continueWithExistingStudent = async () => {
-    const response = await axios.post("/students/continueWithExistingStudent", {
-      userData,
-    });
+    try {
+      console.log("userData", userData);
 
-    console.log("response data from continueWithExistingStudent", response);
+      const response = await axios.post(
+        "/students/continueWithExistingStudent",
+        {
+          userData: userData[0],
+        }
+      );
+
+      // Overwrite the token cookie with the new token
+      document.cookie = `token=${response.data.token}; path=/; max-age=3600`;
+      navigate("/registration/basicDetailsForm");
+
+      console.log("response data from continueWithExistingStudent", response);
+    } catch (error) {
+      console.error("Error in continueWithExistingStudent", error);
+    }
+  };
+
+  const createNewStudent = async () => {
+    const response = await axios.post("/students/createNewStudent");
+    console.log("response", response);
+    document.cookie = `token=${response.data.token}; path=/; max-age=3600`;
+    navigate("/registration/basicDetailsForm");
   };
 
   return (
@@ -103,7 +122,10 @@ const EnquiryData = () => {
         >
           Continue with the existing profile
         </button>
-        <button className="px-6 py-3 bg-[#ffdd00] text-black font-semibold rounded-lg hover:bg-yellow-600 transition">
+        <button
+          className="px-6 py-3 bg-[#ffdd00] text-black font-semibold rounded-lg hover:bg-yellow-600 transition"
+          onClick={createNewStudent}
+        >
           Create New
         </button>
       </div>

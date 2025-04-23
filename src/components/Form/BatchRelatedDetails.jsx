@@ -41,7 +41,7 @@ const BatchRelatedDetailsForm = () => {
     console.log("FormData", formData);
 
     Object.keys(formData).forEach((key) => {
-      if (!(key === "subjectCombination" && formData.classForAdmission <= 10)) {
+      if (!(key === "program" && formData.classForAdmission <= 10)) {
         if (!formData[key]?.toString().trim()) {
           formErrors[key] = `${key.replace(/([A-Z])/g, " $1")} is required`;
           isValid = false;
@@ -57,7 +57,7 @@ const BatchRelatedDetailsForm = () => {
     const { name, value } = e.target;
     dispatch(updateBatchDetails({ [name]: value }));
 
-    if (name === "subjectCombination") {
+    if (name === "program") {
       setProgram(value); // Update program selection
     }
 
@@ -104,18 +104,30 @@ const BatchRelatedDetailsForm = () => {
       return;
     }
     console.log("Running  ");
-    setProgram(formData.subjectCombination || "");
+    setProgram(formData.program || "");
   }, [dataExist]);
 
   const programOptions = {
     Foundation: ["VI", "VII", "VIII", "IX", "X"],
-    "JEE(Main & Adv)": [
+    "JEE(Main & Adv.)": [
       "XI Engineering",
       "XII Engineering",
       "XII Passed Engineering",
     ],
     "NEET(UG)": ["XI Medical", "XII Medical", "XII Passed Medical"],
   };
+
+
+  // const programOptions = {
+  //   "Foundation (VI - X)": ["VI", "VII", "VIII", "IX", "X"],
+  //   "Engineering (XI - XII)": [
+  //     "XI",
+  //     "XII",
+  //     "XII Passed",
+  //   ],
+  //   "Medical (XI -XII)": ["XI", "XII", "XII Passed"],
+  // };
+
 
   const convertToNumber = (romanNumeral) => {
     const romanToNumber = {
@@ -161,10 +173,15 @@ const BatchRelatedDetailsForm = () => {
     setCheckUrl(pathLocation === "/batchDetailsForm");
   }, []);
 
+
+  useEffect(()=>{
+
+  },[])
+
   // Validate form fields
 
   useEffect(() => {
-    console.log("formData", formData);
+    console.log("formData form batchDetails ", formData);
   }, [formData]);
 
   // Handle form submission
@@ -198,22 +215,21 @@ const BatchRelatedDetailsForm = () => {
 
           <div className="flex flex-col">
             <label
-              htmlFor="subjectCombination"
+              htmlFor="program"
               className="text-sm font-medium text-white mb-1"
             >
               Program
             </label>
             <select
-              id="subjectCombination"
-              name="subjectCombination"
-              value={formData.subjectCombination || ""}
+              id="program"
+              name="program"
+              value={formData.program || ""}
               onChange={handleChange}
               className="border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-indigo-400 focus:outline-none"
             >
               <option disabled value="">
                 Select Program
               </option>
-              {console.log("subjectOptions", subjectOptions)}
 
               {Object.keys(programOptions).map((program) => (
                 <option
@@ -225,9 +241,9 @@ const BatchRelatedDetailsForm = () => {
                 </option>
               ))}
             </select>
-            {errors.subjectCombination && (
+            {errors.program && (
               <p className="text-[#ffdd00] text-xs mt-1">
-                {errors.subjectCombination}
+                {errors.program}
               </p>
             )}
           </div>
@@ -254,7 +270,7 @@ const BatchRelatedDetailsForm = () => {
 
               {console.log("program", program)}
               {program &&
-                programOptions[program].map((course) => (
+                programOptions[program]?.map((course) => (
                   <option
                     className="bg-white text-black"
                     key={course}

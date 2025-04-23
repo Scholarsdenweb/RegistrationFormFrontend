@@ -35,20 +35,27 @@ const BasicDetailsForm = () => {
   const [basicDetailsError, setBasicDetailsError] = useState("");
   const [batchDetailsError, setBatchDetailsError] = useState("");
   const [showReloading, setShowReloading] = useState(false);
+  const pathLocation = location.pathname;
 
   const {
     data: basicFormData,
     loading,
     error,
-    dataExist: basicFormDataExist,
+    dataExist,
   } = useSelector((state) => state.basicDetails);
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
 
+  useEffect(() => {
+    console.log("basicFormData", basicFormData);
+    console.log("dataExist", dataExist);
+  }, [basicFormData]);
+
   const { userData } = useSelector((state) => state.userDetails);
 
   const [checkUrl, setCheckUrl] = useState(false);
+
   const [errors, setErrors] = useState({});
   const [submitMessage, setSubmitMessage] = useState("");
 
@@ -80,8 +87,9 @@ const BasicDetailsForm = () => {
   }, []);
 
   useEffect(() => {
-    console.log("userData", userData);
-  }, [userData]);
+    console.log("basicFormData", dataExist);
+    console.log("basicFormData", basicFormData);
+  }, [basicFormData]);
 
   // const examDateOptions =allDates;
   const examDateOptions = ["15/02/2025", "02/20/2025", "10/03/2025"];
@@ -89,9 +97,8 @@ const BasicDetailsForm = () => {
   useEffect(() => {
     setCheckUrl(location.pathname === "/basicDetailsForm");
     dispatch(fetchBasicDetails());
-    dispatch(fetchBatchDetails());
     dispatch(fetchUserDetails());
-  }, [dispatch, location.pathname]);
+  }, [dispatch, pathLocation]);
 
   // useEffect(() => {
   //   dispatch(setLoading(false));
@@ -105,9 +112,9 @@ const BasicDetailsForm = () => {
     const formErrors = {};
     let isValid = true;
 
-    ["dob", "gender", "examDate", "examName", "name", "email"].forEach(
+    ["dob", "gender", "examDate", "examName", "studentName", "email"].forEach(
       async (field) => {
-        if (field === "name" || field === "email") {
+        if (field === "studentName" || field === "email") {
           if (!userData?.[field]?.trim()) {
             formErrors[field] = `${field
               .replace(/([A-Z])/g, " $1")
@@ -121,7 +128,9 @@ const BasicDetailsForm = () => {
 
           console.log("result form validationbasicform", result);
           console.log("basicFormData?.[field]", basicFormData?.[field]);
+          console.log("basicFormData?.[field]", field);
         } else if (!basicFormData?.[field]?.trim()) {
+          console.log("basicFormData", basicFormData?.[field]);
           formErrors[field] = `${field
             .replace(/([A-Z])/g, " $1")
             .toUpperCase()} is required.`;
@@ -138,7 +147,7 @@ const BasicDetailsForm = () => {
 
   const basicFormHandleChange = (e) => {
     const { name, value } = e.target;
-    if (name === "name" || name === "email") {
+    if (name === "studentName" || name === "email") {
       dispatch(updateUserDetails({ [name]: value }));
       return;
     }
@@ -202,18 +211,25 @@ const BasicDetailsForm = () => {
     setShowReloading(true);
 
     try {
+      console.log("dataExist", dataExist);
       console.log("basicFormData form addAndUpdateBasicFrom", basicFormData);
-      const url = basicFormDataExist
+      const url = dataExist
         ? "/form/basicDetails/updateForm"
         : "/form/basicDetails/addForm";
-      const method = basicFormDataExist ? axios.patch : axios.post;
+      // const url = "/form/basicDetails/updateForm"
+
+      const method = dataExist ? axios.patch : axios.post;
+      // const method =  axios.patch ;
 
       await method(url, basicFormData);
       // setSubmitMessage(
-      //   basicFormDataExist
+      //   dataExist
       //     ? "Basic details updated successfully!"
       //     : "Basic details submitted successfully!"
       // );
+
+
+      console.log("userData before editStudent", userData)
       const response = await axios.patch("/students/editStudent", userData);
 
       console.log("response for onSubmit in BasicDetails", response);
@@ -231,16 +247,17 @@ const BasicDetailsForm = () => {
   const onSubmit = async (e) => {
     setLoading(true);
     e.preventDefault();
+    const isValid = await validateBasicForm();
 
-    if (validateBasicForm()) {
+    if (isValid) {
       // await addAndUpdatebatchForm();
+
+      console.log("validateBasicForm", validateBasicForm());
 
       console.log("ITS workiong");
       await addAndUpdateBasicFrom();
     }
   };
-
-  const pathLocation = location.pathname;
 
   const convertToNumber = (romanNumeral) => {
     const romanToNumber = {
@@ -303,16 +320,16 @@ const BasicDetailsForm = () => {
             </label>
             <input
               type="text"
-              id="name"
-              name="name"
-              value={userData.name}
+              id="studentName"
+              name="studentName"
+              value={userData.studentName}
               onChange={basicFormHandleChange}
               placeholder="Enter Your Name"
               className="border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-indigo-400 focus:outline-none"
             />
-            {basicDetailsError.name && (
+            {basicDetailsError.studentName && (
               <p className="text-[#ffdd00] text-xs mt-1">
-                {basicDetailsError.name}
+                {basicDetailsError.studentName}
               </p>
             )}
           </div>
