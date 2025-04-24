@@ -17,9 +17,9 @@ export default function SignupRight() {
 
   // Regex pattern for phone number validation (+91 followed by 10 digits)
   const phoneRegex = /^\+91[0-9]{10}$/;
-  const [codeVerified, setCodeVerified] = useState(true);
+  // const [codeVerified, setCodeVerified] = useState(true);
   // const [loading, setLoading] = useState(false);
-  // const [codeVerified, setCodeVerified] = useState(false);
+  const [codeVerified, setCodeVerified] = useState(false);
   const [isSubmittingForm, setIsSubmittingForm] = useState(false);
 
   const [showReloading, setShowReloading] = useState(false);
@@ -94,6 +94,36 @@ export default function SignupRight() {
     setErrors(formErrors);
     return isValid;
   };
+  const checkVerificationCode = async () => {
+    try {
+
+
+      console.log("verifyNumber", formData.phone)
+      const response = await axios.post("/students/verifyNumber", {
+        mobileNumber: formData.phone,
+        otp: code,
+      });
+      if (response.status === 200) {
+        // setSubmitMessage("Phone number verified successfully!");
+
+        console.log("ITs working ,,,,,,,,,,,,,");
+        setCodeVerified(true);
+        setShowCodeBox(false);
+      }
+      console.log("ITs working ,,,,,,,,,,,,,");
+
+      console.log("codeVerified form checkVerification", codeVerified);
+      // setCodeVerified(true);
+      // setShowCodeBox(false);
+      return true;
+    } catch (error) {
+      setSubmitMessage("Error verifying phone number");
+      console.log("Error verifying phone number", error);
+      return false;
+    }
+  };
+
+
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -101,18 +131,18 @@ export default function SignupRight() {
     try {
       setIsSubmittingForm(true);
 
-      // let codeChecked = await checkVerificationCode();
+      let codeChecked = await checkVerificationCode();
 
-      // console.log("codeChecked", codeChecked);
-      // if (codeChecked === false) {
-      //   setShowCodeBox(false);
+      console.log("codeChecked", codeChecked);
+      if (codeChecked === false) {
+        setShowCodeBox(false);
 
-      //   // Remove OTP
-      //   setCodeVerified(false);
-      //   setSubmitMessage("Please Verify Your Phone Number");
-      //   setIsSubmittingForm(false); // ⬅️ reset if verification fails
-      //   return;
-      // }
+        // Remove OTP
+        setCodeVerified(false);
+        setSubmitMessage("Please Verify Your Phone Number");
+        setIsSubmittingForm(false); // ⬅️ reset if verification fails
+        return;
+      }
 
       setSubmitMessage("");
  
