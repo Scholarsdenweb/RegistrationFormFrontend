@@ -259,8 +259,8 @@ export default function SignupRight() {
               name="phone"
               value={formData.phone}
               onChange={handleChange}
-              placeholder="Phone"
-              className="border-b-2 py-2 focus:outline-none w-full"
+              placeholder="Enter Contact Number"
+              className="border-b-2 py-2 focus:outline-none w-full px-2"
               style={{ backgroundColor: "#c61d23" }}
               maxLength={10}
               pattern="[0-9]{10}"
