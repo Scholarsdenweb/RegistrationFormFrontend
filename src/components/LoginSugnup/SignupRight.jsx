@@ -17,9 +17,9 @@ export default function SignupRight() {
 
   // Regex pattern for phone number validation (+91 followed by 10 digits)
   const phoneRegex = /^\+91[0-9]{10}$/;
-  const [codeVerified, setCodeVerified] = useState(true);
+  // const [codeVerified, setCodeVerified] = useState(true);
   // const [loading, setLoading] = useState(false);
-  // const [codeVerified, setCodeVerified] = useState(false);
+  const [codeVerified, setCodeVerified] = useState(false);
   const [isSubmittingForm, setIsSubmittingForm] = useState(false);
 
   const [showReloading, setShowReloading] = useState(false);
@@ -129,18 +129,18 @@ export default function SignupRight() {
     try {
       setIsSubmittingForm(true);
 
-      // let codeChecked = await checkVerificationCode();
+      let codeChecked = await checkVerificationCode();
 
-      // console.log("codeChecked", codeChecked);
-      // if (codeChecked === false) {
-      //   setShowCodeBox(false);
+      console.log("codeChecked", codeChecked);
+      if (codeChecked === false) {
+        setShowCodeBox(false);
 
-      //   // Remove OTP
-      //   setCodeVerified(false);
-      //   setSubmitMessage("Please Verify Your Contact Number Number");
-      //   setIsSubmittingForm(false); // ⬅️ reset if verification fails
-      //   return;
-      // }
+        // Remove OTP
+        setCodeVerified(false);
+        setSubmitMessage("Please Verify Your Contact Number Number");
+        setIsSubmittingForm(false); // ⬅️ reset if verification fails
+        return;
+      }
 
       setSubmitMessage("");
 
@@ -304,14 +304,14 @@ export default function SignupRight() {
           </p>
         )}
 
-        {/* {showCodeBox && ( */}
+        {showCodeBox && (
           <button
             type="submit"
             className="w-full bg-yellow-500 hover:bg-yellow-600 text-black font-semibold py-2 rounded-xl transition-all"
           >
             Next
           </button>
-        {/* )} */}
+        )}
       </form>
     </div>
   );
