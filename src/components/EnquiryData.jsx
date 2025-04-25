@@ -26,14 +26,14 @@ const EnquiryData = () => {
     ).padStart(2, "0")}-${date.getFullYear()}`;
   };
 
-  const continueWithExistingStudent = async () => {
+  const continueWithExistingStudent = async (enquiry) => {
     try {
-      console.log("userData", userData);
+      console.log("userData", enquiry);
 
       const response = await axios.post(
         "/students/continueWithExistingStudent",
         {
-          userData: userData[0],
+          userData: enquiry,
         }
       );
 
@@ -54,6 +54,9 @@ const EnquiryData = () => {
     navigate("/registration/basicDetailsForm");
   };
 
+
+
+
   return (
     <div className="p-5 bg-[#c61d23] min-h-screen flex flex-col gap-4">
       <h2 className="text-4xl font-bold text-center  text-white">
@@ -65,11 +68,18 @@ const EnquiryData = () => {
           userData?.map((enquiry, index) => (
             <div
               key={index}
-              className="w-full bg-white rounded-2xl shadow-lg p-6 border border-gray-200"
+              className="relative w-full bg-white rounded-2xl shadow-lg p-6 border border-gray-200"
             >
               <h3 className="text-lg font-semibold text-black mb-4 border-b pb-2">
                 Enquiry #{enquiry.enquiryNumber}
               </h3>
+
+
+              <div className="absolute top-2 right-2 p-2 bg-[#ffdd00] rounded-xl" onClick={()=>{
+                continueWithExistingStudent(enquiry)
+              }}>
+                <button>Continue Registration</button>
+              </div>
 
               <div className="space-y-3 text-sm text-gray-700">
                 {Object.entries(enquiry).map(([key, value]) => {

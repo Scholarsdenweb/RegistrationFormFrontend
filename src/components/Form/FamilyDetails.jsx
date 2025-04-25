@@ -78,7 +78,15 @@ const FamilyDetails = () => {
   const validateForm = () => {
     const newErrors = {};
 
-    Object.keys(formData).forEach((key) => {
+    // Object.keys(formData)
+    [
+      "FatherName",
+      "FatherContactNumber",
+      "FatherOccupation",
+      "MotherName",
+      "MotherContactNumber",
+      "FamilyIncome",
+    ].forEach((key) => {
       const value = formData[key]?.trim();
 
       if (!value) {
@@ -207,7 +215,7 @@ const FamilyDetails = () => {
                   name={key}
                   value={formData[key]}
                   onChange={handleChange}
-                  placeholder={`Enter ${key.replace(/([A-Z])/g, " $1")}`}
+                  placeholder={`Enter${key.replace(/([A-Z])/g, " $1")}`}
                   className="border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-indigo-400 focus:outline-none"
                 />
 

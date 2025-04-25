@@ -154,10 +154,10 @@ const EditUserDetailsPage = ({ setEditUserDetailsShow }) => {
             </div>
 
             <div className="flex justify-between items-center">
-              <label className="font-semibold w-1/3">Phone:</label>
+              <label className="font-semibold w-1/3">Contact Number:</label>
               <input
                 type="text"
-                value={userDetails?.phone || ""}
+                value={userDetails?.contactNumber || ""}
                 readOnly
                 className="w-2/3 p-2 border border-gray-300 rounded bg-gray-100"
               />

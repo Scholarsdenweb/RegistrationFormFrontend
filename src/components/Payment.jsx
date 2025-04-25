@@ -103,7 +103,7 @@ const Payment = () => {
       prefill: {
         name: userData.name,
         email: userData.email,
-        contact: userData.phone,
+        contact: userData.contactNumber,
       },
       theme: {
         color: "#c61d23",

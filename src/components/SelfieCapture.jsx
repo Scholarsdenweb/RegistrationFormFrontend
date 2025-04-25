@@ -1,7 +1,10 @@
 import React, { useRef, useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { submitUserDetails } from "../redux/slices/userDeailsSlice";
+import {
+  fetchUserDetails,
+  submitUserDetails,
+} from "../redux/slices/userDeailsSlice";
 import FormHeader from "./LoginSugnup/FormHeader";
 
 const SelfieCapture = () => {
@@ -32,7 +35,15 @@ const SelfieCapture = () => {
 
   useEffect(() => {
     getCamera();
+
+    dispatch(fetchUserDetails());
+
+    console.log("get userDetails", userDetails);
   }, []);
+
+  useEffect(() => {
+    console.log("get fgfds userDetails", userDetails);
+  }, [userDetails]);
 
   const handleCapture = async () => {
     const canvas = canvasRef.current;
@@ -58,10 +69,13 @@ const SelfieCapture = () => {
     try {
       const blob = await (await fetch(dataUrl)).blob();
       const formData = new FormData();
+
+      console.log("userDetails", userDetails.studentName);
+      console.log("userDetails", userDetails.StudentsId);
       formData.append(
         "file",
         blob,
-        userDetails.name + "_" + userDetails.StudentsId + ".png"
+        userDetails.studentName + "_" + userDetails.StudentsId + ".png"
       );
       formData.append("upload_preset", "ProfilePictures");
       formData.append("cloud_name", "dtytgoj3f");
@@ -109,6 +123,13 @@ const SelfieCapture = () => {
           <FormHeader />
         </div>
 
+        {/* {userDetails?.profilePicture && (
+          <img
+            src={userDetails.profilePicture}
+            alt="Captured selfie"
+            className="rounded-xl w-24 aspect-square object-cover"
+          />
+        )} */}
         <div className="w-full max-w-sm  bg-white rounded-2xl shadow-md p-4">
           {!capturedImage ? (
             <>

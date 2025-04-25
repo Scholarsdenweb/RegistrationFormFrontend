@@ -67,8 +67,8 @@ const UserDetailsPage = ({ setUserDetailShow }) => {
                 <span>{userDetails.paymentId || "N/A"}</span>
               </div>
               <div className="flex justify-between border-b pb-2">
-                <span className="font-semibold">Phone:</span>
-                <span>{userDetails.phone || "N/A"}</span>
+                <span className="font-semibold">contactNumber:</span>
+                <span>{userDetails.contactNumber || "N/A"}</span>
               </div>
               <div className="flex justify-between border-b pb-2">
                 <span className="font-semibold">Result:</span>

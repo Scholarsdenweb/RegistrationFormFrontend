@@ -108,8 +108,8 @@ const BatchRelatedDetailsForm = () => {
   }, [dataExist]);
 
   const programOptions = {
-    Foundation: ["VI", "VII", "VIII", "IX", "X"],
-    "JEE(Main & Adv.)": [
+    Foundation : ["VI", "VII", "VIII", "IX", "X"],
+    "JEE(Main & Adv)": [
       "XI Engineering",
       "XII Engineering",
       "XII Passed Engineering",
@@ -143,11 +143,6 @@ const BatchRelatedDetailsForm = () => {
     return romanToNumber[romanNumeral];
   };
 
-  // Options for select dropdowns
-  const batchOptions =
-    formData.classForAdmission <= 10
-      ? ["13/01/2025", "24/01/2025", "25/01/2025"]
-      : ["17/01/2025", "28/01/2025", "29/01/2025"];
 
   let subjectOptions =
     convertToNumber(formData.classForAdmission) >= 6 &&
@@ -223,7 +218,7 @@ const BatchRelatedDetailsForm = () => {
             <select
               id="program"
               name="program"
-              value={formData.program || ""}
+              value={formData?.program || ""}
               onChange={handleChange}
               className="border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-indigo-400 focus:outline-none"
             >
@@ -237,7 +232,9 @@ const BatchRelatedDetailsForm = () => {
                   key={program}
                   value={program}
                 >
-                  {program}
+
+
+                  {program === "Foundation" ? `${program} (VI - X)` : `${program} (XI - XII Passed)` }
                 </option>
               ))}
             </select>
@@ -256,10 +253,14 @@ const BatchRelatedDetailsForm = () => {
             >
               Class
             </label>
+
+            {
+              console.log("formData.classForAdmissson",formData.classForAdmission, typeof(formData.classForAdmission))
+            }
             <select
               id="classForAdmission"
               name="classForAdmission"
-              value={formData?.classForAdmission || ""}
+              value={formData?.classForAdmission}
               onChange={handleChange}
               placeholder="Select Class for adminssion"
               className="border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-indigo-400 focus:outline-none"

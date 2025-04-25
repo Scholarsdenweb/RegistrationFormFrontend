@@ -73,7 +73,7 @@ export const submitExistingUserDetails = createAsyncThunk(
                         admitCard: data?.admitCard || '',
                         result: data?.result || '',
                         paymentId: data?.paymentId || '',
-                        phone: data?.phone || '',
+                        contactNumber: data?.contactNumber || '',
                         profilePicture: data?.profilePicture || '',
                     },
                 };

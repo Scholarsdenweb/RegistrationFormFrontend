@@ -20,7 +20,7 @@ export const fetchUserDetails = createAsyncThunk(
                         admitCard: data?.admitCard || '',
                         result: data?.result || '',
                         paymentId: data?.paymentId || '',
-                        phone: data?.phone || '',
+                        contactNumber: data?.contactNumber || '',
                         profilePicture: data?.profilePicture || '',
                     },
                 };
@@ -55,7 +55,7 @@ export const submitUserDetails = createAsyncThunk(
                         admitCard: data?.admitCard || '',
                         result: data?.result || '',
                         paymentId: data?.paymentId || '',
-                        phone: data?.phone || '',
+                        contactNumber: data?.contactNumber || '',
                         profilePicture: data?.profilePicture || '',
                     },
                 };

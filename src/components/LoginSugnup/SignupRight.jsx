@@ -17,19 +17,19 @@ export default function SignupRight() {
 
   // Regex pattern for phone number validation (+91 followed by 10 digits)
   const phoneRegex = /^\+91[0-9]{10}$/;
-  // const [codeVerified, setCodeVerified] = useState(true);
+  const [codeVerified, setCodeVerified] = useState(true);
   // const [loading, setLoading] = useState(false);
-  const [codeVerified, setCodeVerified] = useState(false);
+  // const [codeVerified, setCodeVerified] = useState(false);
   const [isSubmittingForm, setIsSubmittingForm] = useState(false);
 
   const [showReloading, setShowReloading] = useState(false);
   // State hooks
   const [formData, setFormData] = useState({
-    phone: "",
+    contactNumber: "",
   });
   const [code, setCode] = useState("");
   const [errors, setErrors] = useState({
-    phone: "",
+    contactNumber: "",
   });
   const handleLogout = async () => {
     document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
@@ -45,7 +45,7 @@ export default function SignupRight() {
 
   // name: "",
   // email: "",
-  // phone: "",
+  // contactNumber: "",
   // password: "",
 
   const [showCodeBox, setShowCodeBox] = useState(false);
@@ -54,7 +54,7 @@ export default function SignupRight() {
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-    if (name === "phone") {
+    if (name === "contactNumber") {
       if (value.length > 10) {
         return;
       }
@@ -72,9 +72,9 @@ export default function SignupRight() {
     let isValid = true;
 
     // Field validation
-    ["phone"].forEach((field) => {
+    ["contactNumber"].forEach((field) => {
       if (!formData[field]) {
-        formErrors[field] = `${field} is required`;
+        formErrors[field] = `Contact Number is required`;
         isValid = false;
       }
     });
@@ -84,27 +84,26 @@ export default function SignupRight() {
       isValid = false;
     }
 
-    if (!phoneRegex.test(`+91${formData.phone}`)) {
-      formErrors.phone = "Phone must be a valid 10-digit number";
+    if (!phoneRegex.test(`+91${formData.contactNumber}`)) {
+      formErrors.contactNumber =
+        "Contact Number must be a valid 10-digit number";
       isValid = false;
     }
-
-
 
     setErrors(formErrors);
     return isValid;
   };
   const checkVerificationCode = async () => {
     try {
-
-
-      console.log("verifyNumber", formData.phone)
+      console.log("verifyNumber", formData.contactNumber);
       const response = await axios.post("/students/verifyNumber", {
-        mobileNumber: formData.phone,
+        mobileNumber: formData.contactNumber,
         otp: code,
       });
+
+      console.log("response", response);
       if (response.status === 200) {
-        // setSubmitMessage("Phone number verified successfully!");
+        // setSubmitMessage("Contact number verified successfully!");
 
         console.log("ITs working ,,,,,,,,,,,,,");
         setCodeVerified(true);
@@ -113,17 +112,16 @@ export default function SignupRight() {
       console.log("ITs working ,,,,,,,,,,,,,");
 
       console.log("codeVerified form checkVerification", codeVerified);
-      // setCodeVerified(true);
-      // setShowCodeBox(false);
+
+      setCodeVerified(true);
+      setShowCodeBox(false);
       return true;
     } catch (error) {
-      setSubmitMessage("Error verifying phone number");
-      console.log("Error verifying phone number", error);
+      setSubmitMessage("Error verifying Contact Number number");
+      console.log("Error verifying Contact Number number", error);
       return false;
     }
   };
-
-
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -131,23 +129,20 @@ export default function SignupRight() {
     try {
       setIsSubmittingForm(true);
 
-      let codeChecked = await checkVerificationCode();
+      // let codeChecked = await checkVerificationCode();
 
-      console.log("codeChecked", codeChecked);
-      if (codeChecked === false) {
-        setShowCodeBox(false);
+      // console.log("codeChecked", codeChecked);
+      // if (codeChecked === false) {
+      //   setShowCodeBox(false);
 
-        // Remove OTP
-        setCodeVerified(false);
-        setSubmitMessage("Please Verify Your Phone Number");
-        setIsSubmittingForm(false); // ⬅️ reset if verification fails
-        return;
-      }
+      //   // Remove OTP
+      //   setCodeVerified(false);
+      //   setSubmitMessage("Please Verify Your Contact Number Number");
+      //   setIsSubmittingForm(false); // ⬅️ reset if verification fails
+      //   return;
+      // }
 
       setSubmitMessage("");
- 
-
-  
 
       if (validateForm()) {
         try {
@@ -180,7 +175,7 @@ export default function SignupRight() {
           } else {
             console.log("response", response);
             setSubmitMessage("Form submitted successfully!");
-            document.cookie = `token=${response.data.token}`;
+            // document.cookie = `token=${response.data.token}`;
             navigate("/registration/basicDetailsForm");
           }
           setSubmitMessage("Form submitted successfully!");
@@ -199,10 +194,10 @@ export default function SignupRight() {
 
   const verifyPhoneNo = async () => {
     // setLoading(true);
-    if (formData.phone.length != 10) {
+    if (formData.contactNumber.length != 10) {
       setErrors((prevErrors) => ({
         ...prevErrors,
-        phone: `The length must be exactly 10.`,
+        contactNumber: `The length must be exactly 10.`,
       }));
       return;
     }
@@ -213,22 +208,20 @@ export default function SignupRight() {
       setShowCodeBox(true);
 
       const response = await axios.post("/students/sendVerification", {
-        mobileNumber: `${formData.phone}`,
+        mobileNumber: `${formData.contactNumber}`,
       });
       if (response.status === 200) {
         setShowCodeBox(true);
         setSubmitMessage("OTP sent successfully");
       }
     } catch (error) {
-      setSubmitMessage("Error verifying phone number");
-      console.log("Error verifying phone number", error);
+      setSubmitMessage("Error verifying Contact Number number");
+      console.log("Error verifying Contact Number number", error);
     } finally {
       // setLoading(false);
       setShowReloading(false);
     }
   };
-
-
 
   return (
     <div className=" w-full bg-[#c61d23] flex items-center justify-center px-4 py-1">
@@ -241,10 +234,10 @@ export default function SignupRight() {
         onSubmit={onSubmit}
       >
         <h2 className="text-center text-2xl md:text-3xl font-semibold">
-          Phone Number Verification
+          Contact Number Verification
         </h2>
 
-        {/* Phone Field */}
+        {/* contactNumber Field */}
         <div className="space-y-4">
           <label
             htmlFor="fatherContactNumber"
@@ -255,9 +248,9 @@ export default function SignupRight() {
           <div className="flex flex-col md:flex-row gap-2">
             <input
               type="number"
-              id="phone"
-              name="phone"
-              value={formData.phone}
+              id="contactNumber"
+              name="contactNumber"
+              value={formData.contactNumber}
               onChange={handleChange}
               placeholder="Enter Contact Number"
               className="border-b-2 py-2 focus:outline-none w-full px-2"
@@ -277,8 +270,8 @@ export default function SignupRight() {
             )}
           </div>
 
-          {errors?.phone && (
-            <p className="text-[#ffdd00] mt-1">{errors.phone}</p>
+          {errors?.contactNumber && (
+            <p className="text-[#ffdd00] mt-1">{errors.contactNumber}</p>
           )}
         </div>
 
@@ -311,12 +304,14 @@ export default function SignupRight() {
           </p>
         )}
 
-        <button
-          type="submit"
-          className="w-full bg-yellow-500 hover:bg-yellow-600 text-black font-semibold py-2 rounded-xl transition-all"
-        >
-          Next
-        </button>
+        {/* {showCodeBox && ( */}
+          <button
+            type="submit"
+            className="w-full bg-yellow-500 hover:bg-yellow-600 text-black font-semibold py-2 rounded-xl transition-all"
+          >
+            Next
+          </button>
+        {/* )} */}
       </form>
     </div>
   );

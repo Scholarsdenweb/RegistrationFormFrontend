@@ -133,7 +133,12 @@ const EducationalDetailsForm = () => {
     const formErrors = {};
     let isValid = true;
 
-    Object.keys(formData).forEach((key) => {
+    // Object.keys(formData)
+    ["SchoolName",
+      "Class",
+
+      "YearOfPassing",
+      "Board",].forEach((key) => {
       const value = formData[key]?.toString().trim();
 
       if (!value) {
@@ -147,14 +152,21 @@ const EducationalDetailsForm = () => {
         isValid = false;
       }
 
-      if (key === "Percentage") {
-        const checkValueGreaterThenLimit = value > 50;
 
-        if (!checkValueGreaterThenLimit) {
-          formErrors[key] = `Percentage must be greater then 50`;
-          isValid = false;
-        }
-      }
+
+// For Percentage
+      // if (key === "Percentage") {
+      //   const checkValueGreaterThenLimit = value > 50;
+
+      //   if (!checkValueGreaterThenLimit) {
+      //     formErrors[key] = `Percentage must be greater then 50`;
+      //     isValid = false;
+      //   }
+      // }
+
+
+
+
     });
 
     setErrorState(formErrors);

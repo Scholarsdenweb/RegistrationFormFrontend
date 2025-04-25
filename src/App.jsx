@@ -37,6 +37,7 @@ import PrivacyPolicy from "./components/Policy/PrivacyPolicy";
 import CancellationsAndRefunds from "./components/Policy/CancellationsAndRefunds";
 import ExistingStudent from "./components/ExistingStudent";
 import EnquiryData from "./components/EnquiryData";
+import FaceDetectionUpload from "./components/FaceDetection";
 
 function App() {
   return (
@@ -64,6 +65,11 @@ function App() {
                 path="/employee/CloudinaryUpload"
                 element={<CloudinaryComponent />}
               />
+              <Route
+                path="/facedetection"
+                element={<FaceDetectionUpload />}
+              />
+
 
               <Route path="/" element={<Signup />} />
               <Route
