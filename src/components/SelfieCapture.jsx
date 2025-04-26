@@ -16,6 +16,8 @@ const SelfieCapture = () => {
   const navigate = useNavigate();
   const [showError, setShowError] = useState("");
   const { userData: userDetails } = useSelector((state) => state.userDetails);
+  const [isFreshUpload, setIsFreshUpload] = useState(false);
+
 
   const dispatch = useDispatch();
 
@@ -63,6 +65,19 @@ const SelfieCapture = () => {
   const [formData, setFormData] = useState({
     profilePicture: userDetails?.profilePicture || null,
   });
+  useEffect(() => {
+    getCamera();
+    dispatch(fetchUserDetails());
+  }, []);
+  
+  useEffect(() => {
+    if (userDetails?.profilePicture) {
+      setCapturedImage(userDetails.profilePicture);
+      setUploadedUrl(userDetails.profilePicture);
+      setIsFreshUpload(false);
+    }
+  }, [userDetails]);
+  
 
   const uploadToCloudinary = async (dataUrl) => {
     setUploading(true);
@@ -103,6 +118,8 @@ const SelfieCapture = () => {
         setFormData(updatedFormData);
         dispatch(submitUserDetails(updatedFormData));
         setUploadedUrl(data.secure_url);
+        setIsFreshUpload(true);
+
       } else {
         setShowError("Upload failed. Please try again.");
       }
@@ -157,7 +174,9 @@ const SelfieCapture = () => {
                 <p className="text-center text-gray-500 mt-2">Uploading...</p>
               ) : uploadedUrl ? (
                 <div className="text-center mt-2">
+                   {isFreshUpload && (
                   <p className="text-green-600">Upload successful!</p>
+                   )}
                   {/* <a
                   href={uploadedUrl}
                   target="_blank"
