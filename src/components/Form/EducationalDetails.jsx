@@ -439,9 +439,8 @@ const EducationalDetailsForm = () => {
       {/* {loading && <Spinner />} */}
 
       <div className="flex flex-col gap-6 max-w-screen-md mx-auto">
-        <div className="text-3xl text-center text-white">
+      <div className="text-3xl text-white text-center transform hover:-translate-y-1 transition duration-200">
           {/* <FormHeader /> */}
-
           S.DAT Registration
         </div>
 

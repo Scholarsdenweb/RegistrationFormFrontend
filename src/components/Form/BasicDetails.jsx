@@ -228,8 +228,7 @@ const BasicDetailsForm = () => {
       //     : "Basic details submitted successfully!"
       // );
 
-
-      console.log("userData before editStudent", userData)
+      console.log("userData before editStudent", userData);
       const response = await axios.patch("/students/editStudent", userData);
 
       console.log("response for onSubmit in BasicDetails", response);
@@ -295,8 +294,7 @@ const BasicDetailsForm = () => {
       {loading && <Spinner />}
 
       <div className="flex flex-col gap-6 max-w-screen-md mx-auto">
-        <div className="text-3xl text-white text-center">
-          {/* <FormHeader /> */}
+        <div className="text-3xl text-white text-center transform hover:-translate-y-1 transition duration-200">
           S.DAT Registration
         </div>
 

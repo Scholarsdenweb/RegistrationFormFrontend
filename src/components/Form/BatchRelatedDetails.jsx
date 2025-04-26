@@ -22,9 +22,7 @@ const BatchRelatedDetailsForm = () => {
     (state) => state.batchDetails
   );
 
-
-    const [showReloading, setShowReloading] = useState(false);
-  
+  const [showReloading, setShowReloading] = useState(false);
 
   const [submitMessage, setSubmitMessage] = useState("");
   const [errors, setErrors] = useState({});
@@ -35,7 +33,7 @@ const BatchRelatedDetailsForm = () => {
     setCheckUrl(pathLocation === "/batchDetailsForm");
   }, [dispatch, pathLocation]);
 
-  const  validateForm = () => {
+  const validateForm = () => {
     let formErrors = {};
     let isValid = true;
     console.log("FormData", formData);
@@ -85,13 +83,11 @@ const BatchRelatedDetailsForm = () => {
             : "Batch related details submitted successfully!"
         );
 
-
-          navigate("/registration/educationalDetailsForm");
- 
+        navigate("/registration/educationalDetailsForm");
       } catch (error) {
         console.error("Error submitting form:", error);
         setSubmitMessage("Error submitting form. Please try again.");
-      }finally{
+      } finally {
         setShowReloading(false);
       }
     }
@@ -108,7 +104,7 @@ const BatchRelatedDetailsForm = () => {
   }, [dataExist]);
 
   const programOptions = {
-    Foundation : ["VI", "VII", "VIII", "IX", "X"],
+    Foundation: ["VI", "VII", "VIII", "IX", "X"],
     "JEE(Main & Adv)": [
       "XI Engineering",
       "XII Engineering",
@@ -116,7 +112,6 @@ const BatchRelatedDetailsForm = () => {
     ],
     "NEET(UG)": ["XI Medical", "XII Medical", "XII Passed Medical"],
   };
-
 
   // const programOptions = {
   //   "Foundation (VI - X)": ["VI", "VII", "VIII", "IX", "X"],
@@ -127,7 +122,6 @@ const BatchRelatedDetailsForm = () => {
   //   ],
   //   "Medical (XI -XII)": ["XI", "XII", "XII Passed"],
   // };
-
 
   const convertToNumber = (romanNumeral) => {
     const romanToNumber = {
@@ -142,7 +136,6 @@ const BatchRelatedDetailsForm = () => {
 
     return romanToNumber[romanNumeral];
   };
-
 
   let subjectOptions =
     convertToNumber(formData.classForAdmission) >= 6 &&
@@ -168,10 +161,7 @@ const BatchRelatedDetailsForm = () => {
     setCheckUrl(pathLocation === "/batchDetailsForm");
   }, []);
 
-
-  useEffect(()=>{
-
-  },[])
+  useEffect(() => {}, []);
 
   // Validate form fields
 
@@ -186,7 +176,7 @@ const BatchRelatedDetailsForm = () => {
       {/* {loading && <Spinner />} */}
 
       <div className="flex flex-col gap-6 max-w-screen-md mx-auto">
-        <div className="text-3xl text-center text-white">
+        <div className="text-3xl text-white text-center transform hover:-translate-y-1 transition duration-200">
           {/* <FormHeader /> */}
           S.DAT Registration
         </div>
@@ -194,13 +184,9 @@ const BatchRelatedDetailsForm = () => {
         {/* <h1 className="text-3xl md:text-4xl font-semibold text-white text-center">
           SDAT Registration Form
         </h1> */}
-        
 
-                <PageNumberComponent />
+        <PageNumberComponent />
 
-
-
-      
         <form
           autoComplete="off"
           className="flex flex-col gap-4  w-full"
@@ -232,16 +218,14 @@ const BatchRelatedDetailsForm = () => {
                   key={program}
                   value={program}
                 >
-
-
-                  {program === "Foundation" ? `${program} (VI - X)` : `${program} (XI - XII Passed)` }
+                  {program === "Foundation"
+                    ? `${program} (VI - X)`
+                    : `${program} (XI - XII Passed)`}
                 </option>
               ))}
             </select>
             {errors.program && (
-              <p className="text-[#ffdd00] text-xs mt-1">
-                {errors.program}
-              </p>
+              <p className="text-[#ffdd00] text-xs mt-1">{errors.program}</p>
             )}
           </div>
 
@@ -254,9 +238,11 @@ const BatchRelatedDetailsForm = () => {
               Class
             </label>
 
-            {
-              console.log("formData.classForAdmissson",formData.classForAdmission, typeof(formData.classForAdmission))
-            }
+            {console.log(
+              "formData.classForAdmissson",
+              formData.classForAdmission,
+              typeof formData.classForAdmission
+            )}
             <select
               id="classForAdmission"
               name="classForAdmission"
@@ -289,10 +275,10 @@ const BatchRelatedDetailsForm = () => {
           </div>
 
           {showReloading && (
-          <div className="flex justify-center items-center">
-            <div className="animate-spin  rounded-full h-5 w-5 border-b-2 border-white"></div>
-          </div>
-        )}
+            <div className="flex justify-center items-center">
+              <div className="animate-spin  rounded-full h-5 w-5 border-b-2 border-white"></div>
+            </div>
+          )}
 
           {/* Preferred Batch */}
           {/* <div className="flex flex-col">
