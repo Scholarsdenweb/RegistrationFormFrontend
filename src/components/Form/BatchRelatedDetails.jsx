@@ -199,7 +199,7 @@ const BatchRelatedDetailsForm = () => {
               htmlFor="program"
               className="text-sm font-medium text-white mb-1"
             >
-              Program
+              Select Program
             </label>
             <select
               id="program"
@@ -235,7 +235,7 @@ const BatchRelatedDetailsForm = () => {
               htmlFor="classForAdmission"
               className="text-sm font-medium text-white mb-1"
             >
-              Class
+              Register For
             </label>
 
             {console.log(

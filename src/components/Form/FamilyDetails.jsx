@@ -36,6 +36,44 @@ const FamilyDetails = () => {
     "More than 20 Lakhs",
   ];
 
+  const optionsForSelectInput = {
+    FamilyIncome: [
+      "Less than 1 Lakh",
+      "1 Lakh - 5 Lakhs",
+      "5 Lakhs - 10 Lakhs",
+      "10 Lakhs - 20 Lakhs",
+      "More than 20 Lakhs",
+    ],
+    FatherOccupation: [
+      "Engineer",
+      "Doctor",
+      "Teacher",
+      "Businessman",
+      "Farmer",
+      "Lawyer",
+      "Accountant",
+      "Driver",
+      "Police Officer",
+      "Soldier",
+      "Other"
+    ],
+    
+    MotherOccupation: [
+      "Teacher",
+      "Homemaker",
+      "Nurse",
+      "Doctor",
+      "Businesswoman",
+      "Engineer",
+      "Accountant",
+      "Clerk",
+      "Farmer",
+      "Tailor",
+      "Other"
+    ]
+    
+  };
+
   // Form change handler
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -163,7 +201,7 @@ const FamilyDetails = () => {
           <PageNumberComponent />
 
           {Object.keys(formData).map((key) => {
-            if (key === "FamilyIncome") {
+            if (key === "FamilyIncome" || key === "FatherOccupation" || key === "MotherOccupation") {
               return (
                 <div className="flex flex-col w-full" key={key}>
                   <label
@@ -179,12 +217,12 @@ const FamilyDetails = () => {
                     onChange={handleChange}
                     className="border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-indigo-400 focus:outline-none"
                   >
-                    <option value="">Select Family Income</option>
-                    {incomeRanges.map((range, index) => (
+                    <option value="">{`Select ${key.replace(/([A-Z])/g, " $1")}`}</option>
+                    {optionsForSelectInput[key].map((range, index) => (
                       <option key={index} value={range}>
                         {range}
                       </option>
-                    ))}
+                    ))}                              
                   </select>
                   {errors[key] && (
                     <p className="text-[#ffdd00] text-xs mt-1">{errors[key]}</p>

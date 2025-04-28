@@ -176,16 +176,20 @@ const SelfieCapture = () => {
               ) : (
                 <p className="text-center text-red-500 mt-2">Upload failed.</p>
               )}
-              <button
-                onClick={() => {
-                  setCapturedImage(null);
-                  setUploadedUrl("");
-                  getCamera();
-                }}
-                className="mt-4 w-full bg-[#ffdd00] text-black py-2 px-4 rounded-xl hover:bg-[#e2e242] transition"
-              >
-                Retake
-              </button>
+
+              {!uploading && (
+                <button
+                  onClick={() => {
+                    setCapturedImage(null);
+                    setUploadedUrl("");
+                    getCamera();
+                  }}
+                  className="mt-4 w-full bg-[#ffdd00] text-black py-2 px-4 rounded-xl hover:bg-[#e2e242] transition"
+                >
+                  Retake
+                </button>
+              )
+              }
             </>
           )}
           <canvas ref={canvasRef} className="hidden" />

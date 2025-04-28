@@ -4,6 +4,9 @@ import { updateExistingUserDetails } from "../redux/slices/existingStudentSlice"
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
+import profileImg from "../assets/profileImg.png";
+import ProfileBar from "./ProfileBar";
+
 const ExistingStudent = () => {
   const [loading, setLoading] = useState(false);
 
@@ -22,9 +25,17 @@ const ExistingStudent = () => {
       {loading && <Spinner />}
 
       <div className="flex flex-col gap-6 mx-auto">
-        <div className="text-3xl text-white text-center">
-          {/* <FormHeader /> */}
-          S.DAT Registration
+        <div className="flex ">
+          <div className="text-3xl flex-grow text-white text-center">
+            {/* <FormHeader /> */}
+            S.DAT Registration
+          </div>
+
+          <div className="hover:cursor-pointer">
+            {/* <img src={profileImg} alt="" /> */}
+            {/* <FontAwesomeIcon icon="fa-solid fa-user" /> */}
+            <ProfileBar />
+          </div>
         </div>
 
         {/* <h1 className="text-3xl md:text-4xl font-semibold text-white text-center">
@@ -33,15 +44,6 @@ const ExistingStudent = () => {
 
         {/* <PageNumberComponent /> */}
         <ShowExistingStudentDetails />
-
-        <div className="flex justify-end ">
-          <button
-            onClick={handleLogout}
-            className="bg-[#ffdd00] p-3 rounded-xl"
-          >
-            Logout
-          </button>
-        </div>
       </div>
     </div>
   );

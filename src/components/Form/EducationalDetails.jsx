@@ -134,11 +134,7 @@ const EducationalDetailsForm = () => {
     let isValid = true;
 
     // Object.keys(formData)
-    ["SchoolName",
-      "Class",
-
-      "YearOfPassing",
-      "Board",].forEach((key) => {
+    ["SchoolName", "Class", "YearOfPassing", "Board"].forEach((key) => {
       const value = formData[key]?.toString().trim();
 
       if (!value) {
@@ -152,9 +148,7 @@ const EducationalDetailsForm = () => {
         isValid = false;
       }
 
-
-
-// For Percentage
+      // For Percentage
       // if (key === "Percentage") {
       //   const checkValueGreaterThenLimit = value > 50;
 
@@ -163,10 +157,6 @@ const EducationalDetailsForm = () => {
       //     isValid = false;
       //   }
       // }
-
-
-
-
     });
 
     setErrorState(formErrors);
@@ -243,7 +233,9 @@ const EducationalDetailsForm = () => {
 
     if (isEducationalValid) {
       try {
-       const response =  dispatch(updateEducationalDetails({ "Class": dataForClassInput()[0] }));
+        const response = dispatch(
+          updateEducationalDetails({ Class: dataForClassInput()[0] })
+        );
         console.log("response", response);
 
         console.log("FormData Before Reqyuest", formData);
@@ -262,7 +254,7 @@ const EducationalDetailsForm = () => {
       } catch (error) {
         console.error("Error submitting educational details:", error);
         setSubmitMessage("Error submitting form. Please try again.");
-      }finally{
+      } finally {
         setShowReloading(false);
       }
     }
@@ -294,7 +286,8 @@ const EducationalDetailsForm = () => {
     return (
       <div className="flex flex-col px-2" key={key}>
         <label htmlFor={key} className="text-sm font-medium text-white mb-1">
-          {key.replace(/([A-Z])/g, " $1")} {isPercentage && " Obtained"}
+          {key.replace(/([A-Z])/g, " $1")}{" "}
+          {isPercentage && " Obtained (Skip if result not declared)"}
         </label>
         <input
           type={isPercentage ? "number" : "text"}
@@ -408,8 +401,9 @@ const EducationalDetailsForm = () => {
     return (
       <div className="flex flex-col px-2" key={key}>
         <label htmlFor={key} className="text-sm font-medium text-white mb-1">
-          {console.log("key", key)}
-          {key.replace(/([A-Z])/g, " $1")}
+          {key === "Class"
+            ? "Class (Appeared/Appearing)"
+            : key.replace(/([A-Z])/g, " $1")}
         </label>
         <select
           name={key}
@@ -439,7 +433,7 @@ const EducationalDetailsForm = () => {
       {/* {loading && <Spinner />} */}
 
       <div className="flex flex-col gap-6 max-w-screen-md mx-auto">
-      <div className="text-3xl text-white text-center transform hover:-translate-y-1 transition duration-200">
+        <div className="text-3xl text-white text-center transform hover:-translate-y-1 transition duration-200">
           {/* <FormHeader /> */}
           S.DAT Registration
         </div>
@@ -482,11 +476,10 @@ const EducationalDetailsForm = () => {
           {/* </div> */}
 
           {showReloading && (
-          <div className="flex justify-center items-center">
-            <div className="animate-spin  rounded-full h-5 w-5 border-b-2 border-white"></div>
-          </div>
-        )}
-
+            <div className="flex justify-center items-center">
+              <div className="animate-spin  rounded-full h-5 w-5 border-b-2 border-white"></div>
+            </div>
+          )}
 
           <div className="flex flex-col-reverse sm:flex-row justify-between items-center gap-4 mt-6">
             <button

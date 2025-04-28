@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useReducer } from "react";
 import axios from "../../api/axios";
 import {
   fetchBasicDetails,
@@ -108,42 +108,111 @@ const BasicDetailsForm = () => {
   //   dispatch(fetchUserDetails())
   // }, []);
 
+  // const validateBasicForm = async () => {
+  //   const formErrors = {};
+  //   let isValid = true;
+
+  //   ["dob", "gender", "examDate", "examName", "studentName", "email"].forEach(
+  //     async (field) => {
+  //       if (field === "studentName" || field === "email") {
+  //         if (!userData?.[field]?.trim()) {
+  //           formErrors[field] = `${field
+  //             .replace(/([A-Z])/g, " $1")
+  //             .toUpperCase()} is required.`;
+  //           isValid = false;
+  //         }
+  //       } else if (field === "examName") {
+  //         const result = await dispatch(
+  //           updateBasicDetails({ [field]: "SDAT" })
+  //         );
+
+
+  //       } else if (!basicFormData?.[field]?.trim()) {
+          
+  //         formErrors[field] = `${field
+  //           .replace(/([A-Z])/g, " $1")
+  //           .toUpperCase()} is required.`;
+  //         isValid = false;
+  //       }
+  //     }
+  //   );
+
+
+
+
+  //   if(userData["examDate"]){
+  //     console.log("testdata ", testdata);
+  //   }
+
+  //   console.log("formErrors in vaaalidation", formErrors);
+
+  //   setBasicDetailsError(formErrors);
+  //   return isValid;
+  // };
+
+
+
   const validateBasicForm = async () => {
     const formErrors = {};
     let isValid = true;
-
-    ["dob", "gender", "examDate", "examName", "studentName", "email"].forEach(
-      async (field) => {
-        if (field === "studentName" || field === "email") {
-          if (!userData?.[field]?.trim()) {
-            formErrors[field] = `${field
-              .replace(/([A-Z])/g, " $1")
-              .toUpperCase()} is required.`;
-            isValid = false;
-          }
-        } else if (field === "examName") {
-          const result = await dispatch(
-            updateBasicDetails({ [field]: "SDAT" })
-          );
-
-          console.log("result form validationbasicform", result);
-          console.log("basicFormData?.[field]", basicFormData?.[field]);
-          console.log("basicFormData?.[field]", field);
-        } else if (!basicFormData?.[field]?.trim()) {
-          console.log("basicFormData", basicFormData?.[field]);
-          formErrors[field] = `${field
-            .replace(/([A-Z])/g, " $1")
-            .toUpperCase()} is required.`;
+  
+    for (const field of ["dob", "gender", "examDate", "examName", "studentName", "email"]) {
+      if (field === "studentName" || field === "email") {
+        if (!userData?.[field]?.trim()) {
+          formErrors[field] = `${field.replace(/([A-Z])/g, " $1").toUpperCase()} is required.`;
           isValid = false;
         }
+      } else if (field === "examName") {
+        await dispatch(updateBasicDetails({ [field]: "SDAT" }));
+      } else if (!basicFormData?.[field]?.trim()) {
+        formErrors[field] = `${field.replace(/([A-Z])/g, " $1").toUpperCase()} is required.`;
+        isValid = false;
       }
-    );
+      // ✅ Check for future exam date
 
-    console.log("formErrors in vaaalidation", formErrors);
+      // required changes it not working 
+      // if (field === "examDate" ) {
+      //   console.log("formErrors from valicationForm before", basicFormData.examDate);
 
+      //   const examDateRaw = basicFormData?.examDate;
+      //   const examDate = dayjs(examDateRaw, "YYYY-MM-DD", true); 
+      //   console.log("examDate",examDate);
+      //          const today = new Date();
+      //   examDate?.setHours(0, 0, 0, 0);
+      //   today.setHours(0, 0, 0, 0);
+
+
+      //   console.log("examDate", examDate);
+      //   console.log("today", today);
+
+  
+      //   if (examDate <= today) {
+      //     formErrors.examDate = "Exam Date must be a future date.";
+      //     isValid = false;
+      //   }
+      //   console.log("formErrors from valicationForm", basicFormData.examDate);
+      //   console.log("formErrors from valicationForm", formErrors);
+      // }else{
+      //   console.log("examDate from validateBasicForm", basicFormData);
+      // }
+    }
+  
+    console.log("formErrors in validation", formErrors);
+  
     setBasicDetailsError(formErrors);
     return isValid;
   };
+  
+
+
+useEffect(()=>{
+  validateBasicForm();
+},[userData]);
+
+
+
+
+
 
   const basicFormHandleChange = (e) => {
     const { name, value } = e.target;
