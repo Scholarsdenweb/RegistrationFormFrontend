@@ -17,10 +17,12 @@ export default function SignupRight() {
 
   // Regex pattern for phone number validation (+91 followed by 10 digits)
   const phoneRegex = /^\+91[0-9]{10}$/;
-  const [codeVerified, setCodeVerified] = useState(true);
+  // const [codeVerified, setCodeVerified] = useState(true);
   // const [loading, setLoading] = useState(false);
-  // const [codeVerified, setCodeVerified] = useState(false);
+  const [codeVerified, setCodeVerified] = useState(false);
   const [isSubmittingForm, setIsSubmittingForm] = useState(false);
+
+  const [codeEntered, setCodeEntered] = useState(false);
 
   const [showReloading, setShowReloading] = useState(false);
   // State hooks
@@ -129,18 +131,18 @@ export default function SignupRight() {
     try {
       setIsSubmittingForm(true);
 
-      // let codeChecked = await checkVerificationCode();
+      let codeChecked = await checkVerificationCode();
 
-      // console.log("codeChecked", codeChecked);
-      // if (codeChecked === false) {
-      //   setShowCodeBox(false);
+      console.log("codeChecked", codeChecked);
+      if (codeChecked === false) {
+        setShowCodeBox(false);
 
-      //   // Remove OTP
-      //   setCodeVerified(false);
-      //   setSubmitMessage("Please Verify Your Contact Number Number");
-      //   setIsSubmittingForm(false); // ⬅️ reset if verification fails
-      //   return;
-      // }
+        // Remove OTP
+        setCodeVerified(false);
+        setSubmitMessage("Please Verify Your Contact Number Number");
+        setIsSubmittingForm(false); // ⬅️ reset if verification fails
+        return;
+      }
 
       setSubmitMessage("");
 
@@ -214,13 +216,31 @@ export default function SignupRight() {
         setShowCodeBox(true);
         setSubmitMessage("OTP sent successfully");
       }
+
     } catch (error) {
       setSubmitMessage("Error verifying Contact Number number");
       console.log("Error verifying Contact Number number", error);
     } finally {
       // setLoading(false);
       setShowReloading(false);
+      setCode("");
+
     }
+  };
+
+  const handleOTPChange = async (e) => {
+    if (e.target.value.length <= 4) {
+      setCode(e.target.value);
+    }
+
+    if (e.target.value.length >= 4) {
+      setCodeEntered(true);
+      return;
+    } else {
+      setCodeEntered(false);
+    }
+
+    console.log("e.target.value", e.target.value.length);
   };
 
   return (
@@ -285,7 +305,7 @@ export default function SignupRight() {
               id="otp"
               name="otp"
               value={code}
-              onChange={(e) => setCode(e.target.value)}
+              onChange={handleOTPChange}
               placeholder="Enter OTP"
               className="w-full bg-white/5 text-white border border-white px-4 py-2 focus:outline-none placeholder-gray-400"
             />
@@ -304,14 +324,15 @@ export default function SignupRight() {
           </p>
         )}
 
-        {/* {showCodeBox && ( */}
+        {showCodeBox && (
           <button
             type="submit"
-            className="w-full bg-yellow-500 hover:bg-yellow-600 text-black font-semibold py-2 rounded-xl transition-all"
+            className="w-full bg-yellow-500 hover:bg-yellow-600 text-black font-semibold py-2 rounded-xl transition-all disabled:bg-yellow-800"
+            disabled={!codeEntered}
           >
             Next
           </button>
-        {/* )} */}
+        )}
       </form>
     </div>
   );

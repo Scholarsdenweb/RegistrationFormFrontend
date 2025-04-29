@@ -76,7 +76,8 @@ const BasicDetailsForm = () => {
       });
 
       console.log("filteredDates", filteredDates);
-      setAllDates(filteredDates);
+      setAllDates(response.data);
+      // setAllDates(filteredDates);
     } catch (error) {
       console.error("Error fetching dates:", error);
     }
@@ -171,30 +172,35 @@ const BasicDetailsForm = () => {
       // ✅ Check for future exam date
 
       // required changes it not working 
-      // if (field === "examDate" ) {
-      //   console.log("formErrors from valicationForm before", basicFormData.examDate);
-
-      //   const examDateRaw = basicFormData?.examDate;
-      //   const examDate = dayjs(examDateRaw, "YYYY-MM-DD", true); 
-      //   console.log("examDate",examDate);
-      //          const today = new Date();
-      //   examDate?.setHours(0, 0, 0, 0);
-      //   today.setHours(0, 0, 0, 0);
-
-
-      //   console.log("examDate", examDate);
-      //   console.log("today", today);
-
-  
-      //   if (examDate <= today) {
-      //     formErrors.examDate = "Exam Date must be a future date.";
-      //     isValid = false;
-      //   }
-      //   console.log("formErrors from valicationForm", basicFormData.examDate);
-      //   console.log("formErrors from valicationForm", formErrors);
-      // }else{
-      //   console.log("examDate from validateBasicForm", basicFormData);
-      // }
+      if (field === "examDate") {
+        console.log("formErrors from validationForm before", basicFormData.examDate);
+      
+        const examDateRaw = basicFormData?.examDate;
+        // Corrected format
+        const examDate = dayjs(examDateRaw, "DD-MM-YYYY", true); 
+      
+        if (!examDate.isValid()) {
+          formErrors.examDate = "Invalid date format.";
+          isValid = false;
+          return;
+        }
+      
+        const today = dayjs().startOf("day"); // Gets today at 00:00
+        const examDay = examDate.startOf("day"); // Converts to start of day for fair comparison
+      
+        console.log("examDate", examDay.toDate());
+        console.log("today", today.toDate());
+      
+        if (examDay.isSame(today) || examDay.isBefore(today)) {
+          formErrors.examDate = "Exam Date must be a future date.";
+          isValid = false;
+        }
+      
+        console.log("formErrors from validationForm", formErrors);
+      } else {
+        console.log("examDate from validateBasicForm", basicFormData);
+      }
+      
     }
   
     console.log("formErrors in validation", formErrors);
