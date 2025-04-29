@@ -230,11 +230,13 @@ export default function SignupRight() {
 
   const handleOTPChange = async (e) => {
     if (e.target.value.length <= 4) {
+
       setCode(e.target.value);
     }
 
     if (e.target.value.length >= 4) {
       setCodeEntered(true);
+      setSubmitMessage("");
       return;
     } else {
       setCodeEntered(false);
