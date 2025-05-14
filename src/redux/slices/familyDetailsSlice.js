@@ -24,10 +24,21 @@ export const fetchFamilyDetails = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const { data } = await axios.get("/form/familyDetails/getForm");
+
+      console.log("fetchFromData fromd fetchFamilyDetails", data);
       if (data.length > 0) {
         return {
           dataExist: true,
-          formData: data[0],
+          formData: {
+              FatherName: data[0].FatherName ||  "",
+          FatherContactNumber: data[0].FatherContactNumber  || "",
+          FatherOccupation: data[0].FatherOccupation  || "",
+          MotherName: data[0].MotherName  || "",
+          MotherContactNumber: data[0].MotherContactNumber  || "",
+          MotherOccupation: data[0].MotherOccupation  || "",
+          FamilyIncome: data[0].FamilyIncome  || "",
+            
+          },
         };
       }
       return {
@@ -51,9 +62,11 @@ export const fetchFamilyDetails = createAsyncThunk(
 // Async thunk for submitting family details
 export const submitFamilyDetails = createAsyncThunk(
   "familyDetails/submitFamilyDetails",
-  async ({ familyFormData, familyDataExist, setFamilyFormSubmit }, { rejectWithValue }) => {
+  async (
+    { familyFormData, familyDataExist, setFamilyFormSubmit },
+    { rejectWithValue }
+  ) => {
     try {
-
       console.log("formData", familyFormData);
       console.log("familyDataExist", familyDataExist);
       console.log("setFamilyFormSubmit", setFamilyFormSubmit);

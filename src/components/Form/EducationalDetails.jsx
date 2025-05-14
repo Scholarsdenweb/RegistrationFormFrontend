@@ -359,6 +359,74 @@ const EducationalDetailsForm = () => {
     "XII",
   ];
 
+  // const numberToRoman = (value) => {
+  //   const romanMap = {
+  //     1: 'I',
+  //     2: 'II',
+  //     3: 'III',
+  //     4: 'IV',
+  //     5: 'V',
+  //     6: 'VI',
+  //     7: 'VII',
+  //     8: 'VIII',
+  //     9: 'IX',
+  //     10: 'X',
+  //     11: 'XI',
+  //     12: 'XII'
+  //   };
+
+  //   return romanMap[value] || 'Invalid input';
+  // };
+
+  const numberToRoman = (value) => {
+    const romanMap = {
+      1: "I",
+      2: "II",
+      3: "III",
+      4: "IV",
+      5: "V",
+      6: "VI",
+      7: "VII",
+      8: "VIII",
+      9: "IX",
+      10: "X",
+      11: "XI",
+      12: "XII",
+    };
+    return romanMap[value] || "Invalid";
+  };
+
+  const validRomans = new Set([
+    "I",
+    "II",
+    "III",
+    "IV",
+    "V",
+    "VI",
+    "VII",
+    "VIII",
+    "IX",
+    "X",
+    "XI",
+    "XII",
+  ]);
+
+  const normalizeValue = (data) => {
+    const parts = data.trim().split(/\s+/); // split into words
+    const first = parts[0].replace(/(st|nd|rd|th)$/i, "").toUpperCase(); // remove suffix if any
+    const rest = parts.slice(1).join(" "); // everything after the first word
+
+    let roman;
+    if (validRomans.has(first)) {
+      roman = first;
+    } else {
+      const num = parseInt(first);
+      roman = numberToRoman(num);
+    }
+
+    return rest ? `${roman} ${rest}` : roman;
+  };
+
   const dataForClassInput = () => {
     const data = batchRelatedDetails?.classForAdmission.split(" ")[0];
     const dataLength = batchRelatedDetails?.classForAdmission.split(" ").length;
@@ -372,7 +440,15 @@ const EducationalDetailsForm = () => {
     const arrayofData = [];
 
     if (data) {
-      const index = romanClassLevels.indexOf(data);
+      const datavalue = normalizeValue(data);
+
+      // if (!validRomans.has(input)) {
+      //   datavalue = numberToRoman(parseInt(input));
+      // } else {
+      //   datavalue = input;
+      // }
+
+      const index = romanClassLevels.indexOf(datavalue);
       if (index > 0) {
         const value = dataLength === 3 ? index : index - 1;
         const oneLessClass = romanClassLevels[value];

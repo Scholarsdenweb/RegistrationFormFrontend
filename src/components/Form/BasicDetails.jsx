@@ -127,9 +127,8 @@ const BasicDetailsForm = () => {
   //           updateBasicDetails({ [field]: "SDAT" })
   //         );
 
-
   //       } else if (!basicFormData?.[field]?.trim()) {
-          
+
   //         formErrors[field] = `${field
   //           .replace(/([A-Z])/g, " $1")
   //           .toUpperCase()} is required.`;
@@ -137,9 +136,6 @@ const BasicDetailsForm = () => {
   //       }
   //     }
   //   );
-
-
-
 
   //   if(userData["examDate"]){
   //     console.log("testdata ", testdata);
@@ -151,72 +147,72 @@ const BasicDetailsForm = () => {
   //   return isValid;
   // };
 
-
-
   const validateBasicForm = async () => {
     const formErrors = {};
     let isValid = true;
-  
-    for (const field of ["dob", "gender", "examDate", "examName", "studentName", "email"]) {
+
+    for (const field of [
+      "dob",
+      "gender",
+      "examDate",
+      "examName",
+      "studentName",
+      "email",
+    ]) {
       if (field === "studentName" || field === "email") {
         if (!userData?.[field]?.trim()) {
-          formErrors[field] = `${field.replace(/([A-Z])/g, " $1").toUpperCase()} is required.`;
+          formErrors[field] = `${field.replace(/([A-Z])/g, " $1")} is required.`;
           isValid = false;
         }
       } else if (field === "examName") {
         await dispatch(updateBasicDetails({ [field]: "SDAT" }));
       } else if (!basicFormData?.[field]?.trim()) {
-        formErrors[field] = `${field.replace(/([A-Z])/g, " $1").toUpperCase()} is required.`;
+        formErrors[field] = `${field
+          .replace(/([A-Z])/g, " $1")
+          .toUpperCase()} is required.`;
         isValid = false;
       }
       // ✅ Check for future exam date
 
-      // required changes it not working 
+      // required changes it not working
       if (field === "examDate") {
-        console.log("formErrors from validationForm before", basicFormData.examDate);
-      
+        console.log(
+          "formErrors from validationForm before",
+          basicFormData.examDate
+        );
+
         const examDateRaw = basicFormData?.examDate;
         // Corrected format
-        const examDate = dayjs(examDateRaw, "DD-MM-YYYY", true); 
-      
+        const examDate = dayjs(examDateRaw, "DD-MM-YYYY", true);
+
         if (!examDate.isValid()) {
+          console.log("examDate.isValid");
           formErrors.examDate = "Invalid date format.";
           isValid = false;
-          return;
+        } else {
+          const today = dayjs().startOf("day"); // Gets today at 00:00
+          const examDay = examDate.startOf("day"); // Converts to start of day for fair comparison
+
+          console.log("examDate", examDay.toDate());
+          console.log("today", today.toDate());
+
+          if (examDay.isSame(today) || examDay.isBefore(today)) {
+            formErrors.examDate = "Exam Date must be a future date.";
+            isValid = false;
+          }
+
+          console.log("formErrors from validationForm", formErrors);
         }
-      
-        const today = dayjs().startOf("day"); // Gets today at 00:00
-        const examDay = examDate.startOf("day"); // Converts to start of day for fair comparison
-      
-        console.log("examDate", examDay.toDate());
-        console.log("today", today.toDate());
-      
-        if (examDay.isSame(today) || examDay.isBefore(today)) {
-          formErrors.examDate = "Exam Date must be a future date.";
-          isValid = false;
-        }
-      
-        console.log("formErrors from validationForm", formErrors);
       } else {
         console.log("examDate from validateBasicForm", basicFormData);
       }
-      
     }
-  
+
     console.log("formErrors in validation", formErrors);
-  
+
     setBasicDetailsError(formErrors);
     return isValid;
   };
-  
-
-
-useEffect(()=>{
-  validateBasicForm();
-},[userData]);
-
-
-
 
 
 

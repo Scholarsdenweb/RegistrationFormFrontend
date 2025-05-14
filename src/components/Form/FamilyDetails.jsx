@@ -27,15 +27,6 @@ const FamilyDetails = () => {
   const [showReloading, setShowReloading] = useState(false);
   const phoneRegex = /^[0-9]{10}$/;
 
-  // Income options
-  const incomeRanges = [
-    "Less than 1 Lakh",
-    "1 Lakh - 5 Lakhs",
-    "5 Lakhs - 10 Lakhs",
-    "10 Lakhs - 20 Lakhs",
-    "More than 20 Lakhs",
-  ];
-
   const optionsForSelectInput = {
     FamilyIncome: [
       "Less than 1 Lakh",
@@ -55,9 +46,9 @@ const FamilyDetails = () => {
       "Driver",
       "Police Officer",
       "Soldier",
-      "Other"
+      "Other",
     ],
-    
+
     MotherOccupation: [
       "Teacher",
       "Homemaker",
@@ -69,14 +60,15 @@ const FamilyDetails = () => {
       "Clerk",
       "Farmer",
       "Tailor",
-      "Other"
-    ]
-    
+      "Other",
+    ],
   };
 
   // Form change handler
   const handleChange = (e) => {
     const { name, value } = e.target;
+
+    console.log("name and value from handleChange", name , value)
 
     if (name === "MotherContactNumber" || name === "FatherContactNumber") {
       if (value.length > 10) {
@@ -92,7 +84,7 @@ const FamilyDetails = () => {
       })
     );
 
-    if (name === "MotherContactNumber" || name === "FatherContactNumber") {
+    if (name === "FatherContactNumber") {
       if (!phoneRegex.test(value)) {
         setErrors((prev) => ({
           ...prev,
@@ -122,7 +114,7 @@ const FamilyDetails = () => {
       "FatherContactNumber",
       "FatherOccupation",
       "MotherName",
-      "MotherContactNumber",
+   
       "FamilyIncome",
     ].forEach((key) => {
       const value = formData[key]?.trim();
@@ -173,6 +165,10 @@ const FamilyDetails = () => {
     setCheckUrl(pathLocation === "/familyDetailsForm");
   }, [dispatch, pathLocation]);
 
+  useEffect(() => {
+    console.log("Data from useEffect", formData);
+  }, [formData]);
+
   return (
     <div className="min-h-screen w-full bg-[#c61d23] px-2 md:px-8 py-2 overflow-auto">
       {/* {loading && <Spinner />} */}
@@ -201,14 +197,21 @@ const FamilyDetails = () => {
           <PageNumberComponent />
 
           {Object.keys(formData).map((key) => {
-            if (key === "FamilyIncome" || key === "FatherOccupation" || key === "MotherOccupation") {
+            if (
+              key === "FamilyIncome" ||
+              key === "FatherOccupation" ||
+              key === "MotherOccupation"
+            ) {
               return (
                 <div className="flex flex-col w-full" key={key}>
                   <label
                     htmlFor={key}
                     className="text-sm font-medium text-white mb-1"
                   >
-                    Family Income
+                      {key
+                    .replace(/([A-Z])/g, " $1")
+                    .trim()
+                    .replace(/^(\w+)/, "$1's")}
                   </label>
                   <select
                     id={key}
@@ -217,12 +220,15 @@ const FamilyDetails = () => {
                     onChange={handleChange}
                     className="border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-indigo-400 focus:outline-none"
                   >
-                    <option value="">{`Select ${key.replace(/([A-Z])/g, " $1")}`}</option>
+                    <option value="">{`Select ${key.replace(
+                      /([A-Z])/g,
+                      " $1"
+                    )}`}</option>
                     {optionsForSelectInput[key].map((range, index) => (
                       <option key={index} value={range}>
                         {range}
                       </option>
-                    ))}                              
+                    ))}
                   </select>
                   {errors[key] && (
                     <p className="text-[#ffdd00] text-xs mt-1">{errors[key]}</p>

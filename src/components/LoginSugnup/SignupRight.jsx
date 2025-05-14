@@ -17,8 +17,8 @@ export default function SignupRight() {
 
   // Regex pattern for phone number validation (+91 followed by 10 digits)
   const phoneRegex = /^\+91[0-9]{10}$/;
-  // const [codeVerified, setCodeVerified] = useState(true);
   // const [loading, setLoading] = useState(false);
+  // const [codeVerified, setCodeVerified] = useState(true);
   const [codeVerified, setCodeVerified] = useState(false);
   const [isSubmittingForm, setIsSubmittingForm] = useState(false);
 
@@ -216,7 +216,6 @@ export default function SignupRight() {
         setShowCodeBox(true);
         setSubmitMessage("OTP sent successfully");
       }
-
     } catch (error) {
       setSubmitMessage("Error verifying Contact Number number");
       console.log("Error verifying Contact Number number", error);
@@ -224,13 +223,11 @@ export default function SignupRight() {
       // setLoading(false);
       setShowReloading(false);
       setCode("");
-
     }
   };
 
   const handleOTPChange = async (e) => {
     if (e.target.value.length <= 4) {
-
       setCode(e.target.value);
     }
 
