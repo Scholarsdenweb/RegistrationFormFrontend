@@ -8,6 +8,7 @@ dayjs.extend(customParseFormat);
 
 const AddExamDate = () => {
   const [examDate, setExamDate] = useState("");
+  const [scholarshipValidation, setScholarshipValidation] = useState("");
   const [allDates, setAllDates] = useState([]);
   const [editingDate, setEditingDate] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -66,7 +67,8 @@ const AddExamDate = () => {
         console.log("ExamDate", examDate)
         await axios.post("/employees/addExamDate", {
           examDate: dayjs(examDate).format("DD-MM-YYYY"),
-          examName
+          examName,
+          scholarshipValidation : dayjs(scholarshipValidation).format("DD-MM-YYYY")
         });
 
         // await axios.post("/examList/addExam", {
@@ -182,6 +184,14 @@ const AddExamDate = () => {
                 min={minDate}
                 max={maxDate}
                 onChange={(e) => setExamDate(e.target.value)}
+              />
+              <input
+                type="date"
+                className="p-3 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500"
+                value={scholarshipValidation}
+                min={minDate}
+                max={maxDate}
+                onChange={(e) => setScholarshipValidation(e.target.value)}
               />
               <select
                 name="AddExamDate"
