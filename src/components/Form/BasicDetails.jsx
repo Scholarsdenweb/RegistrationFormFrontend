@@ -175,37 +175,37 @@ const BasicDetailsForm = () => {
       // ✅ Check for future exam date
 
       // required changes it not working
-      if (field === "examDate") {
-        console.log(
-          "formErrors from validationForm before",
-          basicFormData.examDate
-        );
+      // if (field === "examDate") {
+      //   console.log(
+      //     "formErrors from validationForm before",
+      //     basicFormData.examDate
+      //   );
 
-        const examDateRaw = basicFormData?.examDate;
-        // Corrected format
-        const examDate = dayjs(examDateRaw, "DD-MM-YYYY", true);
+      //   const examDateRaw = basicFormData?.examDate;
+      //   // Corrected format
+      //   const examDate = dayjs(examDateRaw, "DD-MM-YYYY", true);
 
-        if (!examDate.isValid()) {
-          console.log("examDate.isValid");
-          formErrors.examDate = "Invalid date format.";
-          isValid = false;
-        } else {
-          const today = dayjs().startOf("day"); // Gets today at 00:00
-          const examDay = examDate.startOf("day"); // Converts to start of day for fair comparison
+      //   if (!examDate.isValid()) {
+      //     console.log("examDate.isValid");
+      //     formErrors.examDate = "Invalid date format.";
+      //     isValid = false;
+      //   } else {
+      //     const today = dayjs().startOf("day"); // Gets today at 00:00
+      //     const examDay = examDate.startOf("day"); // Converts to start of day for fair comparison
 
-          console.log("examDate", examDay.toDate());
-          console.log("today", today.toDate());
+      //     console.log("examDate", examDay.toDate());
+      //     console.log("today", today.toDate());
 
-          if (examDay.isSame(today) || examDay.isBefore(today)) {
-            formErrors.examDate = "Exam Date must be a future date.";
-            isValid = false;
-          }
+      //     if (examDay.isSame(today) || examDay.isBefore(today)) {
+      //       formErrors.examDate = "Exam Date must be a future date.";
+      //       isValid = false;
+      //     }
 
-          console.log("formErrors from validationForm", formErrors);
-        }
-      } else {
-        console.log("examDate from validateBasicForm", basicFormData);
-      }
+      //     console.log("formErrors from validationForm", formErrors);
+      //   }
+      // } else {
+      //   console.log("examDate from validateBasicForm", basicFormData);
+      // }
     }
 
     console.log("formErrors in validation", formErrors);
@@ -313,6 +313,19 @@ const BasicDetailsForm = () => {
       setShowReloading(false);
     }
   };
+
+
+
+
+useEffect(()=>{
+  console.log("userdata", userData);
+},[userData])
+
+
+
+
+
+
 
   const onSubmit = async (e) => {
     setLoading(true);
