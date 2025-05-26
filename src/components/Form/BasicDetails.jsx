@@ -161,7 +161,10 @@ const BasicDetailsForm = () => {
     ]) {
       if (field === "studentName" || field === "email") {
         if (!userData?.[field]?.trim()) {
-          formErrors[field] = `${field.replace(/([A-Z])/g, " $1")} is required.`;
+          formErrors[field] = `${field.replace(
+            /([A-Z])/g,
+            " $1"
+          )} is required.`;
           isValid = false;
         }
       } else if (field === "examName") {
@@ -213,8 +216,6 @@ const BasicDetailsForm = () => {
     setBasicDetailsError(formErrors);
     return isValid;
   };
-
-
 
   const basicFormHandleChange = (e) => {
     const { name, value } = e.target;
@@ -308,24 +309,17 @@ const BasicDetailsForm = () => {
       navigate("/registration/batchDetailsForm");
     } catch (error) {
       console.log("Error submitting form:", error);
-      if (errors.length === 0) setSubmitMessage(error.response.data.message);
+      if (error.response.data) {
+        setSubmitMessage(error.response.data);
+      }
     } finally {
       setShowReloading(false);
     }
   };
 
-
-
-
-useEffect(()=>{
-  console.log("userdata", userData);
-},[userData])
-
-
-
-
-
-
+  useEffect(() => {
+    console.log("userdata", userData);
+  }, [userData]);
 
   const onSubmit = async (e) => {
     setLoading(true);
