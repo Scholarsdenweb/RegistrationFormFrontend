@@ -283,6 +283,17 @@ const BasicDetailsForm = () => {
     setShowReloading(true);
 
     try {
+      // setSubmitMessage(
+      //   dataExist
+      //     ? "Basic details updated successfully!"
+      //     : "Basic details submitted successfully!"
+      // );
+
+      console.log("userData before editStudent", userData);
+      const response = await axios.patch("/students/editStudent", userData);
+
+      console.log("response for onSubmit in BasicDetails", response);
+
       console.log("dataExist", dataExist);
       console.log("basicFormData form addAndUpdateBasicFrom", basicFormData);
       const url = dataExist
@@ -294,16 +305,6 @@ const BasicDetailsForm = () => {
       // const method =  axios.patch ;
 
       await method(url, basicFormData);
-      // setSubmitMessage(
-      //   dataExist
-      //     ? "Basic details updated successfully!"
-      //     : "Basic details submitted successfully!"
-      // );
-
-      console.log("userData before editStudent", userData);
-      const response = await axios.patch("/students/editStudent", userData);
-
-      console.log("response for onSubmit in BasicDetails", response);
 
       console.log("response", response);
       navigate("/registration/batchDetailsForm");

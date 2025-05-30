@@ -314,7 +314,7 @@ const BatchRelatedDetailsForm = () => {
               placeholder="Select Class for adminssion"
               className="border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-indigo-400 focus:outline-none"
             >
-              <option disabled selected value="">
+              <option selected value="">
                 Select Class for admission
               </option>
               
