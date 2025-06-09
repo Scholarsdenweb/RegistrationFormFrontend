@@ -51,18 +51,12 @@ const Payment = () => {
 
   useEffect(() => {
     dispatch(fetchBasicDetails());
+
     dispatch(fetchBatchDetails());
     dispatch(fetchEducationalDetails());
     dispatch(fetchFamilyDetails());
     dispatch(fetchUserDetails());
   }, [dispatch]);
-
-  useEffect(() => {
-    console.log("basicDetailsDataExist", basicDetailsData);
-    console.log("batchDetailsData", batchDetailsData);
-    console.log("educationalDetailsData", educationalDetailsData);
-    console.log("familyDetailsData", familyDetailsData);
-  }, []);
 
   const checkoutHandler = async () => {
     if (
@@ -162,22 +156,18 @@ const Payment = () => {
             <Spinner />
           ) : (
             <div className="ol-span-6 px-9 py-8 mb-3 sm:mr-5 h-full bg-gray-100 rounded-3xl flex flex-col items-center justify-between gap-4 ">
-            <div className="flex flex-col gap-5">
+              <div className="flex flex-col gap-5">
+                <h2 className="text-bold text-2xl ">
+                  SDAT Registration Amount : <span>&#8377;500</span>{" "}
+                </h2>
 
-          
-              <h2 className="text-bold text-2xl ">
-                SDAT Registration Amount : <span>&#8377;500</span>{" "}
-              </h2>
-
-              <div
-                className="bg-[#c61d23] text-white p-3 rounded-lg text-center cursor-pointer"
-                onClick={checkoutHandler}
-              >
-                Pay Now
+                <div
+                  className="bg-[#c61d23] text-white p-3 rounded-lg text-center cursor-pointer"
+                  onClick={checkoutHandler}
+                >
+                  Pay Now
+                </div>
               </div>
-              </div>
-
-             
             </div>
           )}
           {allFormNotAvailable && (
@@ -190,12 +180,10 @@ const Payment = () => {
             />
           )}
         </div>
-
-
       </div>
-        <div className="fixed flex justify-center bottom-0 z-0">
-                <PaymentFooter />
-              </div> 
+      <div className="fixed flex justify-center bottom-0 z-0">
+        <PaymentFooter />
+      </div>
     </div>
   );
 };
