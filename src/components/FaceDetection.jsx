@@ -4,18 +4,23 @@ import * as faceapi from 'face-api.js';
 const FaceDetectionUpload = () => {
   const imageRef = useRef();
   const [faceDetected, setFaceDetected] = useState(false);
+  const [modelsLoaded, setModelsLoaded] = useState(false);
 
   useEffect(() => {
-    // Load models from public folder
     const loadModels = async () => {
       const MODEL_URL = '/models';
       await faceapi.nets.ssdMobilenetv1.loadFromUri(MODEL_URL);
+
+      setModelsLoaded(true);
     };
+
     loadModels();
   }, []);
 
   const handleImageChange = async (e) => {
     const file = e.target.files[0];
+  
+
     if (file) {
       const img = imageRef.current;
       img.src = URL.createObjectURL(file);

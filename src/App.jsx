@@ -38,6 +38,7 @@ import CancellationsAndRefunds from "./components/Policy/CancellationsAndRefunds
 import ExistingStudent from "./components/ExistingStudent";
 import EnquiryData from "./components/EnquiryData";
 import FaceDetectionUpload from "./components/FaceDetection";
+import CreateInvoice from "./components/CreateInvoice";
 
 function App() {
   return (
@@ -65,11 +66,7 @@ function App() {
                 path="/employee/CloudinaryUpload"
                 element={<CloudinaryComponent />}
               />
-              <Route
-                path="/facedetection"
-                element={<FaceDetectionUpload />}
-              />
-
+              <Route path="/facedetection" element={<FaceDetectionUpload />} />
 
               <Route path="/" element={<Signup />} />
               <Route
@@ -98,25 +95,26 @@ function App() {
               />
               <Route
                 path="/registration/contactUsPage"
-                element={<ContactUsPage/>}
+                element={<ContactUsPage />}
               />
               <Route
                 path="/registration/privacyPolicy"
-                element={<PrivacyPolicy/>}
+                element={<PrivacyPolicy />}
               />
               <Route
                 path="/registration/cancellationsAndRefunds"
-                element={<CancellationsAndRefunds/>}
+                element={<CancellationsAndRefunds />}
               />
               <Route
                 path="/registration/existingStudent"
-                element={<ExistingStudent/>}
+                element={<ExistingStudent />}
               />
               <Route
                 path="/registration/enquiryData"
-                element={<EnquiryData/>}
+                element={<EnquiryData />}
               />
 
+              <Route path="/CreateInvoice" element={<CreateInvoice />} />
 
               <Route
                 path="/dashboard"

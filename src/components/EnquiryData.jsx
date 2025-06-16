@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import axios from "../api/axios";
 import { fetchExistingUserFormEnquiryDetails } from "../redux/slices/existingStudentSlice";
 import { useNavigate } from "react-router-dom";
+import ProfileBar from "./ProfileBar";
 const EnquiryData = () => {
   const { userData } = useSelector((state) => state.existingStudentDetails);
 
@@ -54,15 +55,16 @@ const EnquiryData = () => {
     navigate("/registration/basicDetailsForm");
   };
 
-
-
-
   return (
     <div className="p-5 bg-[#c61d23] min-h-screen flex flex-col gap-4">
-      <h2 className="text-4xl font-bold text-center  text-white">
-        Enquiry Details
-      </h2>
-
+      <div className="flex ">
+        <h2 className="text-xl flex-grow sm:text-4xl font-bold text-center  text-white">
+          Enquiry Details
+        </h2>
+        <div>
+          <ProfileBar />
+        </div>
+      </div>
       <div className="flex flex-col gap-8">
         {userData?.length > 0 ? (
           userData?.map((enquiry, index) => (
@@ -74,10 +76,12 @@ const EnquiryData = () => {
                 Enquiry #{enquiry.enquiryNumber}
               </h3>
 
-
-              <div className="absolute top-2 right-2 p-2 bg-[#ffdd00] rounded-xl" onClick={()=>{
-                continueWithExistingStudent(enquiry)
-              }}>
+              <div
+                className="absolute top-2 right-2 p-2 bg-[#ffdd00] rounded-xl"
+                onClick={() => {
+                  continueWithExistingStudent(enquiry);
+                }}
+              >
                 <button>Continue Registration</button>
               </div>
 

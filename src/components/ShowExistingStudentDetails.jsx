@@ -49,7 +49,7 @@ const ShowExistingStudentDetails = () => {
 
       {/* Cards */}
       <div className="flex flex-col gap-6 max-w-3xl mx-auto">
-        {userData?.data?.map((student, index) => (
+        {userData.data && userData?.data?.map((student, index) => (
           <div
             key={index}
             className=" relative bg-white rounded-xl shadow-md p-4 sm:p-6 flex items-center justify-start gap-6 hover:shadow-xl transition duration-300 cursor-pointer"

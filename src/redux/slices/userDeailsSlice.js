@@ -30,6 +30,7 @@ export const fetchUserDetails = createAsyncThunk(
                 };
             }
         } catch (error) {
+            console.log("error form fetchUserDetails", error);
             return rejectWithValue(error.response?.data || 'Failed to fetch data');
         }
     }

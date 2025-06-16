@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useReducer } from "react";
 import axios from "../../api/axios";
 import {
   fetchBasicDetails,
@@ -76,7 +76,8 @@ const BasicDetailsForm = () => {
       });
 
       console.log("filteredDates", filteredDates);
-      setAllDates(filteredDates);
+      setAllDates(response.data);
+      // setAllDates(filteredDates);
     } catch (error) {
       console.error("Error fetching dates:", error);
     }
@@ -108,38 +109,109 @@ const BasicDetailsForm = () => {
   //   dispatch(fetchUserDetails())
   // }, []);
 
+  // const validateBasicForm = async () => {
+  //   const formErrors = {};
+  //   let isValid = true;
+
+  //   ["dob", "gender", "examDate", "examName", "studentName", "email"].forEach(
+  //     async (field) => {
+  //       if (field === "studentName" || field === "email") {
+  //         if (!userData?.[field]?.trim()) {
+  //           formErrors[field] = `${field
+  //             .replace(/([A-Z])/g, " $1")
+  //             .toUpperCase()} is required.`;
+  //           isValid = false;
+  //         }
+  //       } else if (field === "examName") {
+  //         const result = await dispatch(
+  //           updateBasicDetails({ [field]: "SDAT" })
+  //         );
+
+  //       } else if (!basicFormData?.[field]?.trim()) {
+
+  //         formErrors[field] = `${field
+  //           .replace(/([A-Z])/g, " $1")
+  //           .toUpperCase()} is required.`;
+  //         isValid = false;
+  //       }
+  //     }
+  //   );
+
+  //   if(userData["examDate"]){
+  //     console.log("testdata ", testdata);
+  //   }
+
+  //   console.log("formErrors in vaaalidation", formErrors);
+
+  //   setBasicDetailsError(formErrors);
+  //   return isValid;
+  // };
+
   const validateBasicForm = async () => {
     const formErrors = {};
     let isValid = true;
 
-    ["dob", "gender", "examDate", "examName", "studentName", "email"].forEach(
-      async (field) => {
-        if (field === "studentName" || field === "email") {
-          if (!userData?.[field]?.trim()) {
-            formErrors[field] = `${field
-              .replace(/([A-Z])/g, " $1")
-              .toUpperCase()} is required.`;
-            isValid = false;
-          }
-        } else if (field === "examName") {
-          const result = await dispatch(
-            updateBasicDetails({ [field]: "SDAT" })
-          );
-
-          console.log("result form validationbasicform", result);
-          console.log("basicFormData?.[field]", basicFormData?.[field]);
-          console.log("basicFormData?.[field]", field);
-        } else if (!basicFormData?.[field]?.trim()) {
-          console.log("basicFormData", basicFormData?.[field]);
-          formErrors[field] = `${field
-            .replace(/([A-Z])/g, " $1")
-            .toUpperCase()} is required.`;
+    for (const field of [
+      "dob",
+      "gender",
+      "examDate",
+      "examName",
+      "studentName",
+      "email",
+    ]) {
+      if (field === "studentName" || field === "email") {
+        if (!userData?.[field]?.trim()) {
+          formErrors[field] = `${field.replace(
+            /([A-Z])/g,
+            " $1"
+          )} is required.`;
           isValid = false;
         }
+      } else if (field === "examName") {
+        await dispatch(updateBasicDetails({ [field]: "SDAT" }));
+      } else if (!basicFormData?.[field]?.trim()) {
+        formErrors[field] = `${field
+          .replace(/([A-Z])/g, " $1")
+          .toUpperCase()} is required.`;
+        isValid = false;
       }
-    );
+      // ✅ Check for future exam date
 
-    console.log("formErrors in vaaalidation", formErrors);
+      // required changes it not working
+      // if (field === "examDate") {
+      //   console.log(
+      //     "formErrors from validationForm before",
+      //     basicFormData.examDate
+      //   );
+
+      //   const examDateRaw = basicFormData?.examDate;
+      //   // Corrected format
+      //   const examDate = dayjs(examDateRaw, "DD-MM-YYYY", true);
+
+      //   if (!examDate.isValid()) {
+      //     console.log("examDate.isValid");
+      //     formErrors.examDate = "Invalid date format.";
+      //     isValid = false;
+      //   } else {
+      //     const today = dayjs().startOf("day"); // Gets today at 00:00
+      //     const examDay = examDate.startOf("day"); // Converts to start of day for fair comparison
+
+      //     console.log("examDate", examDay.toDate());
+      //     console.log("today", today.toDate());
+
+      //     if (examDay.isSame(today) || examDay.isBefore(today)) {
+      //       formErrors.examDate = "Exam Date must be a future date.";
+      //       isValid = false;
+      //     }
+
+      //     console.log("formErrors from validationForm", formErrors);
+      //   }
+      // } else {
+      //   console.log("examDate from validateBasicForm", basicFormData);
+      // }
+    }
+
+    console.log("formErrors in validation", formErrors);
 
     setBasicDetailsError(formErrors);
     return isValid;
@@ -211,6 +283,17 @@ const BasicDetailsForm = () => {
     setShowReloading(true);
 
     try {
+      // setSubmitMessage(
+      //   dataExist
+      //     ? "Basic details updated successfully!"
+      //     : "Basic details submitted successfully!"
+      // );
+
+      console.log("userData before editStudent", userData);
+      const response = await axios.patch("/students/editStudent", userData);
+
+      console.log("response for onSubmit in BasicDetails", response);
+
       console.log("dataExist", dataExist);
       console.log("basicFormData form addAndUpdateBasicFrom", basicFormData);
       const url = dataExist
@@ -222,27 +305,22 @@ const BasicDetailsForm = () => {
       // const method =  axios.patch ;
 
       await method(url, basicFormData);
-      // setSubmitMessage(
-      //   dataExist
-      //     ? "Basic details updated successfully!"
-      //     : "Basic details submitted successfully!"
-      // );
-
-
-      console.log("userData before editStudent", userData)
-      const response = await axios.patch("/students/editStudent", userData);
-
-      console.log("response for onSubmit in BasicDetails", response);
 
       console.log("response", response);
       navigate("/registration/batchDetailsForm");
     } catch (error) {
       console.log("Error submitting form:", error);
-      if (errors.length === 0) setSubmitMessage(error.response.data.message);
+      if (error.response.data) {
+        setSubmitMessage(error.response.data);
+      }
     } finally {
       setShowReloading(false);
     }
   };
+
+  useEffect(() => {
+    console.log("userdata", userData);
+  }, [userData]);
 
   const onSubmit = async (e) => {
     setLoading(true);
@@ -295,8 +373,7 @@ const BasicDetailsForm = () => {
       {loading && <Spinner />}
 
       <div className="flex flex-col gap-6 max-w-screen-md mx-auto">
-        <div className="text-3xl text-white text-center">
-          {/* <FormHeader /> */}
+        <div className="text-3xl text-white text-center transform hover:-translate-y-1 transition duration-200">
           S.DAT Registration
         </div>
 

@@ -53,6 +53,7 @@ const Payment = () => {
 
   useEffect(() => {
     dispatch(fetchBasicDetails());
+
     dispatch(fetchBatchDetails());
     dispatch(fetchEducationalDetails());
     dispatch(fetchFamilyDetails());
