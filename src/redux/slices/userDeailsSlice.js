@@ -1,7 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from '../../api/axios';
 
-// Thunk to fetch user details
 export const fetchUserDetails = createAsyncThunk(
     'userDetails/fetchUserDetails',
     async (_, { rejectWithValue }) => {
@@ -12,7 +11,7 @@ export const fetchUserDetails = createAsyncThunk(
 
             if (data.length !== 0) {
                 return {
-                    dataExist: true, // Indicate data exists
+                    dataExist: true, 
                     userData: {
                         studentName: data?.studentName || '',
                         StudentsId: data?.StudentsId || '',
@@ -26,8 +25,8 @@ export const fetchUserDetails = createAsyncThunk(
                 };
             } else {
                 return {
-                    dataExist: false, // Indicate no data exists
-                    formData: {}, // Default empty data
+                    dataExist: false, 
+                    userData: {}, 
                 };
             }
         } catch (error) {
@@ -47,7 +46,7 @@ export const submitUserDetails = createAsyncThunk(
             const data = response.data;
             if (data.length !== 0) {
                 return {
-                    dataExist: true, // Indicate data exists
+                    dataExist: true, 
                     userData: {
                         studentName: data?.studentName || '',
                         StudentsId: data?.StudentsId || '',
@@ -61,8 +60,8 @@ export const submitUserDetails = createAsyncThunk(
                 };
             } else {
                 return {
-                    dataExist: false, // Indicate no data exists
-                    formData: {}, // Default empty data
+                    dataExist: false, 
+                    userData: {}, 
                 };
             }
         } catch (error) {
@@ -73,14 +72,13 @@ export const submitUserDetails = createAsyncThunk(
 
 
 
-// Slice
 const userDetailsSlice = createSlice({
     name: 'userDetails',
     initialState: {
         userData: {},
         loading: false,
         error: null,
-        dataExist: false, // New flag to indicate if data exists in the database
+        dataExist: false, 
 
     },
     reducers: {
@@ -97,7 +95,7 @@ const userDetailsSlice = createSlice({
             .addCase(fetchUserDetails.fulfilled, (state, action) => {
                 state.loading = false;
                 state.userData = action.payload.userData;
-                state.dataExist = action.payload.dataExist; // Update `dataExist`
+                state.dataExist = action.payload.dataExist; 
 
             })
             .addCase(fetchUserDetails.rejected, (state, action) => {
@@ -111,7 +109,7 @@ const userDetailsSlice = createSlice({
             .addCase(submitUserDetails.fulfilled, (state, action) => {
                 state.loading = false;
                 state.userData = action.payload.userData;
-                state.dataExist = action.payload.dataExist; // Update `dataExist`
+                state.dataExist = action.payload.dataExist; 
             })
             .addCase(submitUserDetails.rejected, (state, action) => {
                 state.loading = false;

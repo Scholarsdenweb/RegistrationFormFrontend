@@ -17,6 +17,8 @@ import Navbar from "./Form/Navbar";
 import Spinner from "../api/Spinner";
 import FormHeader from "./LoginSugnup/FormHeader";
 import PaymentFooter from "./PaymentFooter";
+import { toast, ToastContainer } from "react-toastify";
+
 
 const Payment = () => {
   const dispatch = useDispatch();
@@ -45,7 +47,7 @@ const Payment = () => {
     console.log("userData in useEffect", userData);
     if (userData.paymentId !== undefined && userData.paymentId !== "") {
       console.log("userData.paymentId form useEffect", userData.paymentId);
-      setPaymentStatus("true");
+      setPaymentStatus(true);
     }
   }, [userData]);
 
@@ -57,96 +59,90 @@ const Payment = () => {
     dispatch(fetchUserDetails());
   }, [dispatch]);
 
-  useEffect(() => {
-    console.log("basicDetailsDataExist", basicDetailsData);
-    console.log("batchDetailsData", batchDetailsData);
-    console.log("educationalDetailsData", educationalDetailsData);
-    console.log("familyDetailsData", familyDetailsData);
-  }, []);
-
   const checkoutHandler = async () => {
-    if (
-      !basicDetailsDataExist ||
-      !batchDetailsDataExist ||
-      !educationalDetailsDataExist ||
-      !familyDetailsDataExist
-    ) {
-      setAllFormNotAvailable(true);
-      // alert("Please fill all the details first");
-      return;
+    try {
+      if (
+        !basicDetailsDataExist ||
+        !batchDetailsDataExist ||
+        !educationalDetailsDataExist ||
+        !familyDetailsDataExist
+      ) {
+        setAllFormNotAvailable(true);
+        return;
+      }
+
+      setLoading(true);
+
+      // Get Razorpay Key
+      const {
+        data: { key },
+      } = await axios.get("/payment/getKey");
+      console.log("Razorpay Key:", key);
+
+      // Create Order
+      const {
+        data: { order },
+      } = await axios.post("/payment/checkout");
+      console.log("Order Details:", order);
+
+      const options = {
+        key,
+        amount: order.amount,
+        currency: order.currency,
+        name: "Scholars Den",
+        description: "S.DAT Registration Fees",
+        order_id: order.id,
+        prefill: {
+          name: userData.studentName,
+          email: userData.email,
+          contact: userData.contactNumber,
+        },
+        theme: {
+          color: "#c61d23",
+        },
+        handler: async function (response) {
+          try {
+            console.log("Payment Successful:", response);
+            await dispatch(
+              submitUserDetails({ payment_id: response.razorpay_payment_id })
+            );
+            await axios.post(`/payment/paymentverification`, {
+              razorpay_payment_id: response.razorpay_payment_id,
+              razorpay_order_id: response.razorpay_order_id,
+              razorpay_signature: response.razorpay_signature,
+              studentId: userData.StudentsId,
+            });
+          } catch (handlerError) {
+            console.error("Error in handler function:", handlerError);
+          }
+        },
+      };
+
+      console.log("Razorpay Options:", options);
+
+      const razorpay = new window.Razorpay(options);
+      razorpay.on("payment.failed", function (response) {
+        console.error("Payment Failed:", response.error);
+        // Optionally notify user here
+        toast.error("Something went wrong during payment process.");
+      });
+      razorpay.open();
+
+      console.log("Razorpay instance created:", razorpay);
+    } catch (error) {
+      console.error("Error in checkoutHandler:", error);
+      // Optionally show error to user
+      // toast.error("Something went wrong during payment process.");
+    } finally {
+      setLoading(false);
     }
-
-    // dispatch(setLoading(true));
-
-    setLoading(true);
-    const {
-      data: { key },
-    } = await axios.get("/payment/getKey");
-    console.log("key", key);
-
-    const response = await axios.post("/payment/checkout");
-    console.log("response", response);
-    console.log("response.data.order.amount", response.data.order.amount);
-    console.log("response.data.order.currency", response.data.order.currency);
-    console.log("response.data.currency", response.data.currency);
-
-    const options = {
-      key,
-      amount: response.data.order.amount,
-      currency: response.data.order.currency,
-      name: "Scholars Den",
-      description: "S.DAT Registration Fees",
-      order_id: response.data.order.id,
-      callback_url: `${
-        import.meta.env.VITE_APP_API_URL
-      }/api/payment/paymentverification`,
-      prefill: {
-        name: userData.name,
-        email: userData.email,
-        contact: userData.contactNumber,
-      },
-      theme: {
-        color: "#c61d23",
-      },
-      handler: async function (response) {
-        console.log("Payment successful", response);
-        // setPaymentInitiated(true);
-
-        await dispatch(
-          submitUserDetails({ payment_id: response.razorpay_payment_id })
-        );
-
-        console.log("userData in handler", userData);
-        // dispatch(submitUserDetails());
-
-        // Optionally, verify the payment on your backend
-
-        // Redirect to the success page
-        // window.location.href = `${
-        //   import.meta.env.VITE_APP_API_URL
-        // }/payment/success/${response.razorpay_order_id}`;
-      },
-    };
-
-    console.log("options", options);
-
-    const razorpay = new window.Razorpay(options);
-
-    await razorpay.open();
-
-    const dataFormBasiDetails = await dispatch(fetchBasicDetails());
-
-    console.log("DataFormBasicDetails", dataFormBasiDetails);
-
-    setLoading(false);
-
-    console.log("razorpay object", razorpay);
-    // await axios("/payment/paymentverification", {});
   };
 
   return (
     <div className=" relative min-h-screen w-full bg-[#c61d23] px-2 md:px-8 py-2 overflow-auto">
       {/* {loading && <Spinner />} */}
+            <ToastContainer position="top-right" autoClose={3000} /> {/* Toast Notifications */}
+
 
       <div className="flex flex-col gap-6 max-w-screen-md h-full mx-auto ">
         <div>
@@ -162,22 +158,18 @@ const Payment = () => {
             <Spinner />
           ) : (
             <div className="ol-span-6 px-9 py-8 mb-3 sm:mr-5 h-full bg-gray-100 rounded-3xl flex flex-col items-center justify-between gap-4 ">
-            <div className="flex flex-col gap-5">
+              <div className="flex flex-col gap-5">
+                <h2 className="text-bold text-2xl ">
+                  SDAT Registration Amount : <span>&#8377;500</span>{" "}
+                </h2>
 
-          
-              <h2 className="text-bold text-2xl ">
-                SDAT Registration Amount : <span>&#8377;500</span>{" "}
-              </h2>
-
-              <div
-                className="bg-[#c61d23] text-white p-3 rounded-lg text-center cursor-pointer"
-                onClick={checkoutHandler}
-              >
-                Pay Now
+                <div
+                  className="bg-[#c61d23] text-white p-3 rounded-lg text-center cursor-pointer"
+                  onClick={checkoutHandler}
+                >
+                  Pay Now
+                </div>
               </div>
-              </div>
-
-             
             </div>
           )}
           {allFormNotAvailable && (
@@ -190,12 +182,10 @@ const Payment = () => {
             />
           )}
         </div>
-
-
       </div>
-        <div className="fixed flex justify-center bottom-0 z-0">
-                <PaymentFooter />
-              </div> 
+      <div className="fixed flex justify-center bottom-0 z-0">
+        <PaymentFooter />
+      </div>
     </div>
   );
 };
