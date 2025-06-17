@@ -68,7 +68,6 @@ const FamilyDetails = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-    console.log("name and value from handleChange", name , value)
 
     if (name === "MotherContactNumber" || name === "FatherContactNumber") {
       if (value.length > 10) {
@@ -76,7 +75,6 @@ const FamilyDetails = () => {
       }
     }
 
-    console.log("handle change function is working", name, value);
 
     dispatch(
       updateFamilyDetails({
@@ -165,9 +163,7 @@ const FamilyDetails = () => {
     setCheckUrl(pathLocation === "/familyDetailsForm");
   }, [dispatch, pathLocation]);
 
-  useEffect(() => {
-    console.log("Data from useEffect", formData);
-  }, [formData]);
+ 
 
   return (
     <div className="min-h-screen w-full bg-[#c61d23] px-2 md:px-8 py-2 overflow-auto">
