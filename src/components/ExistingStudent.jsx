@@ -28,7 +28,7 @@ const ExistingStudent = () => {
         <div className="flex ">
           <div className="text-3xl flex-grow text-white text-center">
             {/* <FormHeader /> */}
-            S.DAT Registration
+            Rise Registration
           </div>
 
           <div className="hover:cursor-pointer">

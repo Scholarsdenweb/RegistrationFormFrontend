@@ -6,8 +6,8 @@ import EducationalDetailsForm from "./components/Form/EducationalDetails";
 import { AuthProvider } from "../context/AuthContext";
 import PrivateRoute from "./components/PrivateRoute";
 
-import EmployeeLogin from "./components/employeeCompoments/EmployeeeLoginSignup/EmployeeLogin";
-import EmployeeDashboard from "./components/employeeCompoments/EmployeeDashboard";
+import AdminLogin from "./components/adminCompoments/AdminLoginSignup/AdminLogin";
+import AdminDashboard from "./components/adminCompoments/AdminDashboard";
 
 import BasicDetailsForm from "./components/Form/BasicDetails";
 import Signup from "./components/LoginSugnup/Signup";
@@ -23,11 +23,11 @@ import FormDetailPage from "./components/FormDetailPage";
 import Spinner from "./api/Spinner";
 import Payment from "./components/Payment";
 import Result from "./components/Result";
-import AllStudentResult from "./components/employeeCompoments/AllStudentResult";
-import AddExamDate from "./components/employeeCompoments/AddExamDate";
-import DownloadResult from "./components/employeeCompoments/DownloadResult";
-import CloudinaryUpload from "./components/employeeCompoments/CloudinaryUpload";
-import CloudinaryComponent from "./components/employeeCompoments/CloudinaryComponent";
+import AllStudentResult from "./components/adminCompoments/AllStudentResult";
+import AddExamDate from "./components/adminCompoments/AddExamDate";
+import DownloadResult from "./components/adminCompoments/DownloadResult";
+import CloudinaryUpload from "./components/adminCompoments/CloudinaryUpload";
+import CloudinaryComponent from "./components/adminCompoments/CloudinaryComponent";
 import BatchRelatedDetailsForm from "./components/Form/BatchRelatedDetails";
 import FamilyDetails from "./components/Form/FamilyDetails";
 import SelfieCapture from "./components/SelfieCapture";
@@ -39,32 +39,51 @@ import ExistingStudent from "./components/ExistingStudent";
 import EnquiryData from "./components/EnquiryData";
 import FaceDetectionUpload from "./components/FaceDetection";
 import CreateInvoice from "./components/CreateInvoice";
+import AllFormsComponents from "./components/adminCompoments/AllFormsComponents";
+import RiseFee from "./components/adminCompoments/RiseFee/RiseFee";
+import LockNavigation from "./utils/LockNavigator";
+import Amount from "./components/adminCompoments/Amount";
 
 function App() {
   return (
     <Provider store={store}>
       <AuthProvider>
         <Router>
+
+          <LockNavigation/>
           <div className="p-0 m-0">
             <Routes>
               {/* <Route path="/" element={<Login />} /> */}
-              <Route path="/employee" element={<EmployeeLogin />} />
+              <Route path="/admin" element={<AdminLogin />} />
+              {/* <Route path="/admin" element={<AdminLogin />} /> */}
               <Route
-                path="/employee/dashboard"
-                element={<PrivateRoute component={EmployeeDashboard} />}
+                path="/admin/dashboard"
+                element={<PrivateRoute component={AdminDashboard} />}
               />
               <Route
-                path="/employee/allStudents"
+                path="/admin/allStudents"
                 element={<AllStudentResult />}
               />
-              <Route path="/employee/addExamDate" element={<AddExamDate />} />
+              <Route path="/admin/addExamDate" element={<AddExamDate />} />
               <Route
-                path="/employee/downloadResult"
+                path="/admin/downloadResult"
                 element={<DownloadResult />}
               />
               <Route
-                path="/employee/CloudinaryUpload"
+                path="/admin/CloudinaryUpload"
                 element={<CloudinaryComponent />}
+              />
+              <Route
+                path="/admin/allForms"
+                element={<AllFormsComponents />}
+              />
+              <Route
+                path="/admin/formFee"
+                element={<RiseFee />}
+              />
+              <Route
+                path="/admin/amount"
+                element={<Amount />}
               />
               <Route path="/facedetection" element={<FaceDetectionUpload />} />
 

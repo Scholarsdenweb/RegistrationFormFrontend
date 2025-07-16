@@ -485,7 +485,7 @@ const EducationalDetailsForm = () => {
           name={key}
           value={value}
           onChange={handleChange}
-          className="border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-indigo-400 focus:outline-none w-full"
+          className=" appearance-none  border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-indigo-400 focus:outline-none w-full"
         >
           <option value="" disabled>{`Select ${key.replace(
             /([A-Z])/g,
@@ -511,7 +511,7 @@ const EducationalDetailsForm = () => {
       <div className="flex flex-col gap-6 max-w-screen-md mx-auto">
         <div className="text-3xl text-white text-center transform hover:-translate-y-1 transition duration-200">
           {/* <FormHeader /> */}
-          S.DAT Registration
+          RISE Registration
         </div>
 
         {/* <h1 className="text-3xl md:text-4xl font-semibold text-white text-center">

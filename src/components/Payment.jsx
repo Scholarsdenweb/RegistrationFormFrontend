@@ -23,6 +23,8 @@ import { toast, ToastContainer } from "react-toastify";
 const Payment = () => {
   const dispatch = useDispatch();
 
+  const [amount , setAmount ]= useState();
+
   const [allFormNotAvailable, setAllFormNotAvailable] = useState(false);
 
   const { userData: basicDetailsData, dataExist: basicDetailsDataExist } =
@@ -40,8 +42,19 @@ const Payment = () => {
 
   const { userData } = useSelector((state) => state.userDetails);
   const [paymentStatus, setPaymentStatus] = useState(
-    userData.paymentId !== undefined && userData.paymentId !== "" ? true : false
-  );
+false  );
+
+
+  const getAmount  = async(req, res) =>{
+    const amount = await axios.get("/amount");
+    console.log("amount", amount)
+ if(amount.data.amount === 0)
+    {
+      setPaymentStatus(true);
+    }
+
+    setAmount(amount.data.amount);
+  }  
 
   useEffect(() => {
     console.log("userData in useEffect", userData);
@@ -59,6 +72,11 @@ const Payment = () => {
     dispatch(fetchFamilyDetails());
     dispatch(fetchUserDetails());
   }, [dispatch]);
+
+useEffect(()=>{
+  getAmount();
+}, [])
+
 
   const checkoutHandler = async () => {
     try {
@@ -91,7 +109,7 @@ const Payment = () => {
         amount: order.amount,
         currency: order.currency,
         name: "Scholars Den",
-        description: "S.DAT Registration Fees",
+        description: "Rise Registration Fees",
         order_id: order.id,
         prefill: {
           name: userData.studentName,
@@ -161,7 +179,7 @@ const Payment = () => {
             <div className="ol-span-6 px-9 py-8 mb-3 sm:mr-5 h-full bg-gray-100 rounded-3xl flex flex-col items-center justify-between gap-4 ">
               <div className="flex flex-col gap-5">
                 <h2 className="text-bold text-2xl ">
-                  SDAT Registration Amount : <span>&#8377;500</span>{" "}
+                  SDAT Registration Amount : <span>&#8377;{amount}</span>{" "}
                 </h2>
 
                 <div

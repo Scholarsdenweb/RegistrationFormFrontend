@@ -27,7 +27,7 @@ const TermsAndConditionPage = () => {
       {/* Close Button */}
       <button
         className="absolute top-2 right-6 text-lg sm:text-2xl border-2 px-3 py-1 sm:py-2 rounded-full text-white hover:bg-[#ffdd00] hover:text-black"
-        onClick={() => navigate("-1")}
+        onClick={() => navigate("/registration/payment")}
       >
         X
       </button>
@@ -54,7 +54,7 @@ const TermsAndConditionPage = () => {
           deductions for damages.
         </li>
         <li>No refund for fee defaulters or mid-session dropouts.</li>
-        <li><strong>Fees paid for S.DAT (Scholars Den Admission Test) are non-refundable under any circumstances.</strong></li>
+        <li><strong>Fees paid for RISE (Scholars Den Admission Test) are non-refundable under any circumstances.</strong></li>
         <li>Refunds will be made as per the schedule below:</li>
         <ul className="list-disc pl-6 sm:pl-10">
           <li>Classes 6th–10th: From 1st September of the financial year.</li>

@@ -246,7 +246,7 @@ const BatchRelatedDetailsForm = () => {
       <div className="flex flex-col gap-6 max-w-screen-md mx-auto">
         <div className="text-3xl text-white text-center transform hover:-translate-y-1 transition duration-200">
           {/* <FormHeader /> */}
-          S.DAT Registration
+          RISE Registration
         </div>
 
         {/* <h1 className="text-3xl md:text-4xl font-semibold text-white text-center">
@@ -274,7 +274,7 @@ const BatchRelatedDetailsForm = () => {
               name="program"
               value={programConverter(formData?.program || "")}
               onChange={handleChange}
-              className="border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-indigo-400 focus:outline-none"
+              className="appearance-none border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-indigo-400 focus:outline-none"
             >
               <option disabled value="">
                 Select Program
@@ -312,7 +312,7 @@ const BatchRelatedDetailsForm = () => {
               value={normalizeValue(formData?.classForAdmission)}
               onChange={handleChange}
               placeholder="Select Class for adminssion"
-              className="border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-indigo-400 focus:outline-none"
+              className=" appearance-none  border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-indigo-400 focus:outline-none"
             >
               <option selected value="">
                 Select Class for admission

@@ -22,7 +22,7 @@ const SelfieCapture = () => {
   const getCamera = async () => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({
-        video: { facingMode: "user" }, // Front camera
+        video: { facingMode: "user" }, 
       });
       if (videoRef.current) {
         videoRef.current.srcObject = stream;
@@ -33,12 +33,21 @@ const SelfieCapture = () => {
     }
   };
 
+  const stopCamera = () => {
+    if (videoRef.current && videoRef.current.srcObject) {
+      const tracks = videoRef.current.srcObject.getTracks();
+      tracks.forEach((track) => track.stop());
+      videoRef.current.srcObject = null;
+    }
+  };
+
   useEffect(() => {
     getCamera();
-
     dispatch(fetchUserDetails());
 
-    console.log("get userDetails", userDetails);
+    return () => {
+      stopCamera(); // 🧹 Clean up on unmount
+    };
   }, []);
 
   useEffect(() => {
@@ -166,9 +175,13 @@ const SelfieCapture = () => {
                 >
                   View Image
                 </a> */}
+
                   <button
                     className="mt-4 w-full bg-[#ffdd00]  hover:bg-[#e2e242] text-black py-2 px-4 rounded-xl transition"
-                    onClick={() => navigate("/registration/payment")}
+                    onClick={() => {
+                      stopCamera(); // ⛔ Stop camera
+                      navigate("/registration/payment"); // ✅ Then navigate
+                    }}
                   >
                     Continue
                   </button>
@@ -188,8 +201,7 @@ const SelfieCapture = () => {
                 >
                   Retake
                 </button>
-              )
-              }
+              )}
             </>
           )}
           <canvas ref={canvasRef} className="hidden" />

@@ -374,7 +374,7 @@ const BasicDetailsForm = () => {
 
       <div className="flex flex-col gap-6 max-w-screen-md mx-auto">
         <div className="text-3xl text-white text-center transform hover:-translate-y-1 transition duration-200">
-          S.DAT Registration
+          RISE Registration
         </div>
 
         {/* <h1 className="text-3xl md:text-4xl font-semibold text-white text-center">
@@ -435,7 +435,7 @@ const BasicDetailsForm = () => {
 
           {/* <div className=" "> */}
           {/* Date of Birth */}
-          <div className="flex flex-col w-full">
+          <div className=" appearance-none flex flex-col w-full">
             <label
               htmlFor="dob"
               className="text-sm font-medium text-white mb-1"
@@ -449,7 +449,7 @@ const BasicDetailsForm = () => {
               value={basicFormData?.dob || ""}
               onChange={basicFormHandleChange}
               max={new Date().toISOString().split("T")[0]}
-              className="border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-indigo-400 focus:outline-none"
+              className="appearance-none border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-indigo-400 focus:outline-none"
             />
             {basicDetailsError.dob && (
               <p className="text-[#ffdd00] text-xs mt-1">
@@ -471,7 +471,7 @@ const BasicDetailsForm = () => {
               name="gender"
               value={basicFormData?.gender || ""}
               onChange={basicFormHandleChange}
-              className="border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-indigo-400 focus:outline-none"
+              className="appearance-none border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-indigo-400 focus:outline-none"
             >
               <option value="" disabled>
                 Select Gender
@@ -533,7 +533,7 @@ const BasicDetailsForm = () => {
               name="examDate"
               value={basicFormData?.examDate || ""}
               onChange={basicFormHandleChange}
-              className="border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-indigo-400 focus:outline-none"
+              className=" appearance-none border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-indigo-400 focus:outline-none"
             >
               <option value="" disabled>
                 Select Exam Date

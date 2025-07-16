@@ -54,7 +54,7 @@ const ShowExistingStudentDetails = () => {
             key={index}
             className=" relative bg-white rounded-xl shadow-md p-4 sm:p-6 flex items-center justify-start gap-6 hover:shadow-xl transition duration-300 cursor-pointer"
           >
-            {!student.paymentId && (
+            {!student.admitCard && (
               <div
                 className="absolute right-2 top-2 bg-[#ffdd00] p-2  rounded-xl"
                 onClick={() => continueWithExistingProfile(student._id)}

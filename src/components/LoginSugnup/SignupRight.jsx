@@ -18,8 +18,8 @@ export default function SignupRight() {
   // Regex pattern for phone number validation (+91 followed by 10 digits)
   const phoneRegex = /^\+91[0-9]{10}$/;
   // const [loading, setLoading] = useState(false);
-  // const [codeVerified, setCodeVerified] = useState(true);
-  const [codeVerified, setCodeVerified] = useState(false);
+  const [codeVerified, setCodeVerified] = useState(true);
+  // const [codeVerified, setCodeVerified] = useState(false);
   const [isSubmittingForm, setIsSubmittingForm] = useState(false);
 
   const [codeEntered, setCodeEntered] = useState(false);
@@ -131,8 +131,8 @@ export default function SignupRight() {
     try {
       setIsSubmittingForm(true);
 
-      let codeChecked = await checkVerificationCode();
-      // let codeChecked = true;
+      // let codeChecked = await checkVerificationCode();
+      let codeChecked = true;
 
       console.log("codeChecked", codeChecked);
       if (codeChecked === false) {
@@ -324,15 +324,15 @@ export default function SignupRight() {
           </p>
         )}
 
-        {showCodeBox && (
+        {/* {showCodeBox && ( */}
           <button
             type="submit"
             className="w-full bg-yellow-500 hover:bg-yellow-600 text-black font-semibold py-2 rounded-xl transition-all disabled:bg-yellow-800"
-            disabled={!codeEntered}
+            // disabled={!codeEntered}
           >
             Next
           </button>
-         )}
+         {/* )} */}
       </form>
     </div>
   );
