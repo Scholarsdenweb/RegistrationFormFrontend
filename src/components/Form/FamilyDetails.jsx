@@ -274,7 +274,7 @@ const FamilyDetails = () => {
 
           <div className="flex flex-col-reverse sm:flex-row justify-between items-center gap-4 mt-6">
             <button
-              onClick={() => navigate(-1)}
+              onClick={() => navigate("/registration/educationalDetailsForm")}
               type="button"
               className="w-full sm:w-1/3 border bg-yellow-500 hover:bg-yellow-600 rounded-xl text-black  py-2 px-4 "
             >

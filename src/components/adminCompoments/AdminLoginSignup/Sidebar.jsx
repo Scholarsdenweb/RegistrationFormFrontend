@@ -151,6 +151,26 @@ const Sidebar = () => {
           <h4>Amount</h4>
         </Link>
        
+
+
+       <Link
+          to={"/admin/add-student-registration"}
+          className={`flex gap-3 rounded-l-full ml-16 p-3 ${
+            location.pathname === "/admin/add-student-registration"
+              ? "text-red-600 bg-white"
+              : "text-white"
+          } `}
+        >
+          {/* <img
+            src={
+              location.pathname === "/admin/allForms"
+                ? DashboardDarkMode
+                : DashboardLightMode
+            }
+            alt=""
+          /> */}
+          <h4>Add Student Registration</h4>
+        </Link>
       
       </div>
 

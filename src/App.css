@@ -1,4 +1,4 @@
-#root {
+/* #root {
   max-width: 768px;
   margin: 0 auto;
   padding: 0;
@@ -9,7 +9,7 @@
   font-variation-settings:
     "wdth" 100;
 
-}
+} */
 
 input[type=number]::-webkit-inner-spin-button,
 input[type=number]::-webkit-outer-spin-button {

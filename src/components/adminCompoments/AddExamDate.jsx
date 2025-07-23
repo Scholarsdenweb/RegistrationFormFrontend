@@ -8,7 +8,7 @@ dayjs.extend(customParseFormat);
 
 const AddExamDate = () => {
   const [examDate, setExamDate] = useState("");
-  const [scholarshipValidation, setScholarshipValidation] = useState("");
+  // const [scholarshipValidation, setScholarshipValidation] = useState("");
   const [allDates, setAllDates] = useState([]);
   const [editingDate, setEditingDate] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -23,13 +23,11 @@ const AddExamDate = () => {
     examType: "",
   });
 
-
   const validateForm = () => {
     const formErrors = {};
     let isValid = true;
 
     ["examDate", "examType"].forEach((field) => {
-    
       if (!field) {
         // Capitalize the first letter of the field and add spaces before capital letters
         const formattedField = field
@@ -38,37 +36,34 @@ const AddExamDate = () => {
         formErrors[field] = `${formattedField} is required`;
         isValid = false;
       }
-    }); 
+    });
     setErrors(formErrors);
     return isValid;
   };
 
-
-  
-
   const addDate = async () => {
+    if (!validateForm()) return;
 
-    if(!validateForm()) return;
-  
-// Required to Change Because it may cause error Ex - secound request not run because of any error so we need to handle this issue
+    // Required to Change Because it may cause error Ex - secound request not run because of any error so we need to handle this issue
     setLoading(true);
     try {
       if (editingDate) {
         await axios.patch("/employees/editDate", {
           _id: editingDate._id,
           changedDate: dayjs(examDate).format("DD-MM-YYYY"),
-          newExamName: examName
+          newExamName: examName,
         });
-        await axios.patch("/examList/updateExam")
+        await axios.patch("/examList/updateExam");
         setMessage("✅ Exam date updated successfully!");
         setEditingDate(null);
       } else {
-
-        console.log("ExamDate", examDate)
+        console.log("ExamDate", examDate);
         await axios.post("/employees/addExamDate", {
           examDate: dayjs(examDate).format("DD-MM-YYYY"),
           examName,
-          scholarshipValidation : dayjs(scholarshipValidation).format("DD-MM-YYYY")
+          scholarshipValidation: dayjs(scholarshipValidation).format(
+            "DD-MM-YYYY"
+          ),
         });
 
         // await axios.post("/examList/addExam", {
@@ -76,7 +71,6 @@ const AddExamDate = () => {
         // })
         setMessage("✅ Exam date added successfully!");
       }
-
 
       setExamDate("");
       await fetchAllDates();
@@ -92,19 +86,18 @@ const AddExamDate = () => {
     try {
       const response = await axios.get("/employees/getAllDates");
 
-      console.log("response", response );
-       
+      console.log("response", response);
+
       const filteredDates = response.data.filter((date) => {
         const examDate = dayjs(date.examDate, "DD-MM-YYYY", true);
 
-      
-        return {"examDate":
-          examDate.isValid() &&
-          examDate.isAfter(dayjs().startOf("day")) &&
-          examDate.isBefore(dayjs().add(3, "months").endOf("day")),
-          examName:date.examName
-        }
-        ;
+        return {
+          examDate:
+            examDate.isValid() &&
+            examDate.isAfter(dayjs().startOf("day")) &&
+            examDate.isBefore(dayjs().add(3, "months").endOf("day")),
+          examName: date.examName,
+        };
       });
 
       setAllDates(filteredDates);
@@ -185,14 +178,14 @@ const AddExamDate = () => {
                 max={maxDate}
                 onChange={(e) => setExamDate(e.target.value)}
               />
-              <input
+              {/* <input
                 type="date"
                 className="p-3 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500"
                 value={scholarshipValidation}
                 min={minDate}
                 max={maxDate}
                 onChange={(e) => setScholarshipValidation(e.target.value)}
-              />
+              /> */}
               <select
                 name="AddExamDate"
                 id="AddExamDate"
@@ -203,7 +196,7 @@ const AddExamDate = () => {
                 <option value="" className="bg-white text-black" disabled>
                   Select Exam
                 </option>
-                <option value="SDAT" className="bg-white text-black" >
+                <option value="SDAT" className="bg-white text-black">
                   SDAT
                 </option>
                 <option value="RISE" className="bg-white text-black">

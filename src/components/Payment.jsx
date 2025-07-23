@@ -19,11 +19,10 @@ import FormHeader from "./LoginSugnup/FormHeader";
 import PaymentFooter from "./PaymentFooter";
 import { toast, ToastContainer } from "react-toastify";
 
-
 const Payment = () => {
   const dispatch = useDispatch();
 
-  const [amount , setAmount ]= useState();
+  const [amount, setAmount] = useState();
 
   const [allFormNotAvailable, setAllFormNotAvailable] = useState(false);
 
@@ -41,21 +40,17 @@ const Payment = () => {
   const [loading, setLoading] = useState(false);
 
   const { userData } = useSelector((state) => state.userDetails);
-  const [paymentStatus, setPaymentStatus] = useState(
-false  );
+  const [paymentStatus, setPaymentStatus] = useState(false);
 
-
-  const getAmount  = async(req, res) =>{
+  const getAmount = async (req, res) => {
     const amount = await axios.get("/amount");
-    console.log("amount", amount)
- if(amount.data.amount === 0)
-    {
+    console.log("amount", amount);
+    if (amount.data.amount === 0) {
       setPaymentStatus(true);
     }
 
     setAmount(amount.data.amount);
-  }  
-
+  };
   useEffect(() => {
     console.log("userData in useEffect", userData);
     if (userData.paymentId !== undefined && userData.paymentId !== "") {
@@ -73,10 +68,9 @@ false  );
     dispatch(fetchUserDetails());
   }, [dispatch]);
 
-useEffect(()=>{
-  getAmount();
-}, [])
-
+  useEffect(() => {
+    getAmount();
+  }, []);
 
   const checkoutHandler = async () => {
     try {
@@ -160,9 +154,8 @@ useEffect(()=>{
   return (
     <div className=" relative min-h-screen w-full bg-[#c61d23] px-2 md:px-8 py-2 overflow-auto">
       {/* {loading && <Spinner />} */}
-            <ToastContainer position="top-right" autoClose={3000} /> {/* Toast Notifications */}
-
-
+      <ToastContainer position="top-right" autoClose={3000} />{" "}
+      {/* Toast Notifications */}
       <div className="flex flex-col gap-6 max-w-screen-md h-full mx-auto ">
         <div>
           <FormHeader />
@@ -201,9 +194,10 @@ useEffect(()=>{
             />
           )}
         </div>
-      </div>
-      <div className="fixed flex justify-center bottom-0 z-0">
-        <PaymentFooter />
+
+        <div className="">
+          <PaymentFooter />
+        </div>
       </div>
     </div>
   );

@@ -32,17 +32,15 @@ const Amount = () => {
       return;
     }
 
-    console.log("changedAmount", changedAmount);
-    console.log("changedAmount", Number(changedAmount));
-
-    const response = await axios.patch("/amount", {changedAmount: Number(changedAmount)});
-
-    console.log("response from updateAmountHandler", response);
 
     try {
       setLoading(true);
-      const response = await axios.patch("/amount", changedAmount );
-      setAmount(response.data.amount);
+      const response = await axios.patch("/amount", {
+        changedAmount: Number(changedAmount),
+      });
+
+      console.log("response, response", response);
+      setAmount(response.data.updatedAmount.amount);
       setShowPopup(false);
       toast.success("Amount updated successfully!");
     } catch (error) {

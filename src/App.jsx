@@ -43,6 +43,7 @@ import AllFormsComponents from "./components/adminCompoments/AllFormsComponents"
 import RiseFee from "./components/adminCompoments/RiseFee/RiseFee";
 import LockNavigation from "./utils/LockNavigator";
 import Amount from "./components/adminCompoments/Amount";
+import AddStudentRegistartionComponent from "./components/adminCompoments/AddStudentRegistration/AddStudentRegistartionComponent";
 
 function App() {
   return (
@@ -84,6 +85,10 @@ function App() {
               <Route
                 path="/admin/amount"
                 element={<Amount />}
+              />
+              <Route
+                path="/admin/add-student-registration"
+                element={<AddStudentRegistartionComponent />}
               />
               <Route path="/facedetection" element={<FaceDetectionUpload />} />
 
