@@ -51,7 +51,7 @@ const AddStudentRegistartionComponent = () => {
   };
 
   return (
-    <div className="w-full h-full bg-[#c61d23] overflow-auto min-h-screen">
+    <div className="w-full h-full bg-[#fdf5f6] overflow-auto min-h-screen">
       <ToastContainer position="top-right" autoClose={3000} />
 
       <div className="grid grid-cols-7 h-full">
@@ -61,7 +61,7 @@ const AddStudentRegistartionComponent = () => {
         </div>
 
         {/* Main Content */}
-        <div className="flex flex-col col-span-5 py-6">
+        <div className="flex flex-col col-span-5 py-6 pr-5">
         <AddStudentRegistrationMain/>
         </div>
       </div>

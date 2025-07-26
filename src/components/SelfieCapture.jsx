@@ -22,7 +22,7 @@ const SelfieCapture = () => {
   const getCamera = async () => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({
-        video: { facingMode: "user" }, 
+        video: { facingMode: "user" },
       });
       if (videoRef.current) {
         videoRef.current.srcObject = stream;
@@ -33,20 +33,36 @@ const SelfieCapture = () => {
     }
   };
 
-  const stopCamera = () => {
+  const stopCamera = async () => {
     if (videoRef.current && videoRef.current.srcObject) {
-      const tracks = videoRef.current.srcObject.getTracks();
-      tracks.forEach((track) => track.stop());
+      const tracks = await videoRef.current.srcObject.getTracks();
+      await tracks.forEach(async (track) => await track.stop());
       videoRef.current.srcObject = null;
     }
   };
+
+  // useEffect(() => {
+  //   getCamera();
+  //   dispatch(fetchUserDetails());
+
+  //   return () => {
+  //     stopCamera(); // 🧹 Clean up on unmount
+  //   };
+  // }, []);
 
   useEffect(() => {
     getCamera();
     dispatch(fetchUserDetails());
 
+    const handleBeforeUnload = () => {
+      stopCamera();
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
     return () => {
       stopCamera(); // 🧹 Clean up on unmount
+      window.removeEventListener("beforeunload", handleBeforeUnload);
     };
   }, []);
 
@@ -55,18 +71,19 @@ const SelfieCapture = () => {
   }, [userDetails]);
 
   const handleCapture = async () => {
-    const canvas = canvasRef.current;
-    const video = videoRef.current;
+    const canvas = await canvasRef.current;
+    const video = await videoRef.current;
 
-    canvas.width = video.videoWidth;
-    canvas.height = video.videoHeight;
-    const context = canvas.getContext("2d");
-    context.drawImage(video, 0, 0, canvas.width, canvas.height);
-    const image = canvas.toDataURL("image/png");
+    canvas.width = await video.videoWidth;
+    canvas.height = await video.videoHeight;
+    const context = await canvas.getContext("2d");
+    await context.drawImage(video, 0, 0, canvas.width, canvas.height);
+    const image = await canvas.toDataURL("image/png");
 
-    setCapturedImage(image);
+    await setCapturedImage(image);
 
-    uploadToCloudinary(image);
+   await uploadToCloudinary(image);
+    await stopCamera(); // ✅ Stop the camera immediately after capture
   };
 
   const [formData, setFormData] = useState({
@@ -178,8 +195,8 @@ const SelfieCapture = () => {
 
                   <button
                     className="mt-4 w-full bg-[#ffdd00]  hover:bg-[#e2e242] text-black py-2 px-4 rounded-xl transition"
-                    onClick={() => {
-                      stopCamera(); // ⛔ Stop camera
+                    onClick={async () => {
+                      await stopCamera(); // ⛔ Stop camera
                       navigate("/registration/payment"); // ✅ Then navigate
                     }}
                   >

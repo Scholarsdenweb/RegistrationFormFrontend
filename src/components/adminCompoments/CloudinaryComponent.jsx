@@ -5,7 +5,7 @@ import CloudinaryUpload from "./CloudinaryUpload";
 
 const CloudinaryComponents = () => {
   return (
-    <div className="w-full h-full bg-[#c61d23] overflow-auto ">
+    <div className="w-full h-full bg-[#fdf5f6] overflow-auto ">
       <ToastContainer position="top-right" autoClose={3000} />{" "}
       {/* Toast Notifications */}
       <div className="grid grid-cols-7 h-full">

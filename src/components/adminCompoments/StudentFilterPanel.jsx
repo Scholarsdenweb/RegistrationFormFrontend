@@ -23,9 +23,9 @@ const StudentFilterPanel = ({
     <div className="flex flex-wrap gap-3 items-end justify-between">
       {/* Class Filter */}
       <div className="flex flex-col border-1">
-        <label className="text-white">Select Class</label>
+        <label className="text-black">Select Class</label>
         <select
-          className="w-40 p-4 rounded-xl"
+          className="w-40 p-4 rounded-xl appearance-none "
           onChange={handleChangeClassFilter}
           value={classValue}
         >
@@ -40,7 +40,7 @@ const StudentFilterPanel = ({
 
       {/* Name Filter */}
       <div className="flex flex-col">
-        <label className="text-white">Search by Name</label>
+        <label className="text-black">Search by Name</label>
         <input
           className="p-4 rounded-xl"
           placeholder="Search by Name"

@@ -55,7 +55,7 @@ const DownloadResult = () => {
 }, [hasMore]);
 
   return (
-    <div className="w-full h-full bg-[#c61d23] overflow-auto">
+    <div className="w-full h-full bg-[#fdf5f6] overflow-auto">
       <div className="grid grid-cols-7 h-full">
         {/* Left Sidebar */}
         <div className="col-span-2">

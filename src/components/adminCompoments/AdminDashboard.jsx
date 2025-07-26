@@ -66,7 +66,7 @@ const AdminDashboard = () => {
   };
 
   return (
-    <div className="w-full h-full bg-[#c61d23]">
+    <div className="w-full h-full bg-[#fdf5f6]">
       <div className="grid grid-cols-7 h-full">
         {/* Left Sidebar */}
         <div className="col-span-2">

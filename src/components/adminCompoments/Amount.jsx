@@ -52,7 +52,7 @@ const Amount = () => {
   };
 
   return (
-    <div className="w-full h-full bg-[#c61d23] overflow-auto min-h-screen">
+    <div className="w-full h-full bg-[#fdf5f6] overflow-auto min-h-screen">
       <ToastContainer position="top-right" autoClose={3000} />
 
       <div className="grid grid-cols-7 h-full">
@@ -63,7 +63,7 @@ const Amount = () => {
 
         {/* Main Content */}
         <div className="flex flex-col col-span-5 py-6 px-8">
-          <div className="relative bg-white rounded-3xl shadow-xl p-10 flex flex-col items-center gap-8">
+          <div className="relative bg-white rounded-3xl shadow-xl p-10 flex flex-col items-center gap-8 h-full ">
             <h1 className="text-3xl font-bold text-gray-800">
               Registration Fee
             </h1>

@@ -139,7 +139,7 @@ const AddExamDate = () => {
   const maxDate = dayjs().add(3, "month").format("YYYY-MM-DD");
 
   return (
-    <div className="w-full h-full overflow-auto bg-[#c61d23]">
+    <div className="w-full h-full overflow-auto bg-[#fdf5f6]">
       <div className="grid grid-cols-7 h-full">
         {/* Sidebar */}
         <div className="col-span-2">

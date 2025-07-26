@@ -353,7 +353,7 @@ const AllFormsMain = () => {
         <Sidebar />
       </div> */}
 
-      <div className="col-span-10 max-w-7xl w-full pr-4 py-6 bg-[#c61d23] overflow-auto h-screen">
+      <div className="col-span-10 max-w-7xl w-full pr-4 py-6 bg-[#fdf5f6] overflow-auto h-screen">
         {/* <h2 className="text-3xl font-semibold text-center text-white mb-8">
           Admin Dashboard
         </h2> */}
