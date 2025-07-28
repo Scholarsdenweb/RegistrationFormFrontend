@@ -6,6 +6,7 @@ import familyDetailsReducer from "./slices/familyDetailsSlice";
 import userDetailsReducer from "./slices/userDeailsSlice";
 import loadingDetailsReducer from "./slices/loadingSlice";
 import existingUserDetailsReducer from "./slices/existingStudentSlice";
+import examDateReducer from "./slices/examDateDetails"
 
 // Configure Redux Store
 const store = configureStore({
@@ -18,6 +19,7 @@ const store = configureStore({
     userDetails: userDetailsReducer,
     existingStudentDetails: existingUserDetailsReducer,
     loadingDetails: loadingDetailsReducer,
+    examDate : examDateReducer
   },
 });
 

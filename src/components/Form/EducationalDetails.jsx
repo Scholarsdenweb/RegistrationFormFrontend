@@ -284,8 +284,8 @@ const EducationalDetailsForm = () => {
     const isPercentage = key === "Percentage";
 
     return (
-      <div className="flex flex-col px-2" key={key}>
-        <label htmlFor={key} className="text-sm font-medium text-white mb-1">
+      <div className="flex flex-col bg-white p-5 rounded-xl" key={key}>
+        <label htmlFor={key} className="text-sm font-medium text-black mb-1">
           {key.replace(/([A-Z])/g, " $1")}{" "}
           {isPercentage && " Obtained (Skip if result not declared)"}
         </label>
@@ -475,8 +475,8 @@ const EducationalDetailsForm = () => {
     errorsState
   ) => {
     return (
-      <div className="flex flex-col px-2" key={key}>
-        <label htmlFor={key} className="text-sm font-medium text-white mb-1">
+      <div className="flex flex-col   bg-white p-5 rounded-xl " key={key}>
+        <label htmlFor={key} className="text-sm font-medium text-black mb-1">
           {key === "Class"
             ? "Class (Appeared/Appearing)"
             : key.replace(/([A-Z])/g, " $1")}
@@ -505,13 +505,16 @@ const EducationalDetailsForm = () => {
   };
 
   return (
-    <div className="min-h-screen w-full bg-[#c61d23] px-2 md:px-8 py-2 overflow-auto">
+    <div className="min-h-screen w-full bg-[#fdf5f6] px-2 md:px-8 py-2 overflow-auto">
       {/* {loading && <Spinner />} */}
 
       <div className="flex flex-col gap-6 max-w-screen-md mx-auto">
-        <div className="text-3xl text-white text-center transform hover:-translate-y-1 transition duration-200">
-          {/* <FormHeader /> */}
+        {/* <div className="text-3xl text-black text-center transform hover:-translate-y-1 transition duration-200">
           RISE Registration
+        </div> */}
+
+        <div className="flex   ">
+          <FormHeader />
         </div>
 
         {/* <h1 className="text-3xl md:text-4xl font-semibold text-white text-center">
@@ -583,7 +586,7 @@ export default EducationalDetailsForm;
 // return (
 //   <div
 //     className="w-full h-screen overflow-auto  "
-//     style={{ backgroundColor: "#c61d23" }}
+//     style={{ backgroundColor: "#fdf5f6" }}
 //   >
 //        <div className="grid grid-cols-7 ">
 //       <div className="col-span-1">
@@ -599,7 +602,7 @@ export default EducationalDetailsForm;
 //             className="bg-white shadow-lg p-4 rounded-2xl"
 //             onSubmit={handleSubmit}
 //           >
-//             <h1 className="text-xl font-bold text-white bg-red-600 p-2 rounded-t-2xl">
+//             <h1 className="text-xl font-bold text-black bg-red-600 p-2 rounded-t-2xl">
 //               Educational Details
 //             </h1>
 //             <div className="flex flex-wrap">
@@ -640,7 +643,7 @@ export default EducationalDetailsForm;
 //               )}
 //             </div>
 
-//             <h1 className="text-xl font-bold text-white bg-red-600 p-2 rounded-t-2xl mt-4">
+//             <h1 className="text-xl font-bold text-black bg-red-600 p-2 rounded-t-2xl mt-4">
 //               Family Details
 //             </h1>
 //             <div className="flex flex-wrap">
@@ -682,14 +685,14 @@ export default EducationalDetailsForm;
 //               <button
 //                 type="button"
 //                 onClick={() => navigate(-1)}
-//                 className="w-1/3 bg-gray-500 hover:bg-gray-600 text-white py-2 rounded-lg"
+//                 className="w-1/3 bg-gray-500 hover:bg-gray-600 text-black py-2 rounded-lg"
 //               >
 //                 Previous
 //               </button>
 //             )}
 //             <button
 //               onClick={handleSubmit}
-//               className={` bg-red-600 hover:bg-red-700 text-white py-2 px-9 rounded-full`}
+//               className={` bg-red-600 hover:bg-red-700 text-black py-2 px-9 rounded-full`}
 //             >
 //               {checkUrl ? "Next" : "Update"}
 //             </button>

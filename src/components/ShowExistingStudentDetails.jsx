@@ -34,10 +34,11 @@ const ShowExistingStudentDetails = () => {
   };
 
   return (
-    <div className=" p-1 sm:p-10 bg-gray-50 overflow-auto">
+    // <div className=" p-1 sm:p-10 bg-gray-50 overflow-auto">
+    <div className=" p-1 sm:p-10 overflow-auto">
       <div className="w-full flex justify-end">
         <button
-          className="border-2 shadow-lg p-3 rounded-xl"
+          className="border-2 bg-white shadow-lg p-3 rounded-xl"
           onClick={createNewStudent}
         >
           Create New

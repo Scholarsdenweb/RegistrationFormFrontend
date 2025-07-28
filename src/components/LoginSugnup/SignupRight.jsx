@@ -18,13 +18,18 @@ export default function SignupRight() {
   // Regex pattern for phone number validation (+91 followed by 10 digits)
   const phoneRegex = /^\+91[0-9]{10}$/;
   // const [loading, setLoading] = useState(false);
-  const [codeVerified, setCodeVerified] = useState(true);
-  // const [codeVerified, setCodeVerified] = useState(false);
+  // const [codeVerified, setCodeVerified] = useState(true);
+  const [codeVerified, setCodeVerified] = useState(false);
   const [isSubmittingForm, setIsSubmittingForm] = useState(false);
 
   const [codeEntered, setCodeEntered] = useState(false);
 
   const [showReloading, setShowReloading] = useState(false);
+
+  const [resendAttempts, setResendAttempts] = useState(0);
+  const [resendCooldown, setResendCooldown] = useState(30); // initial cooldown in seconds
+  const [cooldownActive, setCooldownActive] = useState(false);
+
   // State hooks
   const [formData, setFormData] = useState({
     contactNumber: "",
@@ -33,6 +38,7 @@ export default function SignupRight() {
   const [errors, setErrors] = useState({
     contactNumber: "",
   });
+
   const handleLogout = async () => {
     document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
     navigate("/");
@@ -131,20 +137,27 @@ export default function SignupRight() {
     try {
       setIsSubmittingForm(true);
 
-      // let codeChecked = await checkVerificationCode();
-      let codeChecked = true;
+      let codeChecked = await checkVerificationCode();
+      // let codeChecked = true;
 
       console.log("codeChecked", codeChecked);
-      if (codeChecked === false) {
-        setShowCodeBox(false);
+      // if (codeChecked === false) {
+      //   setShowCodeBox(false);
 
-        // Remove OTP
+      //   // Remove OTP
+      //   setCodeVerified(false);
+      //   setSubmitMessage("Please Verify Your Contact Number Number");
+      //   setIsSubmittingForm(false); // ⬅️ reset if verification fails
+      //   return;
+      // }
+      if (!codeChecked) {
         setCodeVerified(false);
-        setSubmitMessage("Please Verify Your Contact Number Number");
-        setIsSubmittingForm(false); // ⬅️ reset if verification fails
+        setCodeEntered(false);
+        setSubmitMessage("Invalid OTP. Please try again.");
+        setCode(""); // Clear previous code
+        setSubmittingOtp(false);
         return;
       }
-
       setSubmitMessage("");
 
       if (validateForm()) {
@@ -204,11 +217,10 @@ export default function SignupRight() {
       }));
       return;
     }
-
-    setShowReloading(true);
+    if (cooldownActive) return;
 
     try {
-      setShowCodeBox(true);
+      setShowReloading(true);
 
       const response = await axios.post("/students/sendVerification", {
         mobileNumber: `${formData.contactNumber}`,
@@ -216,6 +228,11 @@ export default function SignupRight() {
       if (response.status === 200) {
         setShowCodeBox(true);
         setSubmitMessage("OTP sent successfully");
+
+        const nextCooldown = 30 * Math.pow(2, resendAttempts); // exponential backoff
+        setResendCooldown(nextCooldown);
+        setCooldownActive(true);
+        setResendAttempts((prev) => prev + 1);
       }
     } catch (error) {
       setSubmitMessage("Error verifying Contact Number number");
@@ -243,14 +260,27 @@ export default function SignupRight() {
     console.log("e.target.value", e.target.value.length);
   };
 
+  useEffect(() => {
+    let timer;
+    if (cooldownActive && resendCooldown > 0) {
+      timer = setInterval(() => {
+        setResendCooldown((prev) => prev - 1);
+      }, 1000);
+    } else if (resendCooldown === 0) {
+      setCooldownActive(false);
+    }
+
+    return () => clearInterval(timer);
+  }, [cooldownActive, resendCooldown]);
+
   return (
-    <div className=" w-full bg-[#c61d23] flex items-center justify-center px-4 py-1">
+    <div className=" w-full bg-[#fdf5f6] flex items-center justify-center px-4 py-1">
       {/* {isSubmittingForm && showLoadingPage && <LoadingPage />} */}
       {/* {!isSubmittingForm && loading && <Spinner />} */}
 
       {/* {!loading && !showLoadingPage && ( */}
       <form
-        className="bg-white/10 backdrop-blur-md shadow-lg p-6 rounded-xl w-full max-w-lg space-y-6 text-white "
+        className="bg-white/10 backdrop-blur-md p-6 rounded-xl w-full max-w-lg space-y-6 text-black "
         onSubmit={onSubmit}
       >
         <h2 className="text-center text-2xl md:text-3xl font-semibold">
@@ -274,7 +304,7 @@ export default function SignupRight() {
               onChange={handleChange}
               placeholder="Enter Contact Number"
               className="border-b-2 py-2 focus:outline-none w-full px-2"
-              style={{ backgroundColor: "#c61d23" }}
+              style={{ backgroundColor: "#fdf5f6" }}
               maxLength={10}
               pattern="[0-9]{10}"
               inputMode="numeric"
@@ -307,7 +337,7 @@ export default function SignupRight() {
               value={code}
               onChange={handleOTPChange}
               placeholder="Enter OTP"
-              className="w-full bg-white/5 text-white border border-white px-4 py-2 focus:outline-none placeholder-gray-400"
+              className="w-full bg-white/5 text-black border border-white px-4 py-2 focus:outline-none placeholder-gray-400"
             />
           </div>
         )}
@@ -325,14 +355,32 @@ export default function SignupRight() {
         )}
 
         {/* {showCodeBox && ( */}
-          <button
-            type="submit"
-            className="w-full bg-yellow-500 hover:bg-yellow-600 text-black font-semibold py-2 rounded-xl transition-all disabled:bg-yellow-800"
-            // disabled={!codeEntered}
-          >
-            Next
-          </button>
-         {/* )} */}
+        <button
+          type="submit"
+          className="w-full bg-yellow-500 hover:bg-yellow-600 text-black font-semibold py-2 rounded-xl transition-all disabled:bg-yellow-800"
+          // disabled={!codeEntered}
+        >
+          Next
+        </button>
+        {/* )} */}
+
+        {showCodeBox && (
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between mt-2">
+            <p className="text-sm text-gray-600">Didn't receive OTP?</p>
+            <button
+              type="button"
+              onClick={verifyPhoneNo}
+              disabled={cooldownActive}
+              className={`ml-2 px-3 py-2 text-sm font-semibold rounded-md ${
+                cooldownActive
+                  ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+                  : "bg-yellow-500 hover:bg-yellow-600 text-black"
+              }`}
+            >
+              {cooldownActive ? `Resend in ${resendCooldown}s` : "Resend OTP"}
+            </button>
+          </div>
+        )}
       </form>
     </div>
   );

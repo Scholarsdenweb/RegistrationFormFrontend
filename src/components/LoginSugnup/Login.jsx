@@ -20,7 +20,7 @@ const Login = () => {
   ) : (
     <div
       className="grid grid-cols-12 justify-between items-center h-screen"
-      style={{ backgroundColor: "#c61d23" }}
+      style={{ backgroundColor: "#fdf5f6" }}
     >
       <div className="col-span-5 gap-3">
         <LoginRight />

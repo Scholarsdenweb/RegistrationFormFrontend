@@ -21,12 +21,12 @@ const ExistingStudent = () => {
   };
 
   return (
-    <div className="min-h-screen w-full bg-[#c61d23] px-2 md:px-8 py-2 overflow-auto">
+    <div className="min-h-screen w-full bg-[#fdf5f6] px-2 md:px-8 py-2 overflow-auto">
       {loading && <Spinner />}
 
       <div className="flex flex-col gap-6 mx-auto">
         <div className="flex ">
-          <div className="text-3xl flex-grow text-white text-center">
+          <div className="text-3xl flex-grow text-[#c61d23] text-center">
             {/* <FormHeader /> */}
             Rise Registration
           </div>

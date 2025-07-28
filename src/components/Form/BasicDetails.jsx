@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useReducer } from "react";
 import axios from "../../api/axios";
+
 import {
   fetchBasicDetails,
   updateBasicDetails,
@@ -23,6 +24,7 @@ import dayjs from "dayjs";
 import isSameOrAfter from "dayjs/plugin/isSameOrAfter";
 import FormHeader from "../LoginSugnup/FormHeader";
 import PageNumberComponent from "../PageNumberComponent";
+import UploadDocumentField from "./UploadImage";
 
 dayjs.extend(isSameOrAfter);
 const BasicDetailsForm = () => {
@@ -31,6 +33,7 @@ const BasicDetailsForm = () => {
   const location = useLocation();
 
   const [allDates, setAllDates] = useState([]);
+  const [documentUrl, setDocumentUrl] = useState("");
 
   const [basicDetailsError, setBasicDetailsError] = useState("");
   const [batchDetailsError, setBatchDetailsError] = useState("");
@@ -175,40 +178,14 @@ const BasicDetailsForm = () => {
           .toUpperCase()} is required.`;
         isValid = false;
       }
-      // ✅ Check for future exam date
 
-      // required changes it not working
-      // if (field === "examDate") {
-      //   console.log(
-      //     "formErrors from validationForm before",
-      //     basicFormData.examDate
-      //   );
+      // Your examDate validation can still be added here if needed
+    }
 
-      //   const examDateRaw = basicFormData?.examDate;
-      //   // Corrected format
-      //   const examDate = dayjs(examDateRaw, "DD-MM-YYYY", true);
-
-      //   if (!examDate.isValid()) {
-      //     console.log("examDate.isValid");
-      //     formErrors.examDate = "Invalid date format.";
-      //     isValid = false;
-      //   } else {
-      //     const today = dayjs().startOf("day"); // Gets today at 00:00
-      //     const examDay = examDate.startOf("day"); // Converts to start of day for fair comparison
-
-      //     console.log("examDate", examDay.toDate());
-      //     console.log("today", today.toDate());
-
-      //     if (examDay.isSame(today) || examDay.isBefore(today)) {
-      //       formErrors.examDate = "Exam Date must be a future date.";
-      //       isValid = false;
-      //     }
-
-      //     console.log("formErrors from validationForm", formErrors);
-      //   }
-      // } else {
-      //   console.log("examDate from validateBasicForm", basicFormData);
-      // }
+    // ✅ Add this after the loop
+    if (!userData?.profilePicture) {
+      formErrors.profilePicture = "Profile picture is required.";
+      isValid = false;
     }
 
     console.log("formErrors in validation", formErrors);
@@ -369,15 +346,19 @@ const BasicDetailsForm = () => {
   }, [basicFormData]);
 
   return (
-    <div className="min-h-screen w-full bg-[#c61d23] px-2 md:px-8 py-2 overflow-auto">
+    <div className="min-h-screen w-full bg-[#fdf5f6] px-2 md:px-8 py-2 overflow-auto">
       {loading && <Spinner />}
 
-      <div className="flex flex-col gap-6 max-w-screen-md mx-auto">
-        <div className="text-3xl text-white text-center transform hover:-translate-y-1 transition duration-200">
+      <div className="flex flex-col gap-1 max-w-screen-md mx-auto">
+        {/* <div className="text-3xl text-black text-center transform hover:-translate-y-1 transition duration-200">
           RISE Registration
+          
+        </div> */}
+        <div className="flex   ">
+          <FormHeader />
         </div>
 
-        {/* <h1 className="text-3xl md:text-4xl font-semibold text-white text-center">
+        {/* <h1 className="text-3xl md:text-4xl font-semibold text-black text-center">
           Registration Form For SDAT
         </h1> */}
 
@@ -388,10 +369,10 @@ const BasicDetailsForm = () => {
           className="flex flex-col gap-4  w-full"
           onSubmit={onSubmit}
         >
-          <div className="flex flex-col w-full">
+          <div className="flex flex-col w-full bg-white p-5 rounded-xl">
             <label
               htmlFor="name"
-              className="text-sm font-medium text-white mb-1"
+              className="text-sm font-medium text-black mb-1"
             >
               Name
             </label>
@@ -410,10 +391,10 @@ const BasicDetailsForm = () => {
               </p>
             )}
           </div>
-          <div className="flex flex-col w-full">
+          <div className="flex flex-col w-full bg-white p-5 rounded-xl">
             <label
               htmlFor="email"
-              className="text-sm font-medium text-white mb-1"
+              className="text-sm font-medium text-black mb-1"
             >
               Email
             </label>
@@ -432,13 +413,12 @@ const BasicDetailsForm = () => {
               </p>
             )}
           </div>
-
           {/* <div className=" "> */}
           {/* Date of Birth */}
-          <div className=" appearance-none flex flex-col w-full">
+          <div className=" appearance-none flex flex-col w-full bg-white p-5 rounded-xl">
             <label
               htmlFor="dob"
-              className="text-sm font-medium text-white mb-1"
+              className="text-sm font-medium text-black mb-1"
             >
               Date of Birth
             </label>
@@ -457,12 +437,11 @@ const BasicDetailsForm = () => {
               </p>
             )}
           </div>
-
           {/* Gender */}
-          <div className="flex flex-col  w-full">
+          <div className="flex flex-col  w-full bg-white p-5 rounded-xl">
             <label
               htmlFor="gender"
-              className="text-sm font-medium text-white mb-1"
+              className="text-sm font-medium text-black mb-1"
             >
               Gender
             </label>
@@ -488,12 +467,11 @@ const BasicDetailsForm = () => {
               </p>
             )}
           </div>
-
           {/* Exam Name */}
           {/* <div className="flex flex-col  w-full">
             <label
               htmlFor="examName"
-              className="text-sm font-medium text-white mb-1"
+              className="text-sm font-medium text-black mb-1"
             >
               Exam Name
             </label>
@@ -519,12 +497,11 @@ const BasicDetailsForm = () => {
               </p>
             )}
           </div> */}
-
           {/* Exam Date */}
-          <div className="flex flex-col  w-full">
+          <div className="flex flex-col  w-full bg-white p-5 rounded-xl">
             <label
               htmlFor="examDate"
-              className="text-sm font-medium text-white mb-1"
+              className="text-sm font-medium text-black mb-1"
             >
               Exam Date
             </label>
@@ -557,22 +534,24 @@ const BasicDetailsForm = () => {
               </p>
             )}
           </div>
-
+          <UploadDocumentField
+            documentUrl={documentUrl}
+            setDocumentUrl={setDocumentUrl}
+            showPopup={(msg, type) => console.log(msg, type)} // Replace with your popup
+          />
           {showReloading && (
             <div className="flex justify-center items-center">
               <div className="animate-spin  rounded-full h-5 w-5 border-b-2 border-white"></div>
             </div>
           )}
-
           {/* Submit Message */}
           <div className="w-full text-center">
             {submitMessage && (
-              <p className={`text-sm text-center text-white`}>
+              <p className={`text-sm text-center text-black`}>
                 {submitMessage}
               </p>
             )}
           </div>
-
           <div className="flex flex-col-reverse sm:flex-row justify-between items-center gap-4 mt-6">
             <button
               onClick={() => navigate(-1)}

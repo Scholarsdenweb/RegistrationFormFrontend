@@ -6,12 +6,12 @@ import SignupRight from "./SignupRight";
 
 const Signup = () => {
   return (
-    <div className="w-full min-h-screen flex flex-col gap-7 bg-[#c61d23]">
+    <div className="w-full min-h-screen flex flex-col gap-7 bg-[#fdf5f6]">
       {/* Signup Details Page (Top Section) */}
-      <div className="flex px-4 md:px-8 py-2"><FormHeader /></div>
+      <div className="flex px-4 md:px-8 py-2  "><FormHeader /></div>
 
       {/* Signup Form (Middle Section) */}
-      <div className="flex">
+      <div className="flex ">
         <SignupRight />
       </div>
 

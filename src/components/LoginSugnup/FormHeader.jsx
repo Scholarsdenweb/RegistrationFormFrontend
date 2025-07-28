@@ -4,8 +4,8 @@ import LoginSugnupPageImg from "../../assets/LoginSugnupPageImg.png";
 
 const FormHeader = ({ heading = "" }) => {
   return (
-    <div className="h-full w-full pt-2">
-      <div className=" flex flex-col h-full w-full bg-white rounded-2xl px-2 sm:px-5 py-2">
+    <div className="h-full w-full pt-2 ">
+      <div className=" flex flex-col h-full w-full bg-white shadow-lg rounded-2xl px-2 sm:px-5 py-2">
         {heading === "" ? (
           <h3 className=" text-xl sm:text-3xl font-normal text-[#c61d23]">
             <strong className="  ">Welcome to</strong> Scholars Den{" "}

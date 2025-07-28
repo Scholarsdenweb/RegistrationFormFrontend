@@ -44,7 +44,7 @@ const ProfileBar = () => {
 
   return (
     <div className="w-9" onClick={toggleDropdown}>
-      <img src={profileImg} alt="" />
+      <img src={profileImg} className="text-black" alt="" />
       {/* Top Navbar */}
       <nav className="  ">
         <div className="">

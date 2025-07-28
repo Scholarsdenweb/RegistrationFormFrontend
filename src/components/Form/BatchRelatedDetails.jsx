@@ -240,16 +240,17 @@ const BatchRelatedDetailsForm = () => {
   // Handle form submission
 
   return (
-    <div className="min-h-screen w-full bg-[#c61d23] px-2 md:px-8 py-2 overflow-auto">
+    <div className="min-h-screen w-full bg-[#fdf5f6] px-2 md:px-8 py-2 overflow-auto">
       {/* {loading && <Spinner />} */}
 
       <div className="flex flex-col gap-6 max-w-screen-md mx-auto">
-        <div className="text-3xl text-white text-center transform hover:-translate-y-1 transition duration-200">
-          {/* <FormHeader /> */}
+        {/* <div className="text-3xl text-black text-center transform hover:-translate-y-1 transition duration-200">
           RISE Registration
-        </div>
+        </div> */}
+                      <div className="flex   "><FormHeader /></div>
 
-        {/* <h1 className="text-3xl md:text-4xl font-semibold text-white text-center">
+
+        {/* <h1 className="text-3xl md:text-4xl font-semibold text-black text-center">
           SDAT Registration Form
         </h1> */}
 
@@ -262,10 +263,10 @@ const BatchRelatedDetailsForm = () => {
         >
           {/* Subject Combination */}
 
-          <div className="flex flex-col">
+          <div className="flex flex-col bg-white p-5 rounded-xl" >
             <label
               htmlFor="program"
-              className="text-sm font-medium text-white mb-1"
+              className="text-sm font-medium text-black mb-1"
             >
               Select Program
             </label>
@@ -298,10 +299,10 @@ const BatchRelatedDetailsForm = () => {
           </div>
 
           {/* Class  for admission*/}
-          <div className="flex flex-col">
+          <div className="flex flex-col bg-white p-5 rounded-xl">
             <label
               htmlFor="classForAdmission"
-              className="text-sm font-medium text-white mb-1"
+              className="text-sm font-medium text-black mb-1"
             >
               Register For
             </label>
@@ -337,7 +338,7 @@ const BatchRelatedDetailsForm = () => {
           </div>
 
           {showReloading && (
-            <div className="flex justify-center items-center">
+            <div className="flex justify-center items-center ">
               <div className="animate-spin  rounded-full h-5 w-5 border-b-2 border-white"></div>
             </div>
           )}
@@ -346,7 +347,7 @@ const BatchRelatedDetailsForm = () => {
           {/* <div className="flex flex-col">
             <label
               htmlFor="preferredBatch"
-              className="text-sm font-medium text-white mb-1"
+              className="text-sm font-medium text-black mb-1"
             >
               Preferred Batch
             </label>

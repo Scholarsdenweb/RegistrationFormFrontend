@@ -166,16 +166,20 @@ const FamilyDetails = () => {
  
 
   return (
-    <div className="min-h-screen w-full bg-[#c61d23] px-2 md:px-8 py-2 overflow-auto">
+    <div className="min-h-screen w-full bg-[#fdf5f6] px-2 md:px-8 py-2 overflow-auto">
       {/* {loading && <Spinner />} */}
 
       <div className="flex flex-col gap-6 max-w-screen-md mx-auto">
-        <div className="text-3xl text-white text-center transform hover:-translate-y-1 transition duration-200">
-          {/* <FormHeader /> */}
+        {/* <div className="text-3xl text-black text-center transform hover:-translate-y-1 transition duration-200">
           RISE Registration
+        </div> */}
+
+         <div className="flex   ">
+          <FormHeader />
         </div>
 
-        {/* <h1 className="text-3xl md:text-4xl font-semibold text-white text-center">
+
+        {/* <h1 className="text-3xl md:text-4xl font-semibold text-black text-center">
           Registration Form for SDAT
         </h1> */}
         <form
@@ -185,7 +189,7 @@ const FamilyDetails = () => {
         >
           {/* <h1
             className="text-2xl font-bold text-center "
-            style={{ color: "#c61d23" }}
+            style={{ color: "#fdf5f6" }}
           >
             Family Details Form
           </h1> */}
@@ -199,10 +203,10 @@ const FamilyDetails = () => {
               key === "MotherOccupation"
             ) {
               return (
-                <div className="flex flex-col w-full" key={key}>
+                <div className="flex flex-col w-full bg-white p-5 rounded-xl " key={key}>
                   <label
                     htmlFor={key}
-                    className="text-sm font-medium text-white mb-1"
+                    className="text-sm font-medium text-black mb-1"
                   >
                       {key
                     .replace(/([A-Z])/g, " $1")
@@ -234,10 +238,10 @@ const FamilyDetails = () => {
             }
 
             return (
-              <div className="flex flex-col" key={key}>
+              <div className="flex flex-col bg-white p-5 rounded-xl " key={key}>
                 <label
                   htmlFor={key}
-                  className="text-sm font-medium text-white mb-1"
+                  className="text-sm font-medium text-black mb-1"
                 >
                   {key
                     .replace(/([A-Z])/g, " $1")

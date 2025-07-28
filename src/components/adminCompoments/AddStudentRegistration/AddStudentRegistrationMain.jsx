@@ -1,6 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import InputField from "../../../utils/Tags/InputField"
+
+import SelectField from "../../../utils/Tags/SelectField"
+import { useDispatch, useSelector } from "react-redux";
+import { fetchExamDate } from "../../../redux/slices/examDateDetails";
 
 // Reusable Input Component
 const Input = ({ label, name, value, onChange, type = "text", error }) => (
@@ -30,6 +34,19 @@ const updateForm = (e, setter) => {
 // === Main Multi-step Form ===
 const MultiStepStudentForm = () => {
   const [step, setStep] = useState(0);
+
+
+  const {examDate} = useSelector(state=> state.examDate);
+
+  const dispatch = useDispatch();
+
+
+  useEffect(()=>{
+    dispatch(fetchExamDate());
+  },[])
+  useEffect(() =>{
+    console.log("testdata in examDate",  examDate);
+  },[examDate])
 
   const [studentForm, setStudentForm] = useState({
     studentName: "",
@@ -105,27 +122,29 @@ const MultiStepStudentForm = () => {
             value={studentForm.email}
             onChange={(e) => updateForm(e, setStudentForm)}
           />
-          <Input
+          <InputField
             label="Date of Birth"
             name="dob"
             type="date"
             value={basicDetails.dob}
             onChange={(e) => updateForm(e, setBasicDetails)}
           />
-          <Input
+          <SelectField
             label="Gender"
             name="gender"
+            options = {["Male", "Female"]}
             value={basicDetails.gender}
             onChange={(e) => updateForm(e, setBasicDetails)}
           />
         
-          <Input
+          <SelectField
             label="Exam Date"
             name="examDate"
+            options = {examDate.map((examdate)=>examdate.examDate)}
             value={basicDetails.examDate}
             onChange={(e) => updateForm(e, setBasicDetails)}
           />
-          <Input
+          <InputField
             label="Contact Number"
             name="contactNumber"
             value={basicDetails.contactNumber}
@@ -140,7 +159,7 @@ const MultiStepStudentForm = () => {
               Max size: 2MB
             </div>
 
-            <input
+            <InputField
               type="file"
               accept="image/*"
               capture="user"
@@ -172,13 +191,13 @@ const MultiStepStudentForm = () => {
       title: "Batch Details",
       content: (
         <div className="grid md:grid-cols-2 gap-4">
-          <Input
+          <InputField
             label="Class for Admission"
             name="classForAdmission"
             value={batchDetails.classForAdmission}
             onChange={(e) => updateForm(e, setBatchDetails)}
           />
-          <Input
+          <InputField
             label="Program"
             name="program"
             value={batchDetails.program}
@@ -192,31 +211,31 @@ const MultiStepStudentForm = () => {
       title: "Educational Details",
       content: (
         <div className="grid md:grid-cols-2 gap-4">
-          <Input
+          <InputField
             label="School Name"
             name="SchoolName"
             value={educationDetails.SchoolName}
             onChange={(e) => updateForm(e, setEducationDetails)}
           />
-          <Input
+          <InputField
             label="Percentage"
             name="Percentage"
             value={educationDetails.Percentage}
             onChange={(e) => updateForm(e, setEducationDetails)}
           />
-          <Input
+          <InputField
             label="Class"
             name="Class"
             value={educationDetails.Class}
             onChange={(e) => updateForm(e, setEducationDetails)}
           />
-          <Input
+          <InputField
             label="Year Of Passing"
             name="YearOfPassing"
             value={educationDetails.YearOfPassing}
             onChange={(e) => updateForm(e, setEducationDetails)}
           />
-          <Input
+          <InputField
             label="Board"
             name="Board"
             value={educationDetails.Board}
