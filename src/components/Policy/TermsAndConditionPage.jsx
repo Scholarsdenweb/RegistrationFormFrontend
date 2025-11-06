@@ -18,7 +18,7 @@ const TermsAndConditionPage = () => {
   }, [userData]);
 
   return (
-    <div className="max-w-3xl mx-auto px-4 sm:px-8 py-6 bg-[#c61d23] text-white shadow-md relative">
+    <div className="max-w-3xl mx-auto px-4 sm:px-8 py-6 bg-[#fdf5f6] text-black shadow-md relative">
       {/* Title */}
       <h1 className="text-lg sm:text-2xl font-bold mb-4 text-center">
         Terms & Conditions
@@ -26,7 +26,7 @@ const TermsAndConditionPage = () => {
 
       {/* Close Button */}
       <button
-        className="absolute top-2 right-6 text-lg sm:text-2xl border-2 px-3 py-1 sm:py-2 rounded-full text-white hover:bg-[#ffdd00] hover:text-black"
+        className="absolute top-2 right-6 text-lg sm:text-2xl border-2 px-3 py-1 sm:py-2 rounded-full text-black hover:bg-[#e2e1dc] hover:text-black"
         onClick={() => navigate("/registration/payment")}
       >
         X

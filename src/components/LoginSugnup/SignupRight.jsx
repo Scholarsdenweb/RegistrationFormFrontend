@@ -47,6 +47,7 @@ export default function SignupRight() {
   useEffect(() => {
     handleLogout();
   }, []);
+
   useEffect(() => {
     console.log("userData", userData);
   }, [userData]);
@@ -57,7 +58,10 @@ export default function SignupRight() {
   // password: "",
 
   const [showCodeBox, setShowCodeBox] = useState(false);
+
   const [submitMessage, setSubmitMessage] = useState("");
+
+  
 
   const handleChange = (e) => {
     const { name, value } = e.target;

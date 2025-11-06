@@ -1,13 +1,24 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchBasicDetails, updateBasicDetails } from "../../redux/slices/basicDetailsSlice";
+import {
+  fetchBasicDetails,
+  updateBasicDetails,
+} from "../../redux/slices/basicDetailsSlice";
 
 const UploadDocumentField = ({ documentUrl, setDocumentUrl, showPopup }) => {
   const fileInputRef = useRef(null);
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
 
+  console.log(
+    "Data from uploadDocumentField",
+    documentUrl,
+    setDocumentUrl,
+    showPopup
+  );
+
   const { userData } = useSelector((state) => state.userDetails);
+  console.log("Data from userData", userData);
 
   const dispatch = useDispatch();
 
@@ -216,13 +227,13 @@ const UploadDocumentField = ({ documentUrl, setDocumentUrl, showPopup }) => {
       )}
 
       {/* Preview */}
-      {documentUrl && !isUploading && (
+      {userData?.profilePicture && !isUploading && (
         <div className="mt-3">
           <p className="text-sm text-green-600">
             Document uploaded successfully.
           </p>
           <img
-            src={documentUrl}
+            src={userData.profilePicture}
             alt="Uploaded Document"
             className="mt-2 h-32 rounded-md border"
           />

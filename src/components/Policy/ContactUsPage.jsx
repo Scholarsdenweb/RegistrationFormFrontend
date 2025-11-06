@@ -5,13 +5,13 @@ const ContactUsPage = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="max-w-3xl mx-auto min-h-screen px-4 sm:px-8 py-6 bg-[#c61d23] text-white shadow-md relative">
+    <div className="max-w-3xl mx-auto min-h-screen px-4 sm:px-8 py-6 bg-[#fdf5f6] text-black shadow-md relative">
       {/* Title */}
       <h1 className="text-2xl font-bold mb-6 text-center">Contact Us</h1>
 
       {/* Close Button */}
       <button
-        className="absolute top-4 right-6 text-lg sm:text-2xl border-2 px-3 py-1 sm:py-2 rounded-full text-white hover:bg-[#ffdd00] hover:text-black transition"
+        className="absolute top-4 right-6 text-lg sm:text-2xl border-2 px-3 py-1 sm:py-2 rounded-full text-black hover:bg-[#e2e1dc] hover:text-black transition"
         onClick={() => navigate("/registration/payment")}
         aria-label="Close"
       >

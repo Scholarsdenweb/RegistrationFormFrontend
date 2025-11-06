@@ -59,7 +59,8 @@ function App() {
               {/* <Route path="/admin" element={<AdminLogin />} /> */}
               <Route
                 path="/admin/dashboard"
-                element={<PrivateRoute component={AdminDashboard} />}
+                // element={<PrivateRoute component={AdminDashboard} />}
+                element={<AdminDashboard />}
               />
               <Route
                 path="/admin/allStudents"
@@ -140,6 +141,10 @@ function App() {
 
               <Route path="/CreateInvoice" element={<CreateInvoice />} />
 
+              {/* <Route
+                path="/dashboard"
+                element={<PrivateRoute component={Dashboard} />}
+              /> */}
               <Route
                 path="/dashboard"
                 element={<PrivateRoute component={Dashboard} />}

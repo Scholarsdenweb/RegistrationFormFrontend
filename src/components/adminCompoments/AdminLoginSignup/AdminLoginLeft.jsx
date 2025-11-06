@@ -14,11 +14,11 @@ export default function AdminLoginLeft() {
   const dispatch = useDispatch();
 
   const [formData, setFormData] = useState({
-    contactNumber: "",
+    email: "",
+    password : ""
   });
   const [errors, setErrors] = useState({
     contactNumber: "",
-  
   });
 
   const [showErrorMessage, setShowErrorMessage] = useState(false);
@@ -44,8 +44,6 @@ export default function AdminLoginLeft() {
       isValid = false;
     }
 
-   
-
     setErrors(formErrors);
     return isValid;
   };
@@ -54,7 +52,8 @@ export default function AdminLoginLeft() {
     e.preventDefault();
     if (validateForm()) {
       try {
-        const response = await axios.post("/auth/admin_login", formData);
+        console.log("onSubmit function is working fine ");
+        const response = await axios.post("/auth/employee_login", formData);
         setSubmitMessage("Login successful!");
 
         console.log("rsponse from login", response);
@@ -62,7 +61,6 @@ export default function AdminLoginLeft() {
         document.cookie = `token=${response.data.token}`;
         navigate("/admin/dashboard");
       } catch (error) {
-
         setSubmitMessage(error?.response?.data || "An error occurred");
         setShowErrorMessage(true);
 
@@ -75,26 +73,34 @@ export default function AdminLoginLeft() {
   return (
     <div className="w-full bg-[#c61d23] flex items-center justify-center py-1">
       <form
-        className="flex flex-col items-center justify-center gap-6   text-white w-full "
+        className="flex flex-col items-center justify-center gap-6 text-white w-full "
         onSubmit={onSubmit}
       >
-
         <div>
           <h2 className="text-3xl font-bold text-white ">Login</h2>
         </div>
 
-          <div className="flex flex-col items-start w-3/4 ">
-            <InputField
-              label="Contact Number"
-              name="contactNumber"
-              type="number"
-              value={formData.contactNumber}
-              onChange={handleChange}
-              error={errors.email}
-              placeholder="Contact Number"
-            />
-          </div>
-          {/* <div className="flex flex-col items-start w-3/4">
+        <div className="flex flex-col items-start w-3/4 ">
+          {/* <InputField
+            label="Contact Number"
+            name="contactNumber"
+            type="number"
+            value={formData.contactNumber}
+            onChange={handleChange}
+            error={errors.email}
+            placeholder="Contact Number"
+          /> */}
+          <InputField
+            label="Email"
+            name="email"
+            type="email"
+            value={formData.email}
+            onChange={handleChange}
+            error={errors.email}
+            placeholder="Email"
+          />
+        </div>
+        <div className="flex flex-col items-start w-3/4">
             <InputField
               label="Password"
               name="password"
@@ -104,9 +110,7 @@ export default function AdminLoginLeft() {
               error={errors.password}
               placeholder="Password"
             />
-          </div> */}
-
-  
+          </div>
 
         {submitMessage && (
           <p
@@ -120,7 +124,7 @@ export default function AdminLoginLeft() {
             {submitMessage}
           </p>
         )}
-     
+
         <button
           type="submit"
           className="w-3/4 py-2 border-2 rounded-full bg-blue-500 text-white hover:bg-blue-600 transition-all"
@@ -128,8 +132,6 @@ export default function AdminLoginLeft() {
         >
           Login
         </button>
-
-     
       </form>
 
       {/* {showErrorMessage && <ErrorMessage message={submitMessage} closeErrorPopup={setShowErrorMessage} /> }  */}

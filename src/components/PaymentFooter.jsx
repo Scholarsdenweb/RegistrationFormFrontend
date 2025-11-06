@@ -1,58 +1,47 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const PaymentFooter = () => {
   const navigate = useNavigate();
 
+  const footerLinks = [
+    {
+      label: "Terms & Conditions",
+      path: "/registration/termsAndCondition",
+    },
+    { label: "Privacy Policy", path: "/registration/privacyPolicy" },
+    { label: "Contact Us", path: "/registration/contactUsPage" },
+    {
+      label: "Cancellations & Refunds",
+      path: "/registration/cancellationsAndRefunds",
+    },
+  ];
+
   return (
-    <div className="bg-[#c61d23] text-white text-sm sm:text-lg sm:py-6 rounded-t-xl ">
-      <div className="flex flex-col sm:flex-row items-center justify-cenmter ">
+    <footer className="bg-gradient-to-r from-[#fdf5f6] via-[#f3dee0] to-[#fdf5f6] text-gray-800 text-sm sm:text-base py-6 sm:py-8 px-6 rounded-3xl shadow-lg border-t border-pink-200">
+      <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-5 sm:gap-0">
         
-        {/* Terms, Privacy, Contact Buttons */}
-        <div className="flex flex-wrap gap-3 sm:gap-4">
-          <button
-            onClick={() => navigate('/registration/termsAndCondition')}
-            className="border border-white sm:px-3 px-4 py-1 rounded hover:bg-white hover:text-[#c61d23] transition"
-          >
-            Terms & Conditions
-          </button>
-          <button
-            onClick={() => navigate('/registration/privacyPolicy')}
-            className="border border-white sm:px-3 px-4 py-1 rounded hover:bg-white hover:text-[#c61d23] transition"
-          >
-            Privacy Policy
-          </button>
-          <button
-            onClick={() => navigate('/registration/contactUsPage')}
-            className="border border-white sm:px-3 px-4 py-1 rounded hover:bg-white hover:text-[#c61d23] transition"
-          >
-            Contact Us
-          </button>
-          <button
-            onClick={() => navigate('/registration/cancellationsAndRefunds')}
-            className="border border-white sm:px-3 px-4 py-1 rounded hover:bg-white hover:text-[#c61d23] transition"
-          >
-            Cancellations & Refunds
-          </button>
+        {/* Left Section - Links */}
+        <div className="flex flex-wrap justify-center sm:justify-start gap-3 sm:gap-5">
+          {footerLinks.map((btn, i) => (
+            <button
+              key={i}
+              onClick={() => navigate(btn.path)}
+              className="border border-pink-300 text-gray-800 px-4 sm:px-5 py-2 rounded-full font-medium 
+                         hover:bg-pink-600 hover:text-white transition-all duration-300 ease-in-out
+                         focus:outline-none focus:ring-2 focus:ring-pink-400 focus:ring-offset-2"
+            >
+              {btn.label}
+            </button>
+          ))}
         </div>
 
-        {/* Payment Action Buttons */}
-        {/* <div className="flex gap-3">
-          <button
-            onClick={() => navigate('/')}
-            className="bg-gray-200 text-[#c61d23] font-semibold px-6 py-2 rounded hover:bg-white transition"
-          >
-            Cancel
-          </button>
-          <button
-            onClick={() => alert("Proceeding to payment...")}
-            className="bg-[#ffdd00] text-black font-bold px-6 py-2 rounded hover:brightness-110 transition"
-          >
-            Proceed to Pay
-          </button>
-        </div> */}
+        {/* Right Section - Copyright */}
+        {/* <p className="text-center sm:text-right text-xs sm:text-sm text-gray-700 font-medium opacity-90">
+          © {new Date().getFullYear()} SDAT. All Rights Reserved.
+        </p> */}
       </div>
-    </div>
+    </footer>
   );
 };
 

@@ -42,7 +42,7 @@ const Payment = () => {
   const { userData } = useSelector((state) => state.userDetails);
   const [paymentStatus, setPaymentStatus] = useState(false);
 
-  const getAmount = async (req, res) => {
+  const getAmount = async () => {
     const amount = await axios.get("/amount");
     console.log("amount", amount);
     if (amount.data.amount === 0) {
@@ -111,7 +111,7 @@ const Payment = () => {
           contact: userData.contactNumber,
         },
         theme: {
-          color: "#c61d23",
+          color: "#fdf5f6",
         },
         handler: async function (response) {
           try {
@@ -152,38 +152,90 @@ const Payment = () => {
   };
 
   return (
-    <div className=" relative min-h-screen w-full bg-[#c61d23] px-2 md:px-8 py-2 overflow-auto">
-      {/* {loading && <Spinner />} */}
-      <ToastContainer position="top-right" autoClose={3000} />{" "}
-      {/* Toast Notifications */}
-      <div className="flex flex-col gap-6 max-w-screen-md h-full mx-auto ">
-        <div>
-          <FormHeader />
-        </div>
+    // min-h-screen w-full  px-2 md:px-8 py-2 overflow-auto
+    // <div className=" relative min-h-screen w-full bg-[#fdf5f6] px-2 md:px-8 py-2 overflow-auto">
+    //   {/* {loading && <Spinner />} */}
+    //   <ToastContainer position="top-right" autoClose={3000} />{" "}
+    //   {/* Toast Notifications */}
+    //   <div className="flex flex-col gap-6 max-w-screen-md h-full mx-auto ">
+    //     <div>
+    //       <FormHeader />
+    //     </div>
 
+    //     <div
+    //       className={`col-span-6 sm:px-9 sm:py-8 sm:mb-3 sm:mr-5 h-full bg-gray-100 rounded-3xl flex flex-col items-center justify-center gap-4 `}
+    //     >
+    //       {paymentStatus ? (
+    //         <PaymentSuccessMessage />
+    //       ) : loading ? (
+    //         <Spinner />
+    //       ) : (
+    //         <div className="ol-span-6 px-9 py-8 mb-3 sm:mr-5 h-full bg-gray-600 rounded-3xl flex flex-col items-center justify-between gap-4 ">
+    //           <div className="flex flex-col gap-5">
+    //             <h2 className="text-bold text-2xl ">
+    //               SDAT Registration Amount : <span>&#8377;{amount}</span>{" "}
+    //             </h2>
+
+    //             <div
+    //               className="bg-[#fdf5f6] text-black p-3 rounded-lg text-center cursor-pointer"
+    //               onClick={checkoutHandler}
+    //             >
+    //               Pay Now
+    //             </div>
+    //           </div>
+    //         </div>
+    //       )}
+    //       {allFormNotAvailable && (
+    //         <AllFormNotAvailable
+    //           setAllFormNotAvailable={setAllFormNotAvailable}
+    //           familyDetailsDataExist={familyDetailsDataExist}
+    //           educationalDetailsDataExist={educationalDetailsDataExist}
+    //           batchDetailsDataExist={batchDetailsDataExist}
+    //           basicDetailsDataExist={basicDetailsDataExist}
+    //         />
+    //       )}
+    //     </div>
+
+    //     <div className="">
+    //       <PaymentFooter />
+    //     </div>
+    //   </div>
+    // </div>
+
+    <div className="relative min-h-screen w-full bg-gradient-to-br from-[#fdf5f6] to-[#ffe9eb] px-4 md:px-8 pt-6 overflow-auto">
+      {/* Toast Notifications */}
+      <ToastContainer position="top-right" autoClose={3000} />
+
+      <div className="flex flex-col justify-between gap-8 max-w-2xl mx-auto h-full">
+        {/* Header */}
+        <FormHeader />
+
+        {/* Main Card Section */}
         <div
-          className={`col-span-6 sm:px-9 sm:py-8 sm:mb-3 sm:mr-5 h-full bg-gray-100 rounded-3xl flex flex-col items-center justify-center gap-4 `}
+          className={`transition-all duration-300 ease-in-out bg-white shadow-lg rounded-3xl px-6 sm:px-10 py-10 flex flex-col items-center justify-center gap-6`}
         >
           {paymentStatus ? (
             <PaymentSuccessMessage />
           ) : loading ? (
             <Spinner />
           ) : (
-            <div className="ol-span-6 px-9 py-8 mb-3 sm:mr-5 h-full bg-gray-100 rounded-3xl flex flex-col items-center justify-between gap-4 ">
-              <div className="flex flex-col gap-5">
-                <h2 className="text-bold text-2xl ">
-                  SDAT Registration Amount : <span>&#8377;{amount}</span>{" "}
-                </h2>
+            <div className="flex flex-col items-center justify-center text-center gap-6 w-full">
+              <h2 className="text-2xl sm:text-3xl font-semibold text-gray-800">
+                SDAT Registration Amount
+              </h2>
 
-                <div
-                  className="bg-[#c61d23] text-white p-3 rounded-lg text-center cursor-pointer"
-                  onClick={checkoutHandler}
-                >
-                  Pay Now
-                </div>
-              </div>
+              <p className="text-3xl font-bold text-pink-600">₹{amount}</p>
+
+              <button
+                onClick={checkoutHandler}
+                className="mt-4 bg-gradient-to-r from-pink-500 to-red-400 hover:from-pink-600 hover:to-red-500 transition-all duration-300 text-white font-semibold text-lg px-10 py-3 rounded-full shadow-md hover:shadow-lg active:scale-95"
+              >
+                Pay Now
+              </button>
             </div>
           )}
+
+          {/* Conditional Modal */}
           {allFormNotAvailable && (
             <AllFormNotAvailable
               setAllFormNotAvailable={setAllFormNotAvailable}
@@ -195,9 +247,8 @@ const Payment = () => {
           )}
         </div>
 
-        <div className="">
-          <PaymentFooter />
-        </div>
+        {/* Footer */}
+        <PaymentFooter />
       </div>
     </div>
   );

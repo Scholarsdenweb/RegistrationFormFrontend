@@ -148,7 +148,7 @@ const FamilyDetails = () => {
         ).unwrap();
 
         if (result) {
-          navigate("/registration/selfieCapture");
+          navigate("/registration/payment");
         }
       }
     } catch (error) {
