@@ -227,13 +227,13 @@ const UploadDocumentField = ({ documentUrl, setDocumentUrl, showPopup }) => {
       )}
 
       {/* Preview */}
-      {userData?.profilePicture && !isUploading && (
+      {(userData?.profilePicture || documentUrl )&& !isUploading && (
         <div className="mt-3">
           <p className="text-sm text-green-600">
             Document uploaded successfully.
           </p>
           <img
-            src={userData.profilePicture}
+            src={userData.profilePicture || documentUrl}
             alt="Uploaded Document"
             className="mt-2 h-32 rounded-md border"
           />
