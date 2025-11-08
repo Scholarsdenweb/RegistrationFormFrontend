@@ -10,15 +10,9 @@ const UploadDocumentField = ({ documentUrl, setDocumentUrl, showPopup }) => {
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
 
-  console.log(
-    "Data from uploadDocumentField",
-    documentUrl,
-    setDocumentUrl,
-    showPopup
-  );
+
 
   const { userData } = useSelector((state) => state.userDetails);
-  console.log("Data from userData", userData);
 
   const dispatch = useDispatch();
 

@@ -1,20 +1,14 @@
-import React, { useState, useEffect, useReducer } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "../../api/axios";
 
 import {
   fetchBasicDetails,
   updateBasicDetails,
 } from "../../redux/slices/basicDetailsSlice";
-import { useNavigate, useLocation, Link } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import Spinner from "../../api/Spinner";
 import { setLoading } from "../../redux/slices/loadingSlice";
-import Sidebar from "../Sidebar";
-import {
-  fetchBatchDetails,
-  updateBatchDetails,
-} from "../../redux/slices/batchDetailsSlice"; // Adjust the path as necessary
-import { use } from "react";
 import {
   fetchUserDetails,
   updateUserDetails,
@@ -27,6 +21,7 @@ import PageNumberComponent from "../PageNumberComponent";
 import UploadDocumentField from "./UploadImage";
 
 dayjs.extend(isSameOrAfter);
+
 const BasicDetailsForm = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -34,10 +29,10 @@ const BasicDetailsForm = () => {
 
   const [allDates, setAllDates] = useState([]);
   const [documentUrl, setDocumentUrl] = useState("");
-
-  const [basicDetailsError, setBasicDetailsError] = useState("");
-  const [batchDetailsError, setBatchDetailsError] = useState("");
+  const [basicDetailsError, setBasicDetailsError] = useState({});
   const [showReloading, setShowReloading] = useState(false);
+  const [submitMessage, setSubmitMessage] = useState("");
+
   const pathLocation = location.pathname;
 
   const {
@@ -47,40 +42,22 @@ const BasicDetailsForm = () => {
     dataExist,
   } = useSelector((state) => state.basicDetails);
 
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-
-  useEffect(() => {
-    console.log("basicFormData", basicFormData);
-    console.log("dataExist", dataExist);
-  }, [basicFormData]);
-
   const { userData } = useSelector((state) => state.userDetails);
-
-  const [checkUrl, setCheckUrl] = useState(false);
-
-  const [errors, setErrors] = useState({});
-  const [submitMessage, setSubmitMessage] = useState("");
 
   // Dropdown options
   const genderOptions = ["Male", "Female"];
-  const examNameOptions = ["S.Dat", "Rise"];
 
   const fetchAllDates = async () => {
     try {
       const response = await axios.get("/employees/getAllDates");
-      console.log("response fetchAllDates", response);
-
       const today = dayjs().startOf("day");
 
       const filteredDates = response.data.filter((date) => {
         const parsedDate = dayjs(date.examDate, "DD-MM-YYYY");
-        return !parsedDate.isBefore(today); // includes today and future dates
+        return !parsedDate.isBefore(today);
       });
 
-      console.log("filteredDates", filteredDates);
       setAllDates(response.data);
-      // setAllDates(filteredDates);
     } catch (error) {
       console.error("Error fetching dates:", error);
     }
@@ -91,99 +68,53 @@ const BasicDetailsForm = () => {
   }, []);
 
   useEffect(() => {
-    console.log("basicFormData", dataExist);
-    console.log("basicFormData", basicFormData);
-  }, [basicFormData]);
-
-  // const examDateOptions =allDates;
-  const examDateOptions = ["15/02/2025", "02/20/2025", "10/03/2025"];
-
-  useEffect(() => {
-    setCheckUrl(location.pathname === "/basicDetailsForm");
     dispatch(fetchBasicDetails());
     dispatch(fetchUserDetails());
   }, [dispatch, pathLocation]);
 
-  // useEffect(() => {
-  //   dispatch(setLoading(false));
-
-  //   const examName = "examName";
-  //   dispatch(updateBasicDetails({ [examName]: "SDAT" }));
-  //   dispatch(fetchUserDetails())
-  // }, []);
-
-  // const validateBasicForm = async () => {
-  //   const formErrors = {};
-  //   let isValid = true;
-
-  //   ["dob", "gender", "examDate", "examName", "studentName", "email"].forEach(
-  //     async (field) => {
-  //       if (field === "studentName" || field === "email") {
-  //         if (!userData?.[field]?.trim()) {
-  //           formErrors[field] = `${field
-  //             .replace(/([A-Z])/g, " $1")
-  //             .toUpperCase()} is required.`;
-  //           isValid = false;
-  //         }
-  //       } else if (field === "examName") {
-  //         const result = await dispatch(
-  //           updateBasicDetails({ [field]: "SDAT" })
-  //         );
-
-  //       } else if (!basicFormData?.[field]?.trim()) {
-
-  //         formErrors[field] = `${field
-  //           .replace(/([A-Z])/g, " $1")
-  //           .toUpperCase()} is required.`;
-  //         isValid = false;
-  //       }
-  //     }
-  //   );
-
-  //   if(userData["examDate"]){
-  //     console.log("testdata ", testdata);
-  //   }
-
-  //   console.log("formErrors in vaaalidation", formErrors);
-
-  //   setBasicDetailsError(formErrors);
-  //   return isValid;
-  // };
-
   const validateBasicForm = async () => {
+    console.log("ValidateBasicForm called");
     const formErrors = {};
     let isValid = true;
 
-    for (const field of [
-      "dob",
-      "gender",
-      "examDate",
-      "examName",
-      "studentName",
-      "email",
-    ]) {
-      if (field === "studentName" || field === "email") {
-        if (!userData?.[field]?.trim()) {
-          formErrors[field] = `${field.replace(
-            /([A-Z])/g,
-            " $1"
-          )} is required.`;
-          isValid = false;
-        }
-      } else if (field === "examName") {
-        await dispatch(updateBasicDetails({ [field]: "SDAT" }));
-      } else if (!basicFormData?.[field]?.trim()) {
-        formErrors[field] = `${field
-          .replace(/([A-Z])/g, " $1")
-          .toUpperCase()} is required.`;
-        isValid = false;
-      }
-
-      // Your examDate validation can still be added here if needed
+    // Validate studentName
+    if (!userData?.studentName?.trim()) {
+      formErrors.studentName = "Student Name is required.";
+      isValid = false;
     }
 
-    // ✅ Add this after the loop
-    if (!userData?.profilePicture) {
+    // Validate email
+    if (!userData?.email?.trim()) {
+      formErrors.email = "Email is required.";
+      isValid = false;
+    } else if (!/\S+@\S+\.\S+/.test(userData.email)) {
+      formErrors.email = "Please enter a valid email address.";
+      isValid = false;
+    }
+
+    // Validate dob
+    if (!basicFormData?.dob?.trim()) {
+      formErrors.dob = "DATE OF BIRTH is required.";
+      isValid = false;
+    }
+
+    // Validate gender
+    if (!basicFormData?.gender?.trim()) {
+      formErrors.gender = "GENDER is required.";
+      isValid = false;
+    }
+
+    // Validate examDate
+    if (!basicFormData?.examDate?.trim()) {
+      formErrors.examDate = "EXAM DATE is required.";
+      isValid = false;
+    }
+
+    // Set examName automatically
+    await dispatch(updateBasicDetails({ examName: "SDAT" }));
+
+    // Validate profile picture
+    if (!userData?.profilePicture && !documentUrl) {
       formErrors.profilePicture = "Profile picture is required.";
       isValid = false;
     }
@@ -196,182 +127,83 @@ const BasicDetailsForm = () => {
 
   const basicFormHandleChange = (e) => {
     const { name, value } = e.target;
+    
     if (name === "studentName" || name === "email") {
       dispatch(updateUserDetails({ [name]: value }));
-      return;
+    } else {
+      dispatch(updateBasicDetails({ [name]: value }));
     }
 
-    console.log("name", name, "value", value);
-    dispatch(updateBasicDetails({ [name]: value }));
-
+    // Clear error for this field when user starts typing
     if (value.trim()) {
-      setErrors((prevErrors) => ({ ...prevErrors, [name]: "" }));
+      setBasicDetailsError((prevErrors) => ({ ...prevErrors, [name]: "" }));
     }
   };
-
-  // const batchDetailsHandleChange = (e) => {
-  //   const { name, value } = e.target;
-  //   dispatch(updateBatchDetails({ [name]: value }));
-
-  //   if (value.trim()) {
-  //     setErrors((prevErrors) => ({ ...prevErrors, [name]: "" }));
-  //   }
-  // };
-
-  // const validateBatchForm = () => {
-  //   let formErrors = {};
-  //   let isValid = true;
-
-  //   Object.keys(batchFormData).forEach((key) => {
-  //     if (!batchFormData[key]?.toString().trim()) {
-  //       formErrors[key] = `${key.replace(/([A-Z])/g, " $1")} is required`;
-  //       isValid = false;
-  //     }
-  //   });
-
-  //   setBatchDetailsError(formErrors);
-  //   return isValid;
-  // };
-
-  // const addAndUpdatebatchForm = async () => {
-  //   try {
-  //     const url = batchFormDataExist
-  //       ? "/form/batchRelatedDetails/updateForm"
-  //       : "/form/batchRelatedDetails/addForm";
-  //     const method = batchFormDataExist ? axios.patch : axios.post;
-
-  //     await method(url, batchFormData);
-
-  //     setSubmitMessage(
-  //       batchFormDataExist
-  //         ? "Batch related details updated successfully!"
-  //         : "Batch related details submitted successfully!"
-  //     );
-  //     console.log("CHECKurl", checkUrl);
-
-  //     navigate("/registration/batchDetailsForm");
-  //   } catch (error) {
-  //     console.error("Error submitting form:", error);
-  //     setSubmitMessage(error.response.data);
-  //   }
-  // };
 
   const addAndUpdateBasicFrom = async () => {
     setShowReloading(true);
 
     try {
-      // setSubmitMessage(
-      //   dataExist
-      //     ? "Basic details updated successfully!"
-      //     : "Basic details submitted successfully!"
-      // );
-
-      console.log("userData before editStudent", userData);
       const response = await axios.patch("/students/editStudent", userData);
 
-      console.log("response for onSubmit in BasicDetails", response);
-
-      console.log("dataExist", dataExist);
-      console.log("basicFormData form addAndUpdateBasicFrom", basicFormData);
       const url = dataExist
         ? "/form/basicDetails/updateForm"
         : "/form/basicDetails/addForm";
-      // const url = "/form/basicDetails/updateForm"
 
       const method = dataExist ? axios.patch : axios.post;
-      // const method =  axios.patch ;
 
       await method(url, basicFormData);
 
-      console.log("response", response);
       navigate("/registration/batchDetailsForm");
     } catch (error) {
-      console.log("Error submitting form:", error);
-      if (error.response.data) {
-        setSubmitMessage(error.response.data);
+      if (error.response?.data) {
+        setSubmitMessage(
+          typeof error.response.data === "string"
+            ? error.response.data
+            : "An error occurred while submitting the form."
+        );
+      } else {
+        setSubmitMessage("An error occurred. Please try again.");
       }
     } finally {
       setShowReloading(false);
     }
   };
 
-  useEffect(() => {
-    console.log("userdata", userData);
-  }, [userData]);
-
   const onSubmit = async (e) => {
-    setLoading(true);
     e.preventDefault();
+    console.log("Submit Button Clicked");
+
     const isValid = await validateBasicForm();
 
+    console.log("isValid from onSubmit", isValid);
+
     if (isValid) {
-      // await addAndUpdatebatchForm();
-
-      console.log("validateBasicForm", validateBasicForm());
-
-      console.log("ITS workiong");
+      console.log("Form is valid, submitting...");
       await addAndUpdateBasicFrom();
     }
   };
-
-  const convertToNumber = (romanNumeral) => {
-    const romanToNumber = {
-      VI: 6,
-      VII: 7,
-      VIII: 8,
-      IX: 9,
-      X: 10,
-      XI: 11,
-      XII: 12,
-    };
-
-    return romanToNumber[romanNumeral];
-  };
-
-  const convertToRoman = (num) => {
-    const romanNumerals = {
-      6: "VI",
-      7: "VII",
-      8: "VIII",
-      9: "IX",
-      10: "X",
-      11: "XI",
-      12: "XII",
-    };
-    return romanNumerals[num];
-  };
-
-  useEffect(() => {
-    console.log("basicFormData", basicFormData);
-  }, [basicFormData]);
 
   return (
     <div className="min-h-screen w-full bg-[#fdf5f6] px-2 md:px-8 py-2 overflow-auto">
       {loading && <Spinner />}
 
       <div className="flex flex-col gap-1 max-w-screen-md mx-auto">
-        {/* <div className="text-3xl text-black text-center transform hover:-translate-y-1 transition duration-200">
-          RISE Registration
-          
-        </div> */}
-        <div className="flex   ">
+        <div className="flex">
           <FormHeader />
         </div>
-
-        {/* <h1 className="text-3xl md:text-4xl font-semibold text-black text-center">
-          Registration Form For SDAT
-        </h1> */}
 
         <PageNumberComponent />
 
         <form
           autoComplete="off"
-          className="flex flex-col gap-4  w-full"
+          className="flex flex-col gap-4 w-full"
           onSubmit={onSubmit}
         >
+          {/* Name Field */}
           <div className="flex flex-col w-full bg-white p-5 rounded-xl">
             <label
-              htmlFor="name"
+              htmlFor="studentName"
               className="text-sm font-medium text-black mb-1"
             >
               Name
@@ -380,17 +212,19 @@ const BasicDetailsForm = () => {
               type="text"
               id="studentName"
               name="studentName"
-              value={userData.studentName}
+              value={userData?.studentName || ""}
               onChange={basicFormHandleChange}
               placeholder="Enter Your Name"
               className="border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-indigo-400 focus:outline-none"
             />
             {basicDetailsError.studentName && (
-              <p className="text-[#ffdd00] text-xs mt-1">
+              <p className="text-red-500 text-xs mt-1">
                 {basicDetailsError.studentName}
               </p>
             )}
           </div>
+
+          {/* Email Field */}
           <div className="flex flex-col w-full bg-white p-5 rounded-xl">
             <label
               htmlFor="email"
@@ -402,20 +236,20 @@ const BasicDetailsForm = () => {
               type="email"
               id="email"
               name="email"
-              value={userData.email}
+              value={userData?.email || ""}
               placeholder="Enter Your Email"
               onChange={basicFormHandleChange}
               className="border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-indigo-400 focus:outline-none"
             />
             {basicDetailsError.email && (
-              <p className="text-[#ffdd00] text-xs mt-1">
+              <p className="text-red-500 text-xs mt-1">
                 {basicDetailsError.email}
               </p>
             )}
           </div>
-          {/* <div className=" "> */}
+
           {/* Date of Birth */}
-          <div className=" appearance-none flex flex-col w-full bg-white p-5 rounded-xl">
+          <div className="appearance-none flex flex-col w-full bg-white p-5 rounded-xl">
             <label
               htmlFor="dob"
               className="text-sm font-medium text-black mb-1"
@@ -432,13 +266,14 @@ const BasicDetailsForm = () => {
               className="appearance-none border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-indigo-400 focus:outline-none"
             />
             {basicDetailsError.dob && (
-              <p className="text-[#ffdd00] text-xs mt-1">
+              <p className="text-red-500 text-xs mt-1">
                 {basicDetailsError.dob}
               </p>
             )}
           </div>
+
           {/* Gender */}
-          <div className="flex flex-col  w-full bg-white p-5 rounded-xl">
+          <div className="flex flex-col w-full bg-white p-5 rounded-xl">
             <label
               htmlFor="gender"
               className="text-sm font-medium text-black mb-1"
@@ -452,9 +287,7 @@ const BasicDetailsForm = () => {
               onChange={basicFormHandleChange}
               className="appearance-none border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-indigo-400 focus:outline-none"
             >
-              <option value="" disabled>
-                Select Gender
-              </option>
+              <option value="">Select Gender</option>
               {genderOptions.map((option, index) => (
                 <option key={index} value={option}>
                   {option}
@@ -462,43 +295,14 @@ const BasicDetailsForm = () => {
               ))}
             </select>
             {basicDetailsError.gender && (
-              <p className="text-[#ffdd00] text-xs mt-1">
+              <p className="text-red-500 text-xs mt-1">
                 {basicDetailsError.gender}
               </p>
             )}
           </div>
-          {/* Exam Name */}
-          {/* <div className="flex flex-col  w-full">
-            <label
-              htmlFor="examName"
-              className="text-sm font-medium text-black mb-1"
-            >
-              Exam Name
-            </label>
-            <select
-              id="examName"
-              name="examName"
-              value={basicFormData?.examName || ""}
-              onChange={basicFormHandleChange}
-              className="border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-indigo-400 focus:outline-none"
-            >
-              <option value="" disabled>
-                Select Exam Name
-              </option>
-              {examNameOptions.map((option, index) => (
-                <option key={index} value={option}>
-                  {option}
-                </option>
-              ))}
-            </select>
-            {basicDetailsError.examName && (
-              <p className="text-black text-xs mt-1">
-                {basicDetailsError.examName}
-              </p>
-            )}
-          </div> */}
+
           {/* Exam Date */}
-          <div className="flex flex-col  w-full bg-white p-5 rounded-xl">
+          <div className="flex flex-col w-full bg-white p-5 rounded-xl">
             <label
               htmlFor="examDate"
               className="text-sm font-medium text-black mb-1"
@@ -510,13 +314,9 @@ const BasicDetailsForm = () => {
               name="examDate"
               value={basicFormData?.examDate || ""}
               onChange={basicFormHandleChange}
-              className=" appearance-none border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-indigo-400 focus:outline-none"
+              className="appearance-none border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-indigo-400 focus:outline-none"
             >
-              <option value="" disabled>
-                Select Exam Date
-              </option>
-
-              {/* {console.log("AllDates", allDates)} */}
+              <option value="">Select Exam Date</option>
               {allDates?.map((option, index) => {
                 const parsedDate = dayjs(option.examDate, "DD-MM-YYYY");
                 return (
@@ -529,46 +329,56 @@ const BasicDetailsForm = () => {
               })}
             </select>
             {basicDetailsError.examDate && (
-              <p className="text-[#ffdd00] text-xs mt-1">
+              <p className="text-red-500 text-xs mt-1">
                 {basicDetailsError.examDate}
               </p>
             )}
           </div>
+
+          {/* Upload Document Field */}
           <UploadDocumentField
             documentUrl={documentUrl}
             setDocumentUrl={setDocumentUrl}
-            showPopup={(msg, type) => console.log(msg, type)} // Replace with your popup
+            showPopup={(msg, type) => console.log(msg, type)}
           />
+          {basicDetailsError.profilePicture && (
+            <p className="text-red-500 text-xs -mt-2">
+              {basicDetailsError.profilePicture}
+            </p>
+          )}
+
+          {/* Loading Spinner */}
           {showReloading && (
             <div className="flex justify-center items-center">
-              <div className="animate-spin  rounded-full h-5 w-5 border-b-2 border-white"></div>
+              <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-gray-800"></div>
             </div>
           )}
+
           {/* Submit Message */}
-          <div className="w-full text-center">
-            {submitMessage && (
-              <p className={`text-sm text-center text-black`}>
-                {submitMessage}
-              </p>
-            )}
-          </div>
+          {submitMessage && (
+            <div className="w-full text-center">
+              <p className="text-sm text-center text-red-500">{submitMessage}</p>
+            </div>
+          )}
+
+          {/* Action Buttons */}
           <div className="flex flex-col-reverse sm:flex-row justify-between items-center gap-4 mt-6">
             <button
               onClick={() => navigate(-1)}
               type="button"
-              className="w-full sm:w-1/3 border bg-yellow-600 rounded-xl text-black  py-2 px-4   "
+              className="w-full sm:w-1/3 border bg-gray-300 rounded-xl text-gray-600 py-2 px-4 cursor-not-allowed"
               disabled
             >
               Back
             </button>
             <button
               type="submit"
-              className="w-full sm:w-2/3 border bg-yellow-500 hover:bg-yellow-600 text-black py-2 rounded-xl transition-all"
+              className="w-full sm:w-2/3 border bg-yellow-500 hover:bg-yellow-600 text-black py-2 rounded-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+              disabled={showReloading}
             >
-              Next
+              {showReloading ? "Submitting..." : "Next"}
             </button>
           </div>
-          {/* </div> */}
         </form>
       </div>
     </div>
