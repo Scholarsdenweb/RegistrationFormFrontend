@@ -14,7 +14,7 @@ const CancellationsAndRefunds = () => {
       {/* Close Button */}
       <button
         className="absolute top-4 right-6 text-lg sm:text-2xl border-2 px-3 py-1 sm:py-2 rounded-full text-black hover:bg-[#e2e1dc] hover:text-black transition"
-        onClick={() => navigate("/registration/payment")}
+        onClick={() => navigate("/")}
         aria-label="Close"
       >
         X

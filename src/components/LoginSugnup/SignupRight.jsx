@@ -4,8 +4,6 @@ import { useNavigate, Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { updateExistingUserDetails } from "../../redux/slices/existingStudentSlice";
 
-// import ScholarsDenLogo from "../../assets/scholarsDenLogo.png";
-
 export default function SignupRight() {
   const navigate = useNavigate();
 
@@ -13,11 +11,8 @@ export default function SignupRight() {
 
   const { userData } = useSelector((state) => state.existingStudentDetails);
 
-  // const { userData } = useSelector((state) => state.userDetails);
-
   // Regex pattern for phone number validation (+91 followed by 10 digits)
   const phoneRegex = /^\+91[0-9]{10}$/;
-  // const [loading, setLoading] = useState(false);
   const [codeVerified, setCodeVerified] = useState(true);
   // const [codeVerified, setCodeVerified] = useState(false);
   const [isSubmittingForm, setIsSubmittingForm] = useState(false);
@@ -27,8 +22,11 @@ export default function SignupRight() {
   const [showReloading, setShowReloading] = useState(false);
 
   const [resendAttempts, setResendAttempts] = useState(0);
-  const [resendCooldown, setResendCooldown] = useState(30); // initial cooldown in seconds
+  const [resendCooldown, setResendCooldown] = useState(30);
   const [cooldownActive, setCooldownActive] = useState(false);
+
+  // Terms and Conditions state
+  const [termsAccepted, setTermsAccepted] = useState(false);
 
   // State hooks
   const [formData, setFormData] = useState({
@@ -37,7 +35,12 @@ export default function SignupRight() {
   const [code, setCode] = useState("");
   const [errors, setErrors] = useState({
     contactNumber: "",
+    terms: "",
   });
+
+  const [showCodeBox, setShowCodeBox] = useState(false);
+
+  const [submitMessage, setSubmitMessage] = useState("");
 
   const handleLogout = async () => {
     document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
@@ -51,17 +54,6 @@ export default function SignupRight() {
   useEffect(() => {
     console.log("userData", userData);
   }, [userData]);
-
-  // name: "",
-  // email: "",
-  // contactNumber: "",
-  // password: "",
-
-  const [showCodeBox, setShowCodeBox] = useState(false);
-
-  const [submitMessage, setSubmitMessage] = useState("");
-
-  
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -77,6 +69,16 @@ export default function SignupRight() {
       ...prevErrors,
       [name]: value ? "" : `${name} is required`,
     }));
+  };
+
+  const handleTermsChange = (e) => {
+    setTermsAccepted(e.target.checked);
+    if (e.target.checked) {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        terms: "",
+      }));
+    }
   };
 
   const validateForm = () => {
@@ -102,9 +104,16 @@ export default function SignupRight() {
       isValid = false;
     }
 
+    // Terms validation
+    if (!termsAccepted) {
+      formErrors.terms = "You must accept the Terms and Conditions to proceed";
+      isValid = false;
+    }
+
     setErrors(formErrors);
     return isValid;
   };
+
   const checkVerificationCode = async () => {
     try {
       console.log("verifyNumber", formData.contactNumber);
@@ -115,8 +124,6 @@ export default function SignupRight() {
 
       console.log("response", response);
       if (response.status === 200) {
-        // setSubmitMessage("Contact number verified successfully!");
-
         console.log("ITs working ,,,,,,,,,,,,,");
         setCodeVerified(true);
         setShowCodeBox(false);
@@ -138,29 +145,20 @@ export default function SignupRight() {
   const onSubmit = async (e) => {
     e.preventDefault();
 
-
     try {
       setIsSubmittingForm(true);
 
-      // let codeChecked = await checkVerificationCode();
       let codeChecked = true;
+      // let codeChecked = await checkVerificationCode();
 
       console.log("codeChecked", codeChecked);
-      // if (codeChecked === false) {
-      //   setShowCodeBox(false);
 
-      //   // Remove OTP
-      //   setCodeVerified(false);
-      //   setSubmitMessage("Please Verify Your Contact Number Number");
-      //   setIsSubmittingForm(false); // ⬅️ reset if verification fails
-      //   return;
-      // }
       if (!codeChecked) {
         setCodeVerified(false);
         setCodeEntered(false);
         setSubmitMessage("Invalid OTP. Please try again.");
-        setCode(""); // Clear previous code
-        setSubmittingOtp(false);
+        setCode("");
+        setIsSubmittingForm(false);
         return;
       }
       setSubmitMessage("");
@@ -196,7 +194,6 @@ export default function SignupRight() {
           } else {
             console.log("response", response);
             setSubmitMessage("Form submitted successfully!");
-            // document.cookie = `token=${response.data.token}`;
             navigate("/registration/basicDetailsForm");
           }
           setSubmitMessage("Form submitted successfully!");
@@ -210,11 +207,12 @@ export default function SignupRight() {
       }
     } catch (e) {
       console.log("Error", e);
+    } finally {
+      setIsSubmittingForm(false);
     }
   };
 
   const verifyPhoneNo = async () => {
-    // setLoading(true);
     if (formData.contactNumber.length != 10) {
       setErrors((prevErrors) => ({
         ...prevErrors,
@@ -222,6 +220,16 @@ export default function SignupRight() {
       }));
       return;
     }
+
+    // Check if terms are accepted before sending OTP
+    if (!termsAccepted) {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        terms: "You must accept the Terms and Conditions before proceeding",
+      }));
+      return;
+    }
+
     if (cooldownActive) return;
 
     try {
@@ -234,7 +242,7 @@ export default function SignupRight() {
         setShowCodeBox(true);
         setSubmitMessage("OTP sent successfully");
 
-        const nextCooldown = 30 * Math.pow(2, resendAttempts); // exponential backoff
+        const nextCooldown = 30 * Math.pow(2, resendAttempts);
         setResendCooldown(nextCooldown);
         setCooldownActive(true);
         setResendAttempts((prev) => prev + 1);
@@ -243,7 +251,6 @@ export default function SignupRight() {
       setSubmitMessage("Error verifying Contact Number number");
       console.log("Error verifying Contact Number number", error);
     } finally {
-      // setLoading(false);
       setShowReloading(false);
       setCode("");
     }
@@ -265,6 +272,36 @@ export default function SignupRight() {
     console.log("e.target.value", e.target.value.length);
   };
 
+  // Handle terms link click - save form data before opening
+  const handleTermsLinkClick = (e) => {
+    e.stopPropagation();
+    // Save form data to Redux before opening terms page
+    dispatch(
+      updateExistingUserDetails({
+        signupFormData: {
+          contactNumber: formData.contactNumber,
+          termsAccepted: termsAccepted,
+          codeVerified: codeVerified,
+          showCodeBox: showCodeBox,
+          code: code,
+        },
+      })
+    );
+  };
+
+  // Load form data from Redux if available
+  useEffect(() => {
+    if (userData?.signupFormData) {
+      setFormData({
+        contactNumber: userData.signupFormData.contactNumber || "",
+      });
+      setTermsAccepted(userData.signupFormData.termsAccepted || false);
+      setCodeVerified(userData.signupFormData.codeVerified || false);
+      setShowCodeBox(userData.signupFormData.showCodeBox || false);
+      setCode(userData.signupFormData.code || "");
+    }
+  }, []);
+
   useEffect(() => {
     let timer;
     if (cooldownActive && resendCooldown > 0) {
@@ -279,13 +316,9 @@ export default function SignupRight() {
   }, [cooldownActive, resendCooldown]);
 
   return (
-    <div className=" w-full bg-[#fdf5f6] flex items-center justify-center px-4 py-1">
-      {/* {isSubmittingForm && showLoadingPage && <LoadingPage />} */}
-      {/* {!isSubmittingForm && loading && <Spinner />} */}
-
-      {/* {!loading && !showLoadingPage && ( */}
+    <div className="w-full bg-[#fdf5f6] flex items-center justify-center px-4 py-1">
       <form
-        className="bg-white/10 backdrop-blur-md p-6 rounded-xl w-full max-w-lg space-y-6 text-black "
+        className="bg-white/10 backdrop-blur-md p-6 rounded-xl w-full max-w-lg space-y-6 text-black"
         onSubmit={onSubmit}
       >
         <h2 className="text-center text-2xl md:text-3xl font-semibold">
@@ -314,15 +347,15 @@ export default function SignupRight() {
               pattern="[0-9]{10}"
               inputMode="numeric"
             />
-            {/* {!showCodeBox && !codeVerified && (
+            {!showCodeBox && !codeVerified && (
               <button
                 type="button"
                 onClick={verifyPhoneNo}
-                className="px-4 py-2 rounded-md bg-yellow-500 hover:bg-yellow-600 text-black font-semibold "
+                className="px-4 py-2 rounded-md bg-yellow-500 hover:bg-yellow-600 text-black font-semibold"
               >
                 Send OTP
               </button>
-            )} */}
+            )}
           </div>
 
           {errors?.contactNumber && (
@@ -341,16 +374,80 @@ export default function SignupRight() {
               name="otp"
               value={code}
               onChange={handleOTPChange}
-              placeholder="Enter OTP"
-              className="w-full bg-white/5 text-black border border-white px-4 py-2 focus:outline-none placeholder-gray-400"
+              placeholder="Enter 4-digit OTP"
+              className="w-full bg-white text-black border-b-2 border-gray-300 focus:border-yellow-500 px-4 py-2 focus:outline-none placeholder-gray-400 transition-colors"
+              style={{ backgroundColor: "#fdf5f6" }}
             />
           </div>
         )}
+
         {showReloading && (
           <div className="flex justify-center items-center">
-            <div className="animate-spin  rounded-full h-5 w-5 border-b-2 border-white"></div>
+            <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-yellow-500"></div>
           </div>
         )}
+
+        {/* Terms and Conditions Section - Show before OTP */}
+        <div className="space-y-4 border- border-gray-300 pt-5">
+          <div className="flex items-start gap-3">
+            <input
+              type="checkbox"
+              id="terms"
+              checked={termsAccepted}
+              onChange={handleTermsChange}
+              className="mt-1 h-4 w-4 rounded border-gray-400 text-yellow-500 focus:ring-2 focus:ring-yellow-500 cursor-pointer accent-yellow-500"
+            />
+            <label
+              htmlFor="terms"
+              className="text-sm text-black leading-relaxed select-none cursor-pointer"
+            >
+              I agree to the{" "}
+              <Link
+                to="/registration/termsAndCondition"
+                rel="noopener noreferrer"
+                className="text-yellow-600 hover:text-yellow-700 underline font-semibold transition-colors"
+                onClick={handleTermsLinkClick}
+              >
+                Terms and Conditions
+              </Link>
+              ,{" "}
+              <Link
+                to="/registration/privacyPolicy"
+                rel="noopener noreferrer"
+                className="text-yellow-600 hover:text-yellow-700 underline font-semibold transition-colors"
+                onClick={handleTermsLinkClick}
+              >
+                Privacy Policy
+              </Link>
+              , and{" "}
+              <Link
+                to="/registration/cancellationsAndRefunds"
+                rel="noopener noreferrer"
+                className="text-yellow-600 hover:text-yellow-700 underline font-semibold transition-colors"
+                onClick={handleTermsLinkClick}
+              >
+                Cancellations & Refunds
+              </Link>
+            </label>
+          </div>
+
+          {errors?.terms && (
+            <p className="text-red-600 text-sm font-medium">{errors.terms}</p>
+          )}
+
+          {/* Contact Us Link */}
+          <div className="text-center pt-2">
+            <span className="text-xs text-gray-600">Need help? </span>
+            <Link
+              to="/registration/contactUsPage"
+              rel="noopener noreferrer"
+              className="text-xs text-yellow-600 hover:text-yellow-700 font-semibold transition-colors"
+              onClick={(e) => e.stopPropagation()}
+            >
+              Contact Us
+            </Link>
+          </div>
+        </div>
 
         {/* Submit Message */}
         {submitMessage && (
@@ -362,10 +459,18 @@ export default function SignupRight() {
         {/* {showCodeBox && ( */}
         <button
           type="submit"
-          className="w-full bg-yellow-500 hover:bg-yellow-600 text-black font-semibold py-2 rounded-xl transition-all disabled:bg-yellow-800"
-          // disabled={!codeEntered}
+          // disabled={!termsAccepted || isSubmittingForm}
+          // className={`w-full font-semibold py-2 rounded-xl transition-all ${
+          //   termsAccepted && !isSubmittingForm
+          //     ? "bg-yellow-500 hover:bg-yellow-600 text-black"
+          //     : "bg-yellow-800 text-gray-400 cursor-not-allowed"
+          // }`}
+
+          className={`w-full font-semibold py-2 rounded-xl transition-all 
+                bg-yellow-500 hover:bg-yellow-600 text-black
+            `}
         >
-          Next
+          {isSubmittingForm ? "Processing..." : "Next"}
         </button>
         {/* )} */}
 

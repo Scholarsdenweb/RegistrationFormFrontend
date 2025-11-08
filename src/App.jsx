@@ -44,6 +44,7 @@ import RiseFee from "./components/adminCompoments/RiseFee/RiseFee";
 import LockNavigation from "./utils/LockNavigator";
 import Amount from "./components/adminCompoments/Amount";
 import AddStudentRegistartionComponent from "./components/adminCompoments/AddStudentRegistration/AddStudentRegistartionComponent";
+import PaymentSuccess from "./components/PaymentSuccessMessage";
 
 function App() {
   return (
@@ -138,6 +139,8 @@ function App() {
                 path="/registration/enquiryData"
                 element={<EnquiryData />}
               />
+              <Route path="/registration/success" element={<PaymentSuccess/>} />
+              registration/success
 
               <Route path="/CreateInvoice" element={<CreateInvoice />} />
 

@@ -12,7 +12,7 @@ const ContactUsPage = () => {
       {/* Close Button */}
       <button
         className="absolute top-4 right-6 text-lg sm:text-2xl border-2 px-3 py-1 sm:py-2 rounded-full text-black hover:bg-[#e2e1dc] hover:text-black transition"
-        onClick={() => navigate("/registration/payment")}
+        onClick={() => navigate("/")}
         aria-label="Close"
       >
         X
@@ -28,7 +28,7 @@ const ContactUsPage = () => {
         <p>We’re here to help with:</p>
         <ul className="list-disc list-inside space-y-1">
           <li>📚 Information about our Foundation, JEE, and NEET programs</li>
-          <li>📝 Admission inquiries & scholarship tests (like <strong>RISE</strong>)</li>
+          <li>📝 Admission inquiries & scholarship tests (like <strong>RISE & SDAT</strong>)</li>
           <li>🔄 Help with an existing registration or class schedule</li>
           <li>❓ Any other questions you may have!</li>
         </ul>

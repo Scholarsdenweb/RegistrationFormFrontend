@@ -17,6 +17,16 @@ const TermsAndConditionPage = () => {
     console.log("userData", userData);
   }, [userData]);
 
+  const handleClose = () => {
+    // If opened in a new tab/window, close it
+    if (window.opener) {
+      window.close();
+    } else {
+      // If not opened as a new tab, navigate back
+      navigate("/");
+    }
+  };
+
   return (
     <div className="max-w-3xl mx-auto px-4 sm:px-8 py-6 bg-[#fdf5f6] text-black shadow-md relative">
       {/* Title */}
@@ -27,7 +37,7 @@ const TermsAndConditionPage = () => {
       {/* Close Button */}
       <button
         className="absolute top-2 right-6 text-lg sm:text-2xl border-2 px-3 py-1 sm:py-2 rounded-full text-black hover:bg-[#e2e1dc] hover:text-black"
-        onClick={() => navigate("/registration/payment")}
+        onClick={handleClose}
       >
         X
       </button>
@@ -54,7 +64,7 @@ const TermsAndConditionPage = () => {
           deductions for damages.
         </li>
         <li>No refund for fee defaulters or mid-session dropouts.</li>
-        <li><strong>Fees paid for RISE (Scholars Den Admission Test) are non-refundable under any circumstances.</strong></li>
+        <li><strong>Fees paid for RISE & SDAT are non-refundable under any circumstances.</strong></li>
         <li>Refunds will be made as per the schedule below:</li>
         <ul className="list-disc pl-6 sm:pl-10">
           <li>Classes 6th–10th: From 1st September of the financial year.</li>
@@ -88,19 +98,19 @@ const TermsAndConditionPage = () => {
         conditions.
       </p>
       <p className="font-bold text-center text-base sm:text-lg">
-        मै/हम माणत करता/करती/करते है कि हमने उक्त नयम व शत को भली भांत पढ़ लया है व
+        मै/हम माणत करता/करती/करते है कि हमने उक्त नयम व शत को भली भांत पढ़ लया है व
         उनका पालन करेंगे।
       </p>
 
       {/* Agree Button */}
-      <div className="flex justify-center mt-4">
+      {/* <div className="flex justify-center mt-4">
         <button
           className="w-full sm:w-auto hover:bg-[#ffdd00] hover:text-black border-2 py-2 px-4 rounded-lg transition duration-300"
           onClick={() => handleChange("termsAndCondition", true)}
         >
           Agree
         </button>
-      </div>
+      </div> */}
     </div>
   );
 };

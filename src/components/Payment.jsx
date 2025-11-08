@@ -2,6 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import axios from "../api/axios";
 import Sidebar from "./Sidebar";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom"; // Add this import
 import { fetchEducationalDetails } from "../redux/slices/educationalDetailsSlice";
 import { fetchFamilyDetails } from "../redux/slices/familyDetailsSlice";
 import { fetchBasicDetails } from "../redux/slices/basicDetailsSlice";
@@ -21,6 +22,7 @@ import { toast, ToastContainer } from "react-toastify";
 
 const Payment = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate(); // Initialize navigate
 
   const [amount, setAmount] = useState();
 
@@ -51,6 +53,7 @@ const Payment = () => {
 
     setAmount(amount.data.amount);
   };
+  
   useEffect(() => {
     console.log("userData in useEffect", userData);
     if (userData.paymentId !== undefined && userData.paymentId !== "") {
@@ -61,7 +64,6 @@ const Payment = () => {
 
   useEffect(() => {
     dispatch(fetchBasicDetails());
-
     dispatch(fetchBatchDetails());
     dispatch(fetchEducationalDetails());
     dispatch(fetchFamilyDetails());
@@ -124,9 +126,14 @@ const Payment = () => {
               razorpay_order_id: response.razorpay_order_id,
               razorpay_signature: response.razorpay_signature,
               studentId: userData.StudentsId,
+              payment_amount: order.amount / 100, // Convert paise to rupees
             });
+            
+            // Redirect to success page after successful payment
+            navigate('/registration/success');
           } catch (handlerError) {
             console.error("Error in handler function:", handlerError);
+            toast.error("Payment verification failed. Please contact support.");
           }
         },
       };
@@ -136,72 +143,20 @@ const Payment = () => {
       const razorpay = new window.Razorpay(options);
       razorpay.on("payment.failed", function (response) {
         console.error("Payment Failed:", response.error);
-        // Optionally notify user here
-        toast.error("Something went wrong during payment process.");
+        toast.error("Payment failed. Please try again.");
       });
       razorpay.open();
 
       console.log("Razorpay instance created:", razorpay);
     } catch (error) {
       console.error("Error in checkoutHandler:", error);
-      // Optionally show error to user
-      // toast.error("Something went wrong during payment process.");
+      toast.error("Something went wrong. Please try again.");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    // min-h-screen w-full  px-2 md:px-8 py-2 overflow-auto
-    // <div className=" relative min-h-screen w-full bg-[#fdf5f6] px-2 md:px-8 py-2 overflow-auto">
-    //   {/* {loading && <Spinner />} */}
-    //   <ToastContainer position="top-right" autoClose={3000} />{" "}
-    //   {/* Toast Notifications */}
-    //   <div className="flex flex-col gap-6 max-w-screen-md h-full mx-auto ">
-    //     <div>
-    //       <FormHeader />
-    //     </div>
-
-    //     <div
-    //       className={`col-span-6 sm:px-9 sm:py-8 sm:mb-3 sm:mr-5 h-full bg-gray-100 rounded-3xl flex flex-col items-center justify-center gap-4 `}
-    //     >
-    //       {paymentStatus ? (
-    //         <PaymentSuccessMessage />
-    //       ) : loading ? (
-    //         <Spinner />
-    //       ) : (
-    //         <div className="ol-span-6 px-9 py-8 mb-3 sm:mr-5 h-full bg-gray-600 rounded-3xl flex flex-col items-center justify-between gap-4 ">
-    //           <div className="flex flex-col gap-5">
-    //             <h2 className="text-bold text-2xl ">
-    //               SDAT Registration Amount : <span>&#8377;{amount}</span>{" "}
-    //             </h2>
-
-    //             <div
-    //               className="bg-[#fdf5f6] text-black p-3 rounded-lg text-center cursor-pointer"
-    //               onClick={checkoutHandler}
-    //             >
-    //               Pay Now
-    //             </div>
-    //           </div>
-    //         </div>
-    //       )}
-    //       {allFormNotAvailable && (
-    //         <AllFormNotAvailable
-    //           setAllFormNotAvailable={setAllFormNotAvailable}
-    //           familyDetailsDataExist={familyDetailsDataExist}
-    //           educationalDetailsDataExist={educationalDetailsDataExist}
-    //           batchDetailsDataExist={batchDetailsDataExist}
-    //           basicDetailsDataExist={basicDetailsDataExist}
-    //         />
-    //       )}
-    //     </div>
-
-    //     <div className="">
-    //       <PaymentFooter />
-    //     </div>
-    //   </div>
-    // </div>
-
     <div className="relative min-h-screen w-full bg-gradient-to-br from-[#fdf5f6] to-[#ffe9eb] px-4 md:px-8 pt-6 overflow-auto">
       {/* Toast Notifications */}
       <ToastContainer position="top-right" autoClose={3000} />
@@ -248,7 +203,7 @@ const Payment = () => {
         </div>
 
         {/* Footer */}
-        <PaymentFooter />
+        {/* <PaymentFooter /> */}
       </div>
     </div>
   );
