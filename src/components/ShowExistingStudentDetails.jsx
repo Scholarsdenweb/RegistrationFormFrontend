@@ -35,7 +35,7 @@ const ShowExistingStudentDetails = () => {
       const response = await axios.post("/students/continueRegistration", {
         _id,
       });
-      document.cookie = `token=${response.data.token}; path=/; max-age=3600`;
+      // document.cookie = `token=${response.data.token}; path=/; max-age=3600`;
       console.log("response continueWithExisting Profile", response);
       navigate("/registration/basicDetailsForm");
     } catch (error) {

@@ -547,11 +547,11 @@ const BatchRelatedDetailsForm = () => {
 
         await method(url, formData);
 
-        setSubmitMessage(
-          dataExist
-            ? "Batch related details updated successfully!"
-            : "Batch related details submitted successfully!"
-        );
+        // setSubmitMessage(
+        //   dataExist
+        //     ? "Batch related details updated successfully!"
+        //     : "Batch related details submitted successfully!"
+        // );
 
         navigate("/registration/educationalDetailsForm");
       } catch (error) {

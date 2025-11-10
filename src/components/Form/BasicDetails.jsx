@@ -544,7 +544,15 @@ const BasicDetailsForm = () => {
     setShowReloading(true);
 
     try {
+            console.log("DataExist", dataExist);
+            console.log("userData", userData);
+
+
       const response = await axios.patch("/students/editStudent", userData);
+
+      
+
+      console.log("response", response);
 
       const url = dataExist
         ? "/form/basicDetails/updateForm"
@@ -556,6 +564,9 @@ const BasicDetailsForm = () => {
 
       navigate("/registration/batchDetailsForm");
     } catch (error) {
+
+
+      console.log("error from addandUpdateBasicForm",error)
       if (error.response?.data) {
         setSubmitMessage(
           typeof error.response.data === "string"

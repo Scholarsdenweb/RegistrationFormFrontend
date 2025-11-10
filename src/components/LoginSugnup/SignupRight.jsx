@@ -167,6 +167,9 @@ export default function SignupRight() {
         try {
           console.log("Response beforew auth", formData);
           const response = await axios.post("/auth/student_signup", formData);
+          console.log("response form signupRight", response);
+
+          console.log("cookie", document.cookie)
 
           console.log("response.message", response.data.message);
 

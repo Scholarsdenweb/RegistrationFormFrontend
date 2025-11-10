@@ -59,13 +59,13 @@ export const fetchBoards = createAsyncThunk(
 export const submitEducationalDetails = createAsyncThunk(
   "educationalDetails/submitEducationalDetails",
   async (
-    {  educationalFormData, educationalDataExist, setEducationalFormSubmit },
+    {  educationalFormData, educationalDataExist },
     { rejectWithValue }
   ) => {
     try {
       console.log("educationalFormData", educationalFormData);
       console.log("educationalDataExist", educationalDataExist);
-      console.log("setEducationalFormSubmit", setEducationalFormSubmit);
+      // console.log("setEducationalFormSubmit", setEducationalFormSubmit);
       const endpoint = educationalDataExist
       ? "/form/educationalDetails/updateForm"
       : "/form/educationalDetails/addForm";
@@ -74,7 +74,7 @@ export const submitEducationalDetails = createAsyncThunk(
 
       console.log("response from submitEducationalDetails", response);
 
-      setEducationalFormSubmit(true); // Execute the callback to indicate submission status
+      // setEducationalFormSubmit(true); // Execute the callback to indicate submission status
       return true;
     } catch (error) {
       console.log("error", error);

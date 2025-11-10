@@ -894,6 +894,7 @@ const EducationalDetailsForm = () => {
             <div className="w-full bg-gray-200 rounded-full h-2">
               <div
                 className="bg-gradient-to-r from-[#c61d23] to-[#a01818] h-2 rounded-full"
+                style={{ width: "75%" }}
               ></div>
             </div>
           </div>
