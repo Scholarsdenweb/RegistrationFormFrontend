@@ -25,6 +25,8 @@ export default function SignupRight() {
   const [resendCooldown, setResendCooldown] = useState(30);
   const [cooldownActive, setCooldownActive] = useState(false);
 
+  const [termsAndCondition, setTermsAndCondition] = useState(false);
+
   // Terms and Conditions state
   const [termsAccepted, setTermsAccepted] = useState(false);
 
@@ -44,6 +46,7 @@ export default function SignupRight() {
 
   const handleLogout = async () => {
     document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    document.cookie = "authToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
     navigate("/");
   };
 
@@ -182,7 +185,7 @@ export default function SignupRight() {
 
             navigate("/registration/existingStudent");
           } else if (
-            response.data.message === "Student Exist in Enquiry Form"
+            response.data.message === "Student found in enquiry records. Complete your registration!"
           ) {
             console.log(
               "responseData student from enquiry form",

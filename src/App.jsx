@@ -51,8 +51,7 @@ function App() {
     <Provider store={store}>
       <AuthProvider>
         <Router>
-
-          <LockNavigation/>
+          <LockNavigation />
           <div className="p-0 m-0">
             <Routes>
               {/* <Route path="/" element={<Login />} /> */}
@@ -63,10 +62,7 @@ function App() {
                 // element={<PrivateRoute component={AdminDashboard} />}
                 element={<AdminDashboard />}
               />
-              <Route
-                path="/admin/allStudents"
-                element={<AllStudentResult />}
-              />
+              <Route path="/admin/allStudents" element={<AllStudentResult />} />
               <Route path="/admin/addExamDate" element={<AddExamDate />} />
               <Route
                 path="/admin/downloadResult"
@@ -76,40 +72,44 @@ function App() {
                 path="/admin/CloudinaryUpload"
                 element={<CloudinaryComponent />}
               />
-              <Route
-                path="/admin/allForms"
-                element={<AllFormsComponents />}
-              />
-              <Route
-                path="/admin/formFee"
-                element={<RiseFee />}
-              />
-              <Route
-                path="/admin/amount"
-                element={<Amount />}
-              />
+              <Route path="/admin/allForms" element={<AllFormsComponents />} />
+              <Route path="/admin/formFee" element={<RiseFee />} />
+              <Route path="/admin/amount" element={<Amount />} />
               <Route
                 path="/admin/add-student-registration"
                 element={<AddStudentRegistartionComponent />}
               />
               <Route path="/facedetection" element={<FaceDetectionUpload />} />
 
+
+
+
+
               <Route path="/" element={<Signup />} />
+              
+              {/* <Route
+                path="/registration/existingStudent"
+                element={<ExistingStudent />}
+              /> */}
               <Route
-                path="/registration/educationalDetailsForm"
-                element={<EducationalDetailsForm />}
+                path="/registration/existingStudent"
+                element={<PrivateRoute component={ExistingStudent} />}
               />
               <Route
                 path="/registration/basicDetailsForm"
-                element={<BasicDetailsForm />}
+                element={<PrivateRoute component={ BasicDetailsForm} />}
+              />
+              <Route
+                path="/registration/educationalDetailsForm"
+                element={<PrivateRoute component={EducationalDetailsForm} />}
               />
               <Route
                 path="/registration/batchDetailsForm"
-                element={<BatchRelatedDetailsForm />}
+                element={<PrivateRoute component={BatchRelatedDetailsForm} />}
               />
               <Route
                 path="/registration/familyDetailsForm"
-                element={<FamilyDetails />}
+                element={<PrivateRoute component={FamilyDetails} />}
               />
               <Route
                 path="/registration/selfieCapture"
@@ -132,18 +132,14 @@ function App() {
                 element={<CancellationsAndRefunds />}
               />
               <Route
-                path="/registration/existingStudent"
-                element={<ExistingStudent />}
-              />
-              <Route
                 path="/registration/enquiryData"
                 element={<EnquiryData />}
               />
-              <Route path="/registration/success" element={<PaymentSuccess/>} />
-              registration/success
-
-              <Route path="/CreateInvoice" element={<CreateInvoice />} />
-
+              <Route
+                path="/registration/success"
+                element={<PaymentSuccess />}
+              />
+              {/* <Route path="/CreateInvoice" element={<CreateInvoice />} /> */}
               {/* <Route
                 path="/dashboard"
                 element={<PrivateRoute component={Dashboard} />}
@@ -152,7 +148,7 @@ function App() {
                 path="/dashboard"
                 element={<PrivateRoute component={Dashboard} />}
               />
-              <Route path="/examDetails" element={<ExamDetails />} />
+              {/* <Route path="/examDetails" element={<ExamDetails />} /> */}
               <Route path="/showMessage" element={<ShowMessage />} />
               <Route path="/forgetPassword" element={<ForgotPassword />} />
               <Route
@@ -160,24 +156,23 @@ function App() {
                 element={<ResetPassword />}
               />
               {/* <Route path="result" element={<ResultPage />} /> */}
-              <Route
+              {/* <Route
                 path="/FormDetailPage"
                 element={<PrivateRoute component={FormDetailPage} />}
-              />
-              <Route
+              /> */}
+              {/* <Route
                 path="/resultDetails"
                 element={<PrivateRoute component={ResultPage} />}
-              />
-              <Route path="/registration/payment" element={<Payment />} />
+              /> */}
+              <Route path="/registration/payment" element={<PrivateRoute component={Payment} />} />
               {/* <Route
                 path="/payment/success/:payment_id"
                 element={<PrivateRoute component={PaymentSuccessMessage} />}
               /> */}
-              <Route
+              {/* <Route
                 path="/result"
                 element={<PrivateRoute component={Result} />}
-              />
-
+              /> */}
               <Route path="/spinner" element={<Spinner />} />
             </Routes>
           </div>

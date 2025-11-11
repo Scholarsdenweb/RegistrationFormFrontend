@@ -153,10 +153,7 @@ const UploadDocumentField = ({ documentUrl, setDocumentUrl, showPopup }) => {
         dispatch(updateBasicDetails({ profilePicture: data.secure_url }));
         setDocumentUrl(data.secure_url);
 
-        showPopup(
-          `Upload successful! Reduced from ${originalSizeKB} KB to ${compressedSizeKB} KB`,
-          "success"
-        );
+      
         closeModal();
       } else {
         showPopup("Upload failed.", "error");

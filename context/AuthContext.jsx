@@ -43,7 +43,7 @@ import React, {
   useCallback,
   useEffect,
 } from "react";
-import axios from "axios";
+import axios from "../src/api/axios";
 
 const AuthContext = createContext();
 
@@ -68,11 +68,11 @@ export const AuthProvider = ({ children }) => {
         setLoading(true);
         // Backend should validate the HttpOnly cookie
         // This endpoint verifies the token without exposing it
-        const response = await axios.get("/api/auth/verify");
+        const response = await axios.get("/auth/verify");
 
-        console.log("response from chcekAuth", response);
+        console.log("responzzse from chcekAuth", response);
 
-        if (response.data.isAuthenticated) {
+        if (response?.data?.authenticated) {
           setIsAuthenticated(true);
           setUser(response.data.user);
         } else {
