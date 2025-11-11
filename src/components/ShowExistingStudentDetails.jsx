@@ -21,7 +21,7 @@ const ShowExistingStudentDetails = () => {
       setLoading(true);
       const response = await axios.post("/students/createNewStudent");
       console.log("response", response);
-      document.cookie = `token=${response.data.token}; path=/; max-age=3600`;
+      // document.cookie = `token=${response.data.token}; path=/; max-age=3600`;
       navigate("/registration/basicDetailsForm");
     } catch (error) {
       console.error("Error creating student:", error);
@@ -140,7 +140,7 @@ const ShowExistingStudentDetails = () => {
                   </div>
 
                   {/* Details Grid */}
-                  <div className="space-y-3 mb-6 bg-gradient-to-br from-[#fdf5f6] to-[#f5eff0] rounded-xl p-4 border border-gray-100">
+                  <div className="flex justify-between space-y-3 mb-6 bg-gradient-to-br from-[#fdf5f6] to-[#f5eff0] rounded-xl p-4 border border-gray-100">
                     <div className="flex items-center gap-3">
                       <Mail size={16} className="text-[#c61d23] flex-shrink-0" />
                       <div className="min-w-0">
@@ -241,7 +241,7 @@ const ShowExistingStudentDetails = () => {
               <p className="text-[#c61d23] text-sm font-mono font-semibold mt-1">{selectedStudent.StudentsId}</p>
             </div>
 
-            <div className="space-y-4 bg-gradient-to-br from-[#fdf5f6] to-[#f5eff0] rounded-xl p-4 border border-gray-100 mb-6">
+            <div className=" space-y-4 bg-gradient-to-br from-[#fdf5f6] to-[#f5eff0] rounded-xl p-4 border border-gray-100 mb-6">
               <div>
                 <p className="text-xs text-gray-600 uppercase tracking-wide font-semibold">Email</p>
                 <p className="text-sm text-gray-900 break-all">{selectedStudent.email}</p>

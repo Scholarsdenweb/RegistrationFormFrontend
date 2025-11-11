@@ -679,12 +679,13 @@ const FamilyDetails = () => {
             </div>
 
             {/* Error Message */}
-            {submitMessage && (
+
+            {/* {submitMessage && (
               <div className="bg-red-50 border border-red-200 rounded-xl p-4 flex items-start gap-3">
                 <AlertCircle size={18} className="text-red-500 flex-shrink-0 mt-0.5" />
                 <p className="text-sm text-red-700">{submitMessage}</p>
               </div>
-            )}
+            )} */}
 
             {/* Loading State */}
             {showReloading && (

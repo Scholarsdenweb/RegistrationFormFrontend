@@ -4,12 +4,12 @@ import {
   fetchBasicDetails,
   updateBasicDetails,
 } from "../../redux/slices/basicDetailsSlice";
+import imageCompression from "browser-image-compression";
 
 const UploadDocumentField = ({ documentUrl, setDocumentUrl, showPopup }) => {
   const fileInputRef = useRef(null);
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
-
 
 
   const { userData } = useSelector((state) => state.userDetails);
@@ -45,13 +45,98 @@ const UploadDocumentField = ({ documentUrl, setDocumentUrl, showPopup }) => {
     if (file) handleFileUpload(file);
   };
 
+  // const uploadToCloudinary = async (file) => {
+  //   setIsUploading(true);
+  //   try {
+  //     const formData = new FormData();
+  //     formData.append("file", file);
+  //     formData.append("upload_preset", "ProfilePictures");
+  //     formData.append("cloud_name", "dtytgoj3f");
+  //     formData.append("folder", "SDAT270425Image");
+
+  //     const res = await fetch(
+  //       "https://api.cloudinary.com/v1_1/dtytgoj3f/image/upload",
+  //       {
+  //         method: "POST",
+  //         body: formData,
+  //       }
+  //     );
+
+  //     const data = await res.json();
+  //     if (data.secure_url) {
+  //       dispatch(updateBasicDetails({ profilePicture: data.secure_url }));
+
+  //       setDocumentUrl(data.secure_url);
+  //       showPopup("Upload successful!", "success");
+  //       closeModal();
+  //     } else {
+  //       showPopup("Upload failed.", "error");
+  //     }
+  //   } catch (err) {
+  //     showPopup("Upload error.", "error");
+  //   } finally {
+  //     setIsUploading(false);
+  //   }
+  // };
+
+  // const uploadToCloudinary = async (file) => {
+  //   setIsUploading(true);
+  //   try {
+  //     // Step 1: Compress Image Before Upload
+  //     const compressedFile = await imageCompression(file, {
+  //       maxSizeMB: 1, // Ensure image < 1MB
+  //       maxWidthOrHeight: 800, // Resize large images
+  //       useWebWorker: true, // Faster / no UI freeze
+  //     });
+
+  //     const formData = new FormData();
+  //     formData.append("file", compressedFile); // Upload compressed version
+  //     formData.append("upload_preset", "ProfilePictures");
+  //     formData.append("folder", "SDAT270425Image");
+
+  //     const res = await fetch(
+  //       "https://api.cloudinary.com/v1_1/dtytgoj3f/image/upload",
+  //       {
+  //         method: "POST",
+  //         body: formData,
+  //       }
+  //     );
+
+  //     const data = await res.json();
+
+  //     if (data.secure_url) {
+  //       dispatch(updateBasicDetails({ profilePicture: data.secure_url }));
+  //       setDocumentUrl(data.secure_url);
+
+  //       showPopup("Upload successful!", "success");
+  //       closeModal();
+  //     } else {
+  //       showPopup("Upload failed.", "error");
+  //     }
+  //   } catch (err) {
+  //     console.error("Upload error →", err);
+  //     showPopup("Upload error.", "error");
+  //   } finally {
+  //     setIsUploading(false);
+  //   }
+  // };
+
   const uploadToCloudinary = async (file) => {
     setIsUploading(true);
+
+    // Add state for file size display (add this at component level)
+
     try {
+      // Step 1: Compress Image Before Upload
+      const compressedFile = await imageCompression(file, {
+        maxSizeMB: 1, // Ensure image < 1MB
+        maxWidthOrHeight: 800, // Resize large images
+        useWebWorker: true, // Faster / no UI freeze
+      });
+
       const formData = new FormData();
-      formData.append("file", file);
+      formData.append("file", compressedFile);
       formData.append("upload_preset", "ProfilePictures");
-      formData.append("cloud_name", "dtytgoj3f");
       formData.append("folder", "SDAT270425Image");
 
       const res = await fetch(
@@ -63,16 +148,21 @@ const UploadDocumentField = ({ documentUrl, setDocumentUrl, showPopup }) => {
       );
 
       const data = await res.json();
+
       if (data.secure_url) {
         dispatch(updateBasicDetails({ profilePicture: data.secure_url }));
-
         setDocumentUrl(data.secure_url);
-        showPopup("Upload successful!", "success");
+
+        showPopup(
+          `Upload successful! Reduced from ${originalSizeKB} KB to ${compressedSizeKB} KB`,
+          "success"
+        );
         closeModal();
       } else {
         showPopup("Upload failed.", "error");
       }
     } catch (err) {
+      console.error("Upload error →", err);
       showPopup("Upload error.", "error");
     } finally {
       setIsUploading(false);
@@ -123,7 +213,6 @@ const UploadDocumentField = ({ documentUrl, setDocumentUrl, showPopup }) => {
       >
         Upload Document (JPEG, PNG, Max 2MB)
       </label>
-
       {/* Trigger Button */}
       <button
         type="button"
@@ -132,7 +221,6 @@ const UploadDocumentField = ({ documentUrl, setDocumentUrl, showPopup }) => {
       >
         Upload Document
       </button>
-
       {/* Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
@@ -192,7 +280,6 @@ const UploadDocumentField = ({ documentUrl, setDocumentUrl, showPopup }) => {
           </div>
         </div>
       )}
-
       {/* Uploading Status */}
       {isUploading && (
         <div className="mt-3 text-sm text-blue-600 flex items-center gap-2">
@@ -219,9 +306,9 @@ const UploadDocumentField = ({ documentUrl, setDocumentUrl, showPopup }) => {
           Uploading document...
         </div>
       )}
-
+    
       {/* Preview */}
-      {(userData?.profilePicture || documentUrl )&& !isUploading && (
+      {(userData?.profilePicture || documentUrl) && !isUploading && (
         <div className="mt-3">
           <p className="text-sm text-green-600">
             Document uploaded successfully.
@@ -233,7 +320,6 @@ const UploadDocumentField = ({ documentUrl, setDocumentUrl, showPopup }) => {
           />
         </div>
       )}
-
       {/* Hidden Input */}
       <input
         type="file"
