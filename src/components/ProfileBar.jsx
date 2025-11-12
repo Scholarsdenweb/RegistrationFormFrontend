@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { updateExistingUserDetails } from "../redux/slices/existingStudentSlice";
 import { LogOut, ChevronDown, Phone, User } from "lucide-react";
+import { useAuth } from "../../context/AuthContext";
 
 const ProfileBar = ({ onLogout }) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -10,18 +11,24 @@ const ProfileBar = ({ onLogout }) => {
     (state) => state.existingStudentDetails
   );
 
+  const { logout } = useAuth();
+
   const toggleDropdown = () => setDropdownOpen(!dropdownOpen);
 
   const handleLogoutClick = async () => {
     await dispatch(updateExistingUserDetails({ data: "" }));
-    document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/";
-    document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/registration";
+    // document.cookie = "authToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/";
+    // document.cookie = "authToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/registration";
+    logout();
+
     setDropdownOpen(false);
     if (onLogout) onLogout();
   };
 
-  const studentData = existingStudentDetail?.data?.[0] || existingStudentDetail?.userData?.[0];
-  const contactNumber = studentData?.contactNumber || studentData?.fatherContactNumber || "N/A";
+  const studentData =
+    existingStudentDetail?.data?.[0] || existingStudentDetail?.userData?.[0];
+  const contactNumber =
+    studentData?.contactNumber || studentData?.fatherContactNumber || "N/A";
   const studentName = studentData?.name || "Student";
   const profilePicture = studentData?.profilePicture;
 
@@ -45,8 +52,12 @@ const ProfileBar = ({ onLogout }) => {
           )}
         </div>
         <div className="hidden sm:flex flex-col items-start">
-          <p className="text-xs text-gray-500 uppercase tracking-wide font-semibold">Student</p>
-          <p className="text-sm font-semibold text-gray-900 truncate max-w-32">{studentName}</p>
+          <p className="text-xs text-gray-500 uppercase tracking-wide font-semibold">
+            Student
+          </p>
+          <p className="text-sm font-semibold text-gray-900 truncate max-w-32">
+            {studentName}
+          </p>
         </div>
         <ChevronDown
           size={18}
@@ -74,7 +85,9 @@ const ProfileBar = ({ onLogout }) => {
                 )}
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-semibold text-gray-900 truncate">{studentName}</p>
+                <p className="text-sm font-semibold text-gray-900 truncate">
+                  {studentName}
+                </p>
                 <p className="text-xs text-gray-600 flex items-center gap-1">
                   <Phone size={12} />
                   <span className="truncate">{contactNumber}</span>

@@ -36,7 +36,7 @@ import ContactUsPage from "./components/Policy/ContactUsPage";
 import PrivacyPolicy from "./components/Policy/PrivacyPolicy";
 import CancellationsAndRefunds from "./components/Policy/CancellationsAndRefunds";
 import ExistingStudent from "./components/ExistingStudent";
-import EnquiryData from "./components/EnquiryData";
+import ShowEnquiryOFExistingStudentDetails from "./components/ShowEnquiryOFExistingStudentDetails";
 import FaceDetectionUpload from "./components/FaceDetection";
 import CreateInvoice from "./components/CreateInvoice";
 import AllFormsComponents from "./components/adminCompoments/AllFormsComponents";
@@ -81,12 +81,8 @@ function App() {
               />
               <Route path="/facedetection" element={<FaceDetectionUpload />} />
 
-
-
-
-
               <Route path="/" element={<Signup />} />
-              
+
               {/* <Route
                 path="/registration/existingStudent"
                 element={<ExistingStudent />}
@@ -96,8 +92,17 @@ function App() {
                 element={<PrivateRoute component={ExistingStudent} />}
               />
               <Route
+                path="/registration/existingenquiry"
+                element={
+                  <PrivateRoute
+                    component={ShowEnquiryOFExistingStudentDetails}
+                  />
+                }
+              />
+
+              <Route
                 path="/registration/basicDetailsForm"
-                element={<PrivateRoute component={ BasicDetailsForm} />}
+                element={<PrivateRoute component={BasicDetailsForm} />}
               />
               <Route
                 path="/registration/educationalDetailsForm"
@@ -111,6 +116,7 @@ function App() {
                 path="/registration/familyDetailsForm"
                 element={<PrivateRoute component={FamilyDetails} />}
               />
+
               <Route
                 path="/registration/selfieCapture"
                 element={<SelfieCapture />}
@@ -131,10 +137,7 @@ function App() {
                 path="/registration/cancellationsAndRefunds"
                 element={<CancellationsAndRefunds />}
               />
-              <Route
-                path="/registration/enquiryData"
-                element={<EnquiryData />}
-              />
+
               <Route
                 path="/registration/success"
                 element={<PaymentSuccess />}
@@ -164,7 +167,10 @@ function App() {
                 path="/resultDetails"
                 element={<PrivateRoute component={ResultPage} />}
               /> */}
-              <Route path="/registration/payment" element={<PrivateRoute component={Payment} />} />
+              <Route
+                path="/registration/payment"
+                element={<PrivateRoute component={Payment} />}
+              />
               {/* <Route
                 path="/payment/success/:payment_id"
                 element={<PrivateRoute component={PaymentSuccessMessage} />}

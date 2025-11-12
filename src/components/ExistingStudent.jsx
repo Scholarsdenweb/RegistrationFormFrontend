@@ -12,10 +12,17 @@ const ExistingStudent = () => {
   const navigate = useNavigate();
 
   const handleLogout = async () => {
-    setLoading(true);
-    await dispatch(updateExistingUserDetails({ userdata: "" }));
-    document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/";
-    navigate("/");
+    try {
+      setLoading(true);
+      await dispatch(updateExistingUserDetails({ userdata: "" }));
+      document.cookie =
+        "authToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/";
+      navigate("/");
+    } catch (error) {
+      console.log("error from existingStudent", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (

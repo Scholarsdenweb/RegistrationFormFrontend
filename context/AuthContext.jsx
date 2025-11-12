@@ -61,33 +61,33 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Check authentication status on mount
-  useEffect(() => {
-    const checkAuth = async () => {
-      try {
-        setLoading(true);
-        // Backend should validate the HttpOnly cookie
-        // This endpoint verifies the token without exposing it
-        const response = await axios.get("/auth/verify");
+  const checkAuth = useCallback(async () => {
+    try {
+      setLoading(true);
+      // Backend should validate the HttpOnly cookie
+      // This endpoint verifies the token without exposing it
+      const response = await axios.get("/auth/verify");
 
-        console.log("responzzse from chcekAuth", response);
+      console.log("responzzse from chcekAuth", response);
 
-        if (response?.data?.authenticated) {
-          setIsAuthenticated(true);
-          setUser(response.data.user);
-        } else {
-          setIsAuthenticated(false);
-          setUser(null);
-        }
-      } catch (err) {
-        console.error("Auth verification failed:", err);
+      if (response?.data?.authenticated) {
+        setIsAuthenticated(true);
+        setUser(response.data.user);
+      } else {
         setIsAuthenticated(false);
         setUser(null);
-      } finally {
-        setLoading(false);
       }
-    };
+    } catch (err) {
+      console.error("Auth verification failed:", err);
+      setIsAuthenticated(false);
+      setUser(null);
+    } finally {
+      setLoading(false);
+    }
+  });
 
+  // Check authentication status on mount
+  useEffect(() => {
     checkAuth();
   }, []);
 
@@ -97,7 +97,7 @@ export const AuthProvider = ({ children }) => {
       setLoading(true);
       setError(null);
 
-      const response = await axios.post("/api/auth/login", credentials, {
+      const response = await axios.post("/auth/login", credentials, {
         withCredentials: true, // Allow cookies to be sent/received
       });
 
@@ -120,13 +120,9 @@ export const AuthProvider = ({ children }) => {
     try {
       setLoading(true);
       // Tell backend to clear the HttpOnly cookie
-      await axios.post(
-        "/api/auth/logout",
-        {},
-        {
-          withCredentials: true,
-        }
-      );
+      const response = await axios.post("/auth/logout");
+
+      console.log("response from logout", response);
 
       setIsAuthenticated(false);
       setUser(null);
@@ -145,7 +141,7 @@ export const AuthProvider = ({ children }) => {
   const refreshToken = useCallback(async () => {
     try {
       const response = await axios.post(
-        "/api/auth/refresh",
+        "/auth/refresh",
         {},
         {
           withCredentials: true,
@@ -206,6 +202,7 @@ export const AuthProvider = ({ children }) => {
     login,
     logout,
     refreshToken,
+    checkAuth
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

@@ -58,7 +58,7 @@ export default function AdminLoginLeft() {
 
         console.log("rsponse from login", response);
         login();
-        document.cookie = `token=${response.data.token}`;
+        document.cookie = `authToken=${response.data.token}`;
         navigate("/admin/dashboard");
       } catch (error) {
         setSubmitMessage(error?.response?.data || "An error occurred");

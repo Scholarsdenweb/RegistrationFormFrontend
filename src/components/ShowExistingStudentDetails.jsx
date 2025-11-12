@@ -16,6 +16,7 @@ const ShowExistingStudentDetails = () => {
     dispatch(fetchExistingUserDetails());
   }, [dispatch]);
 
+
   const createNewStudent = async () => {
     try {
       setLoading(true);
@@ -26,6 +27,9 @@ const ShowExistingStudentDetails = () => {
     } catch (error) {
       console.error("Error creating student:", error);
       setLoading(false);
+    }finally{
+      setLoading(false);
+
     }
   };
 
@@ -41,6 +45,8 @@ const ShowExistingStudentDetails = () => {
     } catch (error) {
       console.error("Error continuing registration:", error);
       setLoading(false);
+    }finally{
+      setLoading(false);
     }
   };
 
@@ -54,16 +60,16 @@ const ShowExistingStudentDetails = () => {
     return aIsPending ? -1 : 1;
   });
 
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-[#fdf5f6] flex items-center justify-center">
-        <div className="flex flex-col items-center gap-4">
-          <Loader size={48} className="text-[#c61d23] animate-spin" />
-          <p className="text-gray-600 font-medium">Processing...</p>
-        </div>
-      </div>
-    );
-  }
+  // if (loading) {
+  //   return (
+  //     <div className="min-h-screen bg-[#fdf5f6] flex items-center justify-center">
+  //       <div className="flex flex-col items-center gap-4">
+  //         <Loader size={48} className="text-[#c61d23] animate-spin" />
+  //         <p className="text-gray-600 font-medium">Processing...</p>
+  //       </div>
+  //     </div>
+  //   );
+  // }
 
   return (
     <div className="bg-[#fdf5f6] p-1 sm:p-10 overflow-auto">

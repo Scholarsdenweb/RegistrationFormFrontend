@@ -7,7 +7,7 @@ const DashboardSidebar = () => {
 
   const handleLogout = () => {
     // Clear the cookie by setting it with an expired date
-    document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    document.cookie = "authToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
     navigate("/");
   };
   
