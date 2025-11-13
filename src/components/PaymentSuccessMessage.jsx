@@ -95,7 +95,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
-import axios from "../api/axios"
+import axios from "../api/axios";
 import {
   CheckCircle,
   MessageCircle,
@@ -111,13 +111,19 @@ const PaymentSuccess = () => {
 
   const [paymentCompleted, setPaymentCompleted] = useState(false);
 
-  const [resultGenerated, setResultGenerated] = useState(false);
+  const [admitCardGenerated, setAdmitCardGenerated] = useState(false);
+
+  const [sendAdmitCardStatus, setSendAdmitCardStatus] = useState(false);
 
   useEffect(() => {
     // Redirect to home if payment is not completed
-    if (!userData.paymentId) {
+    if (!userData?.paymentId) {
       navigate("/");
     }
+    setPaymentCompleted(userData?.paymentId ? true : false);
+    setAdmitCardGenerated(userData?.admitCard ? true : false);
+    setSendAdmitCardStatus(userData?.messageStatus?.admitCardSend);
+    
   }, [userData, navigate]);
 
   const generateAdmitCard = async () => {
@@ -126,7 +132,7 @@ const PaymentSuccess = () => {
       const response = await axios.post("/payment/generateAdmitCard");
 
       console.log("response from generateAdmitCard", response);
-      setResultGenerated(true);
+      setAdmitCardGenerated(true);
 
       // setAdmitCardStatus("Generated");
       // setLoading(false);
@@ -135,9 +141,25 @@ const PaymentSuccess = () => {
     }
   };
 
+  const sendAdmitCard = async () => {
+    try {
+      const response = await axios.post("/payment/sendAdmitCard", {
+        studentId: userData?.StudentsId,
+      });
+
+      console.log("response from sendAdmitCard", response);
+      setSendAdmitCardStatus(true);
+    } catch (error) {
+      console.log("error from sendAdmitCard", error);
+    }
+  };
+
   useEffect(() => {
     if (userData.paymentId) {
       generateAdmitCard();
+    }
+    if (userData.admitCard) {
+      sendAdmitCard();
     }
   }, [userData]);
 
@@ -266,14 +288,14 @@ const PaymentSuccess = () => {
                       title: "Processing",
                       desc: "Admission being processed",
                       time: "1-2 hours",
-                      completed: resultGenerated,
+                      completed: admitCardGenerated,
                     },
                     {
                       step: 3,
                       title: "Admit Card",
                       desc: "Admit card will be sent on WhatsApp",
                       time: "Within 24 hours",
-                      completed: false,
+                      completed: sendAdmitCardStatus,
                     },
                   ].map((item) => (
                     <div key={item.step} className="flex gap-4">
