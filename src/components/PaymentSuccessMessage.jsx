@@ -93,7 +93,7 @@
 
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import axios from "../api/axios";
 import {
@@ -104,9 +104,15 @@ import {
   Home,
   AlertCircle,
 } from "lucide-react";
+import { fetchUserDetails } from "../redux/slices/userDeailsSlice";
 
 const PaymentSuccess = () => {
   const navigate = useNavigate();
+
+  const dispatch = useDispatch();
+
+  // const { userData } = useSelector((state) => state.userDetails);
+
   const { userData } = useSelector((state) => state.userDetails);
 
   const [paymentCompleted, setPaymentCompleted] = useState(false);
@@ -117,13 +123,14 @@ const PaymentSuccess = () => {
 
   useEffect(() => {
     // Redirect to home if payment is not completed
+
+    console.log("test data ", !userData?.paymentId);
     if (!userData?.paymentId) {
       navigate("/");
     }
     setPaymentCompleted(userData?.paymentId ? true : false);
     setAdmitCardGenerated(userData?.admitCard ? true : false);
     setSendAdmitCardStatus(userData?.messageStatus?.admitCardSend);
-    
   }, [userData, navigate]);
 
   const generateAdmitCard = async () => {
@@ -155,12 +162,13 @@ const PaymentSuccess = () => {
   };
 
   useEffect(() => {
+    console.log("userData", userData);
     if (userData.paymentId) {
       generateAdmitCard();
     }
-    if (userData.admitCard) {
-      sendAdmitCard();
-    }
+    // if (userData.admitCard) {
+    //   sendAdmitCard();
+    // }
   }, [userData]);
 
   useEffect(() => {
@@ -170,6 +178,19 @@ const PaymentSuccess = () => {
 
     console.log("userData ", userData);
   }, []);
+
+  useEffect(() => {
+    const fetchAllData = async () => {
+      try {
+        await Promise.all([dispatch(fetchUserDetails())]);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        toast.error("Failed to load registration data");
+      }
+    };
+
+    fetchAllData();
+  }, [dispatch]);
 
   return (
     <div className="min-h-screen w-full bg-gradient-to-br from-[#fdf5f6] via-white to-[#f5eff0]">
@@ -417,3 +438,8 @@ const PaymentSuccess = () => {
 };
 
 export default PaymentSuccess;
+
+// https://res.cloudinary.com/dtytgoj3f/raw/upload/v1762875474/SDAT270425AdmitCard/admit_cards/Satya%20Prakash%20Tiwari/202613101.pdf
+
+// 202613101
+// 8299698491

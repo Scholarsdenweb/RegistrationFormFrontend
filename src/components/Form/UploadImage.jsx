@@ -11,7 +11,6 @@ const UploadDocumentField = ({ documentUrl, setDocumentUrl, showPopup }) => {
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
 
-
   const { userData } = useSelector((state) => state.userDetails);
 
   const dispatch = useDispatch();
@@ -153,7 +152,6 @@ const UploadDocumentField = ({ documentUrl, setDocumentUrl, showPopup }) => {
         dispatch(updateBasicDetails({ profilePicture: data.secure_url }));
         setDocumentUrl(data.secure_url);
 
-      
         closeModal();
       } else {
         showPopup("Upload failed.", "error");
@@ -208,7 +206,7 @@ const UploadDocumentField = ({ documentUrl, setDocumentUrl, showPopup }) => {
         htmlFor="document-upload"
         className="block text-sm font-medium text-gray-700 mb-1"
       >
-        Upload Document (JPEG, PNG, Max 2MB)
+        Upload Photo (JPEG, PNG, Max 2MB)
       </label>
       {/* Trigger Button */}
       <button
@@ -216,7 +214,7 @@ const UploadDocumentField = ({ documentUrl, setDocumentUrl, showPopup }) => {
         onClick={openModal}
         className="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm hover:border-blue-500 transition"
       >
-        Upload Document
+        Upload or Capture Photo
       </button>
       {/* Modal */}
       {isModalOpen && (
@@ -303,12 +301,12 @@ const UploadDocumentField = ({ documentUrl, setDocumentUrl, showPopup }) => {
           Uploading document...
         </div>
       )}
-    
+
       {/* Preview */}
       {(userData?.profilePicture || documentUrl) && !isUploading && (
         <div className="mt-3">
           <p className="text-sm text-green-600">
-            Document uploaded successfully.
+            Photo uploaded successfully.
           </p>
           <img
             src={userData.profilePicture || documentUrl}

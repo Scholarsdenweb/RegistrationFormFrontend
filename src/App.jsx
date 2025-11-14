@@ -115,6 +115,12 @@ function App() {
               <Route
                 path="/registration/familyDetailsForm"
                 element={<PrivateRoute component={FamilyDetails} />}
+
+              />
+
+                <Route
+                path="/registration/success"
+                element={<PrivateRoute component={PaymentSuccess} />}
               />
 
               <Route
@@ -138,10 +144,7 @@ function App() {
                 element={<CancellationsAndRefunds />}
               />
 
-              <Route
-                path="/registration/success"
-                element={<PaymentSuccess />}
-              />
+            
               {/* <Route path="/CreateInvoice" element={<CreateInvoice />} /> */}
               {/* <Route
                 path="/dashboard"

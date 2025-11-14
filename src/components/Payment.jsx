@@ -53,7 +53,7 @@
 
 //     setAmount(amount.data.amount);
 //   };
-  
+
 //   useEffect(() => {
 //     console.log("userData in useEffect", userData);
 //     if (userData.paymentId !== undefined && userData.paymentId !== "") {
@@ -128,7 +128,7 @@
 //               studentId: userData.StudentsId,
 //               payment_amount: order.amount / 100, // Convert paise to rupees
 //             });
-            
+
 //             // Redirect to success page after successful payment
 //             navigate('/registration/success');
 //           } catch (handlerError) {
@@ -209,14 +209,6 @@
 //   );
 // };
 // export default Payment;
-
-
-
-
-
-
-
-
 
 // import { useDispatch, useSelector } from "react-redux";
 // import axios from "../api/axios";
@@ -510,7 +502,6 @@
 //                   </div>
 //                 </div>
 
-
 //                 <div className="bg-gradient-to-br from-[#e6f7ff] to-[#bae7ff] border border-[#1890ff]/30 rounded-xl p-4">
 //                   <div className="flex items-start gap-3">
 //                     <span className="text-2xl">✅</span>
@@ -541,20 +532,6 @@
 // };
 
 // export default Payment;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // import { useDispatch, useSelector } from "react-redux";
 // import axios from "../api/axios";
@@ -898,16 +875,6 @@
 
 // export default Payment;
 
-
-
-
-
-
-
-
-
-
-
 import { useDispatch, useSelector } from "react-redux";
 import axios from "../api/axios";
 import { useEffect, useState } from "react";
@@ -968,12 +935,16 @@ const Payment = () => {
     console.log("userData from isUserDataValid", userData);
     console.log("userData from isUserDataValid", typeof userData);
 
-
     if (!userData || typeof userData !== "object") {
       return false;
     }
 
-    const requiredFields = ["StudentsId", "studentName", "email", "contactNumber"];
+    const requiredFields = [
+      "StudentsId",
+      "studentName",
+      "email",
+      "contactNumber",
+    ];
     return requiredFields.every(
       (field) => userData[field] && userData[field].toString().trim() !== ""
     );
@@ -1028,16 +999,21 @@ const Payment = () => {
   };
 
   // ====== CHECK EXISTING PAYMENT ======
+
+
+  // ====== REDIRECT TO SUCCESS PAGE IF PAYMENT EXISTS ======
   useEffect(() => {
+
     if (
       userData &&
-      userData._id &&
+      userData.StudentsId &&
       userData.paymentId &&
       userData.paymentId.toString().trim() !== ""
     ) {
-      setPaymentStatus(true);
+      console.log("redirecting ");
+      navigate("/registration/success", { replace: true });
     }
-  }, [userData]);
+  }, [userData, navigate]);
 
   // ====== FETCH ALL DATA ======
   useEffect(() => {
@@ -1078,9 +1054,7 @@ const Payment = () => {
     try {
       // ====== VALIDATION 1: Check Razorpay is loaded ======
       if (!isRazorpayLoaded()) {
-        toast.error(
-          "Payment system not ready. Please refresh and try again."
-        );
+        toast.error("Payment system not ready. Please refresh and try again.");
         return;
       }
 
@@ -1111,10 +1085,7 @@ const Payment = () => {
       }
 
       // ====== VALIDATION 6: Check existing payment ======
-      if (
-        userData.paymentId &&
-        userData.paymentId.toString().trim() !== ""
-      ) {
+      if (userData.paymentId && userData.paymentId.toString().trim() !== "") {
         toast.info("Payment already completed for this registration");
         return;
       }
@@ -1156,11 +1127,7 @@ const Payment = () => {
 
         orderData = orderResponse.data;
 
-        if (
-          !orderData ||
-          !orderData.order ||
-          !orderData.order.id
-        ) {
+        if (!orderData || !orderData.order || !orderData.order.id) {
           throw new Error("Failed to create payment order");
         }
       } catch (error) {
@@ -1188,9 +1155,7 @@ const Payment = () => {
         // ====== PAYMENT SUCCESS HANDLER ======
         handler: async function (response) {
           try {
-
-
-            console.log("response form payment", response)
+            console.log("response form payment", response);
             clearTimeout(timeout);
             setLoading(true);
 
@@ -1363,20 +1328,7 @@ const Payment = () => {
           </div>
 
           {/* ====== PAYMENT SUCCESS STATE ====== */}
-          {paymentStatus ? (
-            <div className="space-y-6">
-              <PaymentSuccessMessage />
-
-              <button
-                onClick={() => navigate("/registration/existingStudent")}
-                className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-700 hover:to-green-700 text-white font-semibold rounded-lg transition-all duration-300 shadow-lg hover:shadow-emerald-500/30"
-                aria-label="View your student profile"
-              >
-                <ArrowRight size={20} />
-                View Your Profile
-              </button>
-            </div>
-          ) : amountLoading || loading ? (
+          {amountLoading || loading ? (
             /* ====== LOADING STATE ====== */
             <div className="flex flex-col items-center justify-center py-16">
               <Spinner />
@@ -1433,7 +1385,14 @@ const Payment = () => {
 
                 {/* Payment Button */}
 
-                {console.log("loading || paymentProcessing || !isUserDataValid() || amountLoading || amount <= 0", loading, paymentProcessing, isUserDataValid(), amountLoading, amount<=0)}
+                {console.log(
+                  "loading || paymentProcessing || !isUserDataValid() || amountLoading || amount <= 0",
+                  loading,
+                  paymentProcessing,
+                  isUserDataValid(),
+                  amountLoading,
+                  amount <= 0
+                )}
                 <button
                   onClick={checkoutHandler}
                   disabled={
@@ -1451,9 +1410,9 @@ const Payment = () => {
                 </button>
 
                 {/* Additional Info */}
-                <p className="text-xs text-gray-600 text-center mt-4">
+                {/* <p className="text-xs text-gray-600 text-center mt-4">
                   No hidden charges • Secure payment gateway • Tax included
-                </p>
+                </p> */}
               </div>
 
               {/* Back Button */}
@@ -1486,5 +1445,3 @@ const Payment = () => {
 };
 
 export default Payment;
-
-

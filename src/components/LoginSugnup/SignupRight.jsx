@@ -481,7 +481,7 @@
 //           //     : "bg-yellow-800 text-gray-400 cursor-not-allowed"
 //           // }`}
 
-//           className={`w-full font-semibold py-2 rounded-xl transition-all 
+//           className={`w-full font-semibold py-2 rounded-xl transition-all
 //                 bg-yellow-500 hover:bg-yellow-600 text-black
 //             `}
 //         >
@@ -511,16 +511,6 @@
 //   );
 // }
 
-
-
-
-
-
-
-
-
-
-
 import { useEffect, useState } from "react";
 import axios from "../../api/axios";
 import { useNavigate, Link } from "react-router-dom";
@@ -532,9 +522,9 @@ export default function SignupRight() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { userData } = useSelector((state) => state.existingStudentDetails);
-  
+
   // ✅ Get checkAuth from useAuth hook
-  const { checkAuth, loading: authLoading } = useAuth(  );
+  const { checkAuth, loading: authLoading, logout } = useAuth();
 
   // State management
   const phoneRegex = /^\+91[0-9]{10}$/;
@@ -561,8 +551,9 @@ export default function SignupRight() {
 
   // Clear auth on mount
   const handleLogout = async () => {
-    document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-    document.cookie = "authToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    // document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    // document.cookie = "authToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    logout();
   };
 
   useEffect(() => {
@@ -602,7 +593,7 @@ export default function SignupRight() {
   const handleChange = (e) => {
     const { name, value } = e.target;
     if (name === "contactNumber" && value.length > 10) return;
-    
+
     setFormData({ ...formData, [name]: value });
     setErrors((prevErrors) => ({
       ...prevErrors,
@@ -626,8 +617,12 @@ export default function SignupRight() {
       isValid = false;
     }
 
-    if (formData.contactNumber && !phoneRegex.test(`+91${formData.contactNumber}`)) {
-      formErrors.contactNumber = "Contact Number must be a valid 10-digit number";
+    if (
+      formData.contactNumber &&
+      !phoneRegex.test(`+91${formData.contactNumber}`)
+    ) {
+      formErrors.contactNumber =
+        "Contact Number must be a valid 10-digit number";
       isValid = false;
     }
 
@@ -644,7 +639,7 @@ export default function SignupRight() {
   const checkVerificationCode = async () => {
     try {
       console.log("🔍 Verifying OTP for:", formData.contactNumber);
-      
+
       const response = await axios.post("/students/verifyNumber", {
         mobileNumber: formData.contactNumber,
         otp: code,
@@ -669,7 +664,7 @@ export default function SignupRight() {
   // ✅ FIXED: Form submission with proper error handling
   const onSubmit = async (e) => {
     e.preventDefault();
-    
+
     // Validate form first
     if (!validateForm()) {
       console.log("❌ Form validation failed");
@@ -704,11 +699,11 @@ export default function SignupRight() {
 
       // Submit to backend
       const response = await axios.post("/auth/student_signup", formData);
-      
+
       console.log("✅ Signup response:", response.data);
 
       // ✅ FIXED: Check authentication after successful response
-      if (checkAuth && typeof checkAuth === 'function') {
+      if (checkAuth && typeof checkAuth === "function") {
         try {
           await checkAuth();
           console.log("✅ Authentication checked successfully");
@@ -720,28 +715,33 @@ export default function SignupRight() {
       // Handle different response scenarios
       if (response.data.message === "Student Already Exist") {
         console.log("📋 Existing student found");
-        
-        dispatch(updateExistingUserDetails({ 
-          userData: response.data.student 
-        }));
-        
+
+        dispatch(
+          updateExistingUserDetails({
+            userData: response.data.student,
+          })
+        );
+
         setSubmitMessage("Welcome back! Redirecting...");
         setTimeout(() => {
           navigate("/registration/existingStudent");
         }, 500);
-
-      } else if (response.data.message === "Student found in enquiry records. Complete your registration!") {
+      } else if (
+        response.data.message ===
+        "Student found in enquiry records. Complete your registration!"
+      ) {
         console.log("📝 Enquiry student found");
-        
-        dispatch(updateExistingUserDetails({ 
-          userData: response.data.student 
-        }));
-        
+
+        dispatch(
+          updateExistingUserDetails({
+            userData: response.data.student,
+          })
+        );
+
         setSubmitMessage("Account found! Redirecting...");
         setTimeout(() => {
           navigate("/registration/existingenquiry");
         }, 500);
-
       } else {
         console.log("✅ New student created");
         setSubmitMessage("Registration record created. Redirecting...");
@@ -749,19 +749,18 @@ export default function SignupRight() {
           navigate("/registration/basicDetailsForm");
         }, 500);
       }
-
     } catch (error) {
       console.error("❌ Signup error:", error);
-      
+
       // ✅ FIXED: Better error handling
       let errorMsg = "Registration failed. Please try again.";
-      
+
       if (error.response?.data?.message) {
         errorMsg = error.response.data.message;
       } else if (error.message) {
         errorMsg = error.message;
       }
-      
+
       setSubmitMessage(errorMsg);
     } finally {
       setIsSubmittingForm(false);
@@ -806,12 +805,14 @@ export default function SignupRight() {
         setResendCooldown(nextCooldown);
         setCooldownActive(true);
         setResendAttempts((prev) => prev + 1);
-        
+
         console.log("✅ OTP sent successfully");
       }
     } catch (error) {
       console.error("❌ Failed to send OTP:", error);
-      setSubmitMessage(error.response?.data?.message || "Failed to send OTP. Please try again.");
+      setSubmitMessage(
+        error.response?.data?.message || "Failed to send OTP. Please try again."
+      );
     } finally {
       setShowReloading(false);
       setCode("");
@@ -931,7 +932,10 @@ export default function SignupRight() {
               disabled={isSubmittingForm}
               className="mt-1 h-4 w-4 rounded border-gray-400 text-yellow-500 focus:ring-2 focus:ring-yellow-500 cursor-pointer accent-yellow-500"
             />
-            <label htmlFor="terms" className="text-sm text-black leading-relaxed select-none cursor-pointer">
+            <label
+              htmlFor="terms"
+              className="text-sm text-black leading-relaxed select-none cursor-pointer"
+            >
               I agree to the{" "}
               <Link
                 to="/registration/termsAndCondition"
@@ -976,11 +980,15 @@ export default function SignupRight() {
 
         {/* Submit Message */}
         {submitMessage && (
-          <div className={`text-sm text-center font-medium p-3 rounded-lg ${
-            submitMessage.includes('success') || submitMessage.includes('Welcome') || submitMessage.includes('found')
-              ? 'bg-green-50 text-green-700 border border-green-200' 
-              : 'bg-red-50 text-red-700 border border-red-200'
-          }`}>
+          <div
+            className={`text-sm text-center font-medium p-3 rounded-lg ${
+              submitMessage.includes("success") ||
+              submitMessage.includes("Welcome") ||
+              submitMessage.includes("found")
+                ? "bg-green-50 text-green-700 border border-green-200"
+                : "bg-red-50 text-red-700 border border-red-200"
+            }`}
+          >
             {submitMessage}
           </div>
         )}
@@ -990,7 +998,7 @@ export default function SignupRight() {
           type="submit"
           // disabled={isSubmittingForm || authLoading}
 
-className={`w-full font-semibold py-3 rounded-xl transition-all bg-yellow-500 hover:bg-yellow-600 text-black hover:shadow-lg
+          className={`w-full font-semibold py-3 rounded-xl transition-all bg-yellow-500 hover:bg-yellow-600 text-black hover:shadow-lg
           `}
 
           // className={`w-full font-semibold py-3 rounded-xl transition-all ${
@@ -1004,7 +1012,9 @@ className={`w-full font-semibold py-3 rounded-xl transition-all bg-yellow-500 ho
               <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-black"></div>
               Processing...
             </span>
-          ) : "Next"}
+          ) : (
+            "Next"
+          )}
         </button>
 
         {/* Resend OTP */}
