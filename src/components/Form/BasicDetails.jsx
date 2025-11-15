@@ -394,17 +394,6 @@
 
 // export default BasicDetailsForm;
 
-
-
-
-
-
-
-
-
-
-
-
 import React, { useState, useEffect } from "react";
 import axios from "../../api/axios";
 import {
@@ -422,7 +411,16 @@ import {
 import dayjs from "dayjs";
 import isSameOrAfter from "dayjs/plugin/isSameOrAfter";
 import UploadDocumentField from "./UploadImage";
-import { ArrowRight, ArrowLeft, AlertCircle, CheckCircle, Calendar, User, Mail, Users } from "lucide-react";
+import {
+  ArrowRight,
+  ArrowLeft,
+  AlertCircle,
+  CheckCircle,
+  Calendar,
+  User,
+  Mail,
+  Users,
+} from "lucide-react";
 
 dayjs.extend(isSameOrAfter);
 
@@ -544,13 +542,10 @@ const BasicDetailsForm = () => {
     setShowReloading(true);
 
     try {
-            console.log("DataExist", dataExist);
-            console.log("userData", userData);
-
+      console.log("DataExist", dataExist);
+      console.log("userData", userData);
 
       const response = await axios.patch("/students/editStudent", userData);
-
-      
 
       console.log("response", response);
 
@@ -564,9 +559,7 @@ const BasicDetailsForm = () => {
 
       navigate("/registration/batchDetailsForm");
     } catch (error) {
-
-
-      console.log("error from addandUpdateBasicForm",error)
+      console.log("error from addandUpdateBasicForm", error);
       if (error.response?.data) {
         setSubmitMessage(
           typeof error.response.data === "string"
@@ -582,16 +575,20 @@ const BasicDetailsForm = () => {
   };
 
   const onSubmit = async (e) => {
-    e.preventDefault();
-    console.log("Submit Button Clicked");
+    try {
+      e.preventDefault();
+      console.log("Submit Button Clicked");
 
-    const isValid = await validateBasicForm();
+      const isValid = await validateBasicForm();
 
-    console.log("isValid from onSubmit", isValid);
+      console.log("isValid from onSubmit", isValid);
 
-    if (isValid) {
-      console.log("Form is valid, submitting...");
-      await addAndUpdateBasicFrom();
+      if (isValid) {
+        console.log("Form is valid, submitting...");
+        await addAndUpdateBasicFrom();
+      }
+    } catch (error) {
+      console.log("error from basicDetails on Submit", error);
     }
   };
 
@@ -613,7 +610,9 @@ const BasicDetailsForm = () => {
                 <h1 className="text-xl sm:text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#c61d23] to-[#a01818]">
                   Basic Details
                 </h1>
-                <p className="text-xs text-gray-500 hidden sm:block">Complete your profile</p>
+                <p className="text-xs text-gray-500 hidden sm:block">
+                  Complete your profile
+                </p>
               </div>
             </div>
           </div>
@@ -632,19 +631,31 @@ const BasicDetailsForm = () => {
           {/* Progress Indicator */}
           <div className="mb-8">
             <div className="flex items-center justify-between mb-3">
-              <h2 className="text-lg font-semibold text-gray-900">Step 1 of 4</h2>
+              <h2 className="text-lg font-semibold text-gray-900">
+                Step 1 of 4
+              </h2>
               <div className="text-sm text-gray-600">Basic Information</div>
             </div>
             <div className="w-full bg-gray-200 rounded-full h-2">
-              <div className="bg-gradient-to-r from-[#c61d23] to-[#a01818] h-2 rounded-full" style={{ width: "25%" }}></div>
+              <div
+                className="bg-gradient-to-r from-[#c61d23] to-[#a01818] h-2 rounded-full"
+                style={{ width: "25%" }}
+              ></div>
             </div>
           </div>
 
           {/* Form Container */}
-          <form autoComplete="off" className="flex flex-col gap-5" onSubmit={onSubmit}>
+          <form
+            autoComplete="off"
+            className="flex flex-col gap-5"
+            onSubmit={onSubmit}
+          >
             {/* Name Field */}
             <div className="bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-all p-6">
-              <label htmlFor="studentName" className="flex items-center gap-2 text-sm font-semibold text-gray-900 mb-3">
+              <label
+                htmlFor="studentName"
+                className="flex items-center gap-2 text-sm font-semibold text-gray-900 mb-3"
+              >
                 <User size={18} className="text-[#c61d23]" />
                 Full Name
               </label>
@@ -667,7 +678,10 @@ const BasicDetailsForm = () => {
 
             {/* Email Field */}
             <div className="bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-all p-6">
-              <label htmlFor="email" className="flex items-center gap-2 text-sm font-semibold text-gray-900 mb-3">
+              <label
+                htmlFor="email"
+                className="flex items-center gap-2 text-sm font-semibold text-gray-900 mb-3"
+              >
                 <Mail size={18} className="text-[#c61d23]" />
                 Email Address
               </label>
@@ -690,7 +704,10 @@ const BasicDetailsForm = () => {
 
             {/* Date of Birth */}
             <div className="bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-all p-6">
-              <label htmlFor="dob" className="flex items-center gap-2 text-sm font-semibold text-gray-900 mb-3">
+              <label
+                htmlFor="dob"
+                className="flex items-center gap-2 text-sm font-semibold text-gray-900 mb-3"
+              >
                 <Calendar size={18} className="text-[#c61d23]" />
                 Date of Birth
               </label>
@@ -713,7 +730,10 @@ const BasicDetailsForm = () => {
 
             {/* Gender */}
             <div className="bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-all p-6">
-              <label htmlFor="gender" className="flex items-center gap-2 text-sm font-semibold text-gray-900 mb-3">
+              <label
+                htmlFor="gender"
+                className="flex items-center gap-2 text-sm font-semibold text-gray-900 mb-3"
+              >
                 <Users size={18} className="text-[#c61d23]" />
                 Gender
               </label>
@@ -741,7 +761,10 @@ const BasicDetailsForm = () => {
 
             {/* Exam Date */}
             <div className="bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-all p-6">
-              <label htmlFor="examDate" className="flex items-center gap-2 text-sm font-semibold text-gray-900 mb-3">
+              <label
+                htmlFor="examDate"
+                className="flex items-center gap-2 text-sm font-semibold text-gray-900 mb-3"
+              >
                 <Calendar size={18} className="text-[#c61d23]" />
                 Exam Date
               </label>
@@ -790,7 +813,10 @@ const BasicDetailsForm = () => {
             {/* Error Message */}
             {submitMessage && (
               <div className="bg-red-50 border border-red-200 rounded-xl p-4 flex items-start gap-3">
-                <AlertCircle size={18} className="text-red-500 flex-shrink-0 mt-0.5" />
+                <AlertCircle
+                  size={18}
+                  className="text-red-500 flex-shrink-0 mt-0.5"
+                />
                 <p className="text-sm text-red-700">{submitMessage}</p>
               </div>
             )}

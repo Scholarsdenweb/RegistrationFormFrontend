@@ -13,6 +13,7 @@ export const fetchUserDetails = createAsyncThunk(
                 return {
                     dataExist: true, 
                     userData: {
+                        _id : data?._id || '',
                         studentName: data?.studentName || '',
                         StudentsId: data?.StudentsId || '',
                         email: data?.email || '',

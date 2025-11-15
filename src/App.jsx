@@ -104,18 +104,24 @@ function App() {
                 path="/registration/basicDetailsForm"
                 element={<PrivateRoute component={BasicDetailsForm} />}
               />
-              <Route
-                path="/registration/educationalDetailsForm"
-                element={<PrivateRoute component={EducationalDetailsForm} />}
-              />
+            
               <Route
                 path="/registration/batchDetailsForm"
                 element={<PrivateRoute component={BatchRelatedDetailsForm} />}
               />
+
+
+              
               <Route
                 path="/registration/familyDetailsForm"
                 element={<PrivateRoute component={FamilyDetails} />}
 
+              />
+
+
+                <Route
+                path="/registration/educationalDetailsForm"
+                element={<PrivateRoute component={EducationalDetailsForm} />}
               />
 
                 <Route
