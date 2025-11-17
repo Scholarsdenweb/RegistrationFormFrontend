@@ -7,13 +7,13 @@ export const fetchUserDetails = createAsyncThunk(
         try {
             const response = await axios.get('/students/getStudentsById');
             const data = response.data;
-            console.log("Studennt  Data", data);
-
-            if (data.length !== 0) {
+            console.log("Student Data", data);
+            
+            if (data && Object.keys(data).length !== 0) {
                 return {
                     dataExist: true, 
                     userData: {
-                        _id : data?._id || '',
+                        _id: data?._id || '',
                         studentName: data?.studentName || '',
                         StudentsId: data?.StudentsId || '',
                         email: data?.email || '',
@@ -22,6 +22,12 @@ export const fetchUserDetails = createAsyncThunk(
                         paymentId: data?.paymentId || '',
                         contactNumber: data?.contactNumber || '',
                         profilePicture: data?.profilePicture || '',
+                        messageStatus: data?.messageStatus || {
+                            admitCardSend: false,
+                            admitCardSentDate: null,
+                            resultSend: false,
+                            resultSentDate: null,
+                        },
                     },
                 };
             } else {
@@ -31,7 +37,7 @@ export const fetchUserDetails = createAsyncThunk(
                 };
             }
         } catch (error) {
-            console.log("error form fetchUserDetails", error);
+            console.log("error from fetchUserDetails", error);
             return rejectWithValue(error.response?.data || 'Failed to fetch data');
         }
     }
