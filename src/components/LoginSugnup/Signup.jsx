@@ -1,26 +1,26 @@
 import FormHeader from "./FormHeader";
 import Right from "./Right";
 import SignupRight from "./SignupRight";
-// import scholarsDenLogo from "../../assets/scholarsDenLogo"
-
+import scholarsDenLogo from "../../assets/scholarsDenLogo.png";
+import sdatLogo from "../../assets/SDATLogo.png";
 
 const Signup = () => {
   return (
-    <div className="w-full min-h-screen flex flex-col gap-7 bg-[#fdf5f6]">
-      {/* Signup Details Page (Top Section) */}
-      <div className="flex px-4 md:px-8 py-2  "><FormHeader /></div>
-
-      {/* Signup Form (Middle Section) */}
-      <div className="flex ">
-        <SignupRight />
+    <div className="w-full h-screen flex flex-col bg-gradient-to-br from-[#fdf5f6] via-white to-[#f5eff0] overflow-hidden">
+      {/* Header */}
+      <div className="flex-shrink-0 bg-white/50 backdrop-blur-sm border-b border-gray-200">
+        <div className="px-4 py-3">
+          <FormHeader logoSrc={scholarsDenLogo} />
+        </div>
       </div>
 
-      {/* Footer (Logo at Bottom) */}
-      {/* <div className="flex justify-center items-center py-4">
-        <img className="w-24" src={scholarsDenLogo} alt="Scholars Den Logo" />
-      </div> */}
+      {/* Form Content */}
+      <div className="flex-1 overflow-y-auto overflow-x-hidden">
+        <SignupRight logoSrc={sdatLogo} />
+      </div>
     </div>
   );
 };
 
 export default Signup;
+
