@@ -1376,7 +1376,7 @@ export default function SignupRight({ logoSrc }) {
   };
 
   return (
-    <div className="w-full h-full flex items-center justify-center px-4 py-4 overflow-x-hidden">
+    <div className="w-full h-full flex justify-center px-4 py-4 overflow-x-hidden">
       <div className="w-full max-w-md">
         {/* Branding Section */}
         <div className="text-center mb-4">
@@ -1384,7 +1384,11 @@ export default function SignupRight({ logoSrc }) {
             <div className="relative pt-5">
               <div className="w-48 h-20 sm:w-48 sm:h-20  rounded-2xl shadow-xl border-4 border-[#ffdd00]/40 flex items-center justify-center bg-[#c61d23] p-2">
                 {logoSrc ? (
-                  <img src={logoSrc} alt="Scholar's Den" className="w-full h-full object-contain " />
+                  <img
+                    src={logoSrc}
+                    alt="Scholar's Den"
+                    className="w-full h-full object-contain "
+                  />
                 ) : (
                   <GraduationCap className="w-full h-full text-[#c61d23]" />
                 )}
@@ -1410,7 +1414,7 @@ export default function SignupRight({ logoSrc }) {
               <Phone className="w-4 h-4 text-[#c61d23]" />
               Contact No.<span className="text-[#c61d23]">*</span>
             </label>
-            
+
             <div className="flex flex-col sm:flex-row gap-2">
               <div className="relative flex-1">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -1421,18 +1425,22 @@ export default function SignupRight({ logoSrc }) {
                   name="contactNumber"
                   value={formData.contactNumber}
                   onChange={handleChange}
-                  placeholder="10-digit number"
+                  placeholder="10-digit Number"
                   className="w-full pl-12 pr-3 py-2.5 text-sm border-2 border-gray-200 rounded-lg focus:border-[#c61d23] focus:ring-2 focus:ring-[#c61d23]/20 transition-all outline-none bg-white disabled:bg-gray-50 font-medium"
                   maxLength={10}
                   disabled={showCodeBox || isSubmittingForm}
                 />
               </div>
-              
+
               {!showCodeBox && !codeVerified && (
                 <button
                   type="button"
                   onClick={verifyPhoneNo}
-                  disabled={showReloading || isSubmittingForm || formData.contactNumber.length !== 10}
+                  disabled={
+                    showReloading ||
+                    isSubmittingForm ||
+                    formData.contactNumber.length !== 10
+                  }
                   className="w-full sm:w-auto whitespace-nowrap px-5 py-2.5 text-sm rounded-lg bg-gradient-to-r from-[#c61d23] to-[#a01818] hover:from-[#b01820] hover:to-[#8f1515] text-white font-bold shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-2"
                 >
                   {showReloading ? (
@@ -1456,7 +1464,9 @@ export default function SignupRight({ logoSrc }) {
             {errors?.contactNumber && (
               <div className="flex items-start gap-1.5 p-2 bg-red-50 border-l-4 border-red-500 rounded">
                 <AlertCircle className="w-3.5 h-3.5 text-red-600 mt-0.5 flex-shrink-0" />
-                <p className="text-red-700 text-xs font-medium">{errors.contactNumber}</p>
+                <p className="text-red-700 text-xs font-medium">
+                  {errors.contactNumber}
+                </p>
               </div>
             )}
           </div>
@@ -1478,7 +1488,7 @@ export default function SignupRight({ logoSrc }) {
                 inputMode="numeric"
                 autoFocus
               />
-              
+
               {/* OTP Progress */}
               <div className="flex gap-1.5 justify-center">
                 {[...Array(4)].map((_, idx) => (
@@ -1494,6 +1504,7 @@ export default function SignupRight({ logoSrc }) {
           )}
 
           {/* Terms */}
+
           <div className="space-y-2 pt-2 border-t border-gray-200">
             <div className="flex items-start gap-2 bg-[#fdf5f6] p-3 rounded-lg border border-gray-200">
               <input
@@ -1504,18 +1515,47 @@ export default function SignupRight({ logoSrc }) {
                 disabled={isSubmittingForm}
                 className="mt-0.5 h-4 w-4 rounded border-2 text-[#c61d23] focus:ring-2 focus:ring-[#c61d23] cursor-pointer accent-[#c61d23] flex-shrink-0"
               />
-              <label htmlFor="terms" className="text-xs text-gray-700 leading-snug cursor-pointer">
+              <label
+                htmlFor="terms"
+                className="text-xs text-gray-700 leading-snug"
+              >
                 I agree to the{" "}
-                <span className="text-[#c61d23] underline font-semibold">Terms</span>,{" "}
-                <span className="text-[#c61d23] underline font-semibold">Privacy</span>, and{" "}
-                <span className="text-[#c61d23] underline font-semibold">Refunds</span> policy
+                <Link
+                  to="/registration/termsAndCondition"
+                  rel="noopener noreferrer"
+                  onClick={(e) => e.stopPropagation()}
+                  className="text-[#c61d23] underline font-semibold hover:text-[#a01818] transition-colors"
+                >
+                  Terms
+                </Link>
+                ,{" "}
+                <Link
+                  to="/registration/privacyPolicy"
+                  // target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={(e) => e.stopPropagation()}
+                  className="text-[#c61d23] underline font-semibold hover:text-[#a01818] transition-colors"
+                >
+                  Privacy
+                </Link>
+                , and{" "}
+                <Link
+                  to="/registration/cancellationsAndRefunds"
+                  rel="noopener noreferrer"
+                  onClick={(e) => e.stopPropagation()}
+                  className="text-[#c61d23] underline font-semibold hover:text-[#a01818] transition-colors"
+                >
+                  Refunds
+                </Link>{" "}
+                policy
               </label>
             </div>
-            
             {errors?.terms && (
               <div className="flex items-start gap-1.5 p-2 bg-red-50 border-l-4 border-red-500 rounded">
                 <AlertCircle className="w-3.5 h-3.5 text-red-600 mt-0.5 flex-shrink-0" />
-                <p className="text-red-700 text-xs font-medium">{errors.terms}</p>
+                <p className="text-red-700 text-xs font-medium">
+                  {errors.terms}
+                </p>
               </div>
             )}
           </div>
@@ -1524,7 +1564,8 @@ export default function SignupRight({ logoSrc }) {
           {submitMessage && (
             <div
               className={`text-xs sm:text-sm text-center font-semibold p-3 rounded-lg border-2 ${
-                submitMessage.includes("success") || submitMessage.includes("verified")
+                submitMessage.includes("success") ||
+                submitMessage.includes("verified")
                   ? "bg-emerald-50 text-emerald-700 border-emerald-200"
                   : "bg-red-50 text-red-700 border-red-200"
               }`}
@@ -1587,12 +1628,16 @@ export default function SignupRight({ logoSrc }) {
         </div>
 
         {/* Footer */}
+
         <div className="text-center mt-4">
           <p className="text-xs text-gray-600">
             Need help?{" "}
-            <span className="text-[#c61d23] hover:text-[#a01818] font-bold hover:underline cursor-pointer">
+            <Link
+              to="/registration/contactUsPage"
+              className="text-[#c61d23] hover:text-[#a01818] font-bold hover:underline cursor-pointer transition-colors"
+            >
               Contact Support
-            </span>
+            </Link>
           </p>
         </div>
       </div>

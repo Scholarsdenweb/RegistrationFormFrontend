@@ -81,7 +81,7 @@ const CancellationsAndRefunds = () => {
         <p>
           📱 Phone:{" "}
           <a href="tel:+919412224443" className="underline hover:text-yellow-300">
-            +91-9412224443
+            +91-8126555222/333
           </a>
           <br />
           📧 Email:{" "}

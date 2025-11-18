@@ -665,7 +665,7 @@ const BasicDetailsForm = () => {
                 name="studentName"
                 value={userData?.studentName || ""}
                 onChange={basicFormHandleChange}
-                placeholder="Enter your full name"
+                placeholder="Enter Your Full Name"
                 className="w-full border border-gray-200 rounded-lg p-3 focus:ring-2 focus:ring-[#c61d23] focus:border-transparent focus:outline-none transition-all"
               />
               {basicDetailsError.studentName && (

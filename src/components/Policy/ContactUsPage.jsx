@@ -36,7 +36,7 @@ const ContactUsPage = () => {
         <p className="pt-2 font-semibold">📬 Get in Touch:</p>
         <p>
         {/* 9412224443 */}
-          📱 Phone: <a href="tel:+919412224443" className="underline hover:text-yellow-300">+91-8126555222 / 333</a><br />
+          📱 Phone: <a href="tel:+918126555333" className="underline hover:text-yellow-300">+91-8126555222/333</a><br />
           📧 Email: <a href="mailto:info@scholarsden.in" className="underline hover:text-yellow-300">info@scholarsden.in</a>
         </p>
 

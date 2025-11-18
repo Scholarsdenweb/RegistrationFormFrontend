@@ -83,7 +83,7 @@ export default function ResetPassword() {
           name="password"
           value={formData.password}
           onChange={handleChange}
-          placeholder="Enter new password"
+          placeholder="Enter New Password"
           className="border border-gray-300 p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 w-full"
         />
         {errors.password && (
@@ -101,7 +101,7 @@ export default function ResetPassword() {
           name="confirmPassword"
           value={formData.confirmPassword}
           onChange={handleChange}
-          placeholder="Confirm new password"
+          placeholder="Confirm New Password"
           className="border border-gray-300 p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 w-full"
         />
         {errors.confirmPassword && (

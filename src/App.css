@@ -17,6 +17,272 @@ input[type=number]::-webkit-outer-spin-button {
   margin: 0;
 }
 
+
+
+/* ========================================
+   GLOBAL CUSTOM SCROLLBAR STYLES
+   Add this to your app.css
+   ======================================== */
+
+/* ===== Webkit Browsers (Chrome, Safari, Edge, Opera) ===== */
+
+/* Scrollbar Width */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+/* Scrollbar Track */
+::-webkit-scrollbar-track {
+  background: linear-gradient(to bottom, #fdf5f6 0%, #f5eff0 100%);
+  border-radius: 10px;
+  margin: 4px;
+}
+
+/* Scrollbar Handle (Thumb) */
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(to bottom, #c61d23 0%, #a01818 100%);
+  border-radius: 10px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Scrollbar Handle on Hover */
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(to bottom, #b01820 0%, #8f1515 100%);
+  box-shadow: 0 0 12px rgba(198, 29, 35, 0.6),
+              0 0 20px rgba(198, 29, 35, 0.3);
+  transform: scale(1.05);
+}
+
+/* Scrollbar Handle on Active/Click */
+::-webkit-scrollbar-thumb:active {
+  background: linear-gradient(to bottom, #a01818 0%, #7d1212 100%);
+  box-shadow: 0 0 8px rgba(198, 29, 35, 0.8);
+}
+
+/* Scrollbar Corner (where horizontal and vertical scrollbars meet) */
+::-webkit-scrollbar-corner {
+  background: #b9baaa;
+  border-radius: 10px;
+}
+
+/* ===== Firefox Browser ===== */
+* {
+  scrollbar-width: thin;
+  /* scrollbar-color: #73ad4a #77dc11; */
+}
+
+/* ===== Smooth Scrolling ===== */
+html {
+  scroll-behavior: smooth;
+}
+
+/* ===== Scrollbar Animation ===== */
+@keyframes scrollbar-fade-in {
+  from {
+    opacity: 0;
+    transform: scaleX(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+}
+
+::-webkit-scrollbar-thumb {
+  animation: scrollbar-fade-in 0.3s ease;
+}
+
+/* ===== Responsive Scrollbar ===== */
+
+/* Tablet and Below */
+@media (max-width: 1024px) {
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+}
+
+/* Mobile Devices */
+@media (max-width: 640px) {
+  ::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    margin: 2px;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    border-radius: 5px;
+  }
+}
+
+/* Extra Small Mobile Devices */
+@media (max-width: 480px) {
+  ::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    transform: scale(1);
+  }
+}
+
+/* ===== Optional: Hide Scrollbar but Keep Functionality ===== */
+/* Uncomment if you want hidden scrollbars on specific elements */
+
+/*
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+*/
+
+/* ===== Optional: Different Scrollbar for Dark Mode ===== */
+/* Uncomment and adjust if you have dark mode */
+
+/*
+@media (prefers-color-scheme: dark) {
+  ::-webkit-scrollbar-track {
+    background: linear-gradient(to bottom, #1a1a1a 0%, #2d2d2d 100%);
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: linear-gradient(to bottom, #c61d23 0%, #a01818 100%);
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(to bottom, #d62027 0%, #b01820 100%);
+    box-shadow: 0 0 15px rgba(198, 29, 35, 0.8);
+  }
+  
+  ::-webkit-scrollbar-corner {
+    background: #1a1a1a;
+  }
+  
+  * {
+    scrollbar-color: #c61d23 #1a1a1a;
+  }
+}
+*/
+
+/* ===== Optional: Accent Color Variations ===== */
+/* Uncomment for yellow accent scrollbar on specific elements */
+
+/*
+.yellow-scrollbar::-webkit-scrollbar-thumb {
+  background: linear-gradient(to bottom, #ffdd00 0%, #ffc107 100%);
+}
+
+.yellow-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(to bottom, #ffc107 0%, #ff9800 100%);
+  box-shadow: 0 0 12px rgba(255, 221, 0, 0.6);
+}
+
+.yellow-scrollbar {
+  scrollbar-color: #ffdd00 #fdf5f6;
+}
+*/
+
+/* ===== Optional: Thin Scrollbar Variant ===== */
+/* Add this class to any element for an even thinner scrollbar */
+
+/*
+.thin-scrollbar::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+*/
+
+/* ===== Optional: Wide Scrollbar Variant ===== */
+/* Add this class to any element for a wider scrollbar */
+
+/*
+.wide-scrollbar::-webkit-scrollbar {
+  width: 14px;
+  height: 14px;
+}
+*/
+
+/* ===== Text Selection Color (Bonus) ===== */
+/* Matches your theme colors */
+::selection {
+  background-color: #c61d23;
+  color: #ffffff;
+}
+
+::-moz-selection {
+  background-color: #c61d23;
+  color: #ffffff;
+}
+
+/* ===== Focus Outline (Bonus) ===== */
+/* Consistent focus styling across your app */
+*:focus-visible {
+  outline: 2px solid #c61d23;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* ===== Prevent Body Scroll (Utility Class) ===== */
+/* Add this class to body when modal is open */
+.no-scroll {
+  overflow: hidden;
+  height: 100vh;
+}
+
+/* ===== Custom Scrollbar for Specific Elements ===== */
+
+/* Example: Different scrollbar for code blocks */
+pre::-webkit-scrollbar {
+  height: 8px;
+}
+
+pre::-webkit-scrollbar-track {
+  background: #f5f5f5;
+  border-radius: 4px;
+}
+
+pre::-webkit-scrollbar-thumb {
+  background: #c61d23;
+  border-radius: 4px;
+}
+
+/* Example: Different scrollbar for tables */
+.table-container::-webkit-scrollbar {
+  height: 10px;
+}
+
+.table-container::-webkit-scrollbar-thumb {
+  background: linear-gradient(to right, #c61d23 0%, #a01818 100%);
+}
+
+/* ===== Accessibility: Reduced Motion ===== */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    animation: none;
+    transition: none;
+  }
+}
+
+
+
 and input[type=number] {
   -moz-appearance: textfield;
 }

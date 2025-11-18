@@ -53,7 +53,7 @@ export default function ForgotPassword() {
             name="email"
             value={email}
             onChange={handleEmailChange}
-            placeholder="Enter your email"
+            placeholder="Enter Your Email"
             className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
           />
         </div>

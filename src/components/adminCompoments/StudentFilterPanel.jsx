@@ -43,7 +43,7 @@ const StudentFilterPanel = ({
         <label className="text-black">Search by Name</label>
         <input
           className="p-4 rounded-xl"
-          placeholder="Search by Name"
+          placeholder="Search By Name"
           type="text"
           value={inputValue}
           onChange={handleSearchChange}

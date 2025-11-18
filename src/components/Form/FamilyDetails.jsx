@@ -554,7 +554,12 @@ const FamilyDetails = () => {
           name={key}
           value={formData[key] || ""}
           onChange={handleChange}
-          placeholder={`Enter ${key.replace(/([A-Z])/g, " $1").toLowerCase()}`}
+          placeholder={`Enter ${key
+  .replace(/([A-Z])/g, " $1")
+  .trim()
+  .replace(/\b\w/g, c => c.toUpperCase())
+}`}
+
           className="w-full border border-gray-200 rounded-lg p-3 focus:ring-2 focus:ring-[#c61d23] focus:border-transparent focus:outline-none transition-all"
           maxLength={key === "FatherContactNumber" || key === "MotherContactNumber" ? 10 : undefined}
         />

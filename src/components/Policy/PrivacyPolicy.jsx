@@ -71,7 +71,7 @@ const PrivacyPolicyPage = () => {
           For any questions about this policy or your personal data, feel free to reach out:
         </p>
         <ul className="list-none pl-2">
-          <li>📱 <strong>Phone:</strong> +91-9412224443</li>
+          <li>📱 <strong>Phone:</strong> +91-8126555222/333</li>
           <li>📧 <strong>Email:</strong> info@scholarsden.in</li>
         </ul>
 
