@@ -888,12 +888,6 @@ const BatchRelatedDetailsForm = () => {
 
   // ===== INITIALIZE FORM DATA =====
   useEffect(() => {
-    // Check authentication
-    if (document.cookie === "") {
-      navigate("/");
-      return;
-    }
-
     // Fetch form data
     dispatch(fetchBatchDetails());
   }, [dispatch, navigate]);

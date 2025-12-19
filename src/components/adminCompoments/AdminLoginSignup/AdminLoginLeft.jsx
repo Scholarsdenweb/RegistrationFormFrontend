@@ -39,8 +39,13 @@ export default function AdminLoginLeft() {
     const formErrors = {};
     let isValid = true;
 
-    if (!formData.contactNumber) {
-      formErrors.contactNumber = "Contact Number is required";
+    // if (!formData.contactNumber) {
+    //   formErrors.contactNumber = "Contact Number is required";
+    //   isValid = false;
+    // }
+
+     if (!formData.email) {
+      formErrors.email = "Email is required";
       isValid = false;
     }
 
