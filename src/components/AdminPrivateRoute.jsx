@@ -30,6 +30,8 @@ import Spinner from "./Spinner";
 const AdminPrivateRoute = ({ component: Component }) => {
   const { isAuthenticated, loading } = useAuth();
 
+
+
   // Show loading spinner while checking authentication
   if (loading) {
     return <Spinner />;

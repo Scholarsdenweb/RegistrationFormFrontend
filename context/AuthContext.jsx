@@ -85,7 +85,7 @@ export const AuthProvider = ({ children }) => {
     try {
       setLoading(true);
       setError(null);
-      const response = await axios.post("/auth/admin_login", credentials, {
+      const response = await axios.post("/auth/employee_login", credentials, {
         withCredentials: true,
       });
 
