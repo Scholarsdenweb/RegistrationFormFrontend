@@ -5,6 +5,7 @@ import EducationalDetailsForm from "./components/Form/EducationalDetails";
 
 import { AuthProvider } from "../context/AuthContext";
 import PrivateRoute from "./components/PrivateRoute";
+import AdminPrivateRoute from "./components/AdminPrivateRoute";
 
 import AdminLogin from "./components/adminCompoments/AdminLoginSignup/AdminLogin";
 import AdminDashboard from "./components/adminCompoments/AdminDashboard";
@@ -56,28 +57,43 @@ function App() {
             <Routes>
               {/* <Route path="/" element={<Login />} /> */}
               <Route path="/admin" element={<AdminLogin />} />
-              {/* <Route path="/admin" element={<AdminLogin />} /> */}
               <Route
                 path="/admin/dashboard"
-                // element={<PrivateRoute component={AdminDashboard} />}
-                element={<AdminDashboard />}
+                element={<AdminPrivateRoute component={AdminDashboard} />}
               />
-              <Route path="/admin/allStudents" element={<AllStudentResult />} />
-              <Route path="/admin/addExamDate" element={<AddExamDate />} />
+              <Route
+                path="/admin/allStudents"
+                element={<AdminPrivateRoute component={AllStudentResult} />}
+              />
+              <Route
+                path="/admin/addExamDate"
+                element={<AdminPrivateRoute component={AddExamDate} />}
+              />
               <Route
                 path="/admin/downloadResult"
-                element={<DownloadResult />}
+                element={<AdminPrivateRoute component={DownloadResult} />}
               />
               <Route
                 path="/admin/CloudinaryUpload"
-                element={<CloudinaryComponent />}
+                element={<AdminPrivateRoute component={CloudinaryComponent} />}
               />
-              <Route path="/admin/allForms" element={<AllFormsComponents />} />
-              <Route path="/admin/formFee" element={<RiseFee />} />
-              <Route path="/admin/amount" element={<Amount />} />
+              <Route
+                path="/admin/allForms"
+                element={<AdminPrivateRoute component={AllFormsComponents} />}
+              />
+              <Route
+                path="/admin/formFee"
+                element={<AdminPrivateRoute component={RiseFee} />}
+              />
+              <Route
+                path="/admin/amount"
+                element={<AdminPrivateRoute component={Amount} />}
+              />
               <Route
                 path="/admin/add-student-registration"
-                element={<AddStudentRegistartionComponent />}
+                element={
+                  <AdminPrivateRoute component={AddStudentRegistartionComponent} />
+                }
               />
               <Route path="/facedetection" element={<FaceDetectionUpload />} />
 

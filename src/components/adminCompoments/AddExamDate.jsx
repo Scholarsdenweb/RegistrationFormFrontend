@@ -61,9 +61,9 @@ const AddExamDate = () => {
         await axios.post("/employees/addExamDate", {
           examDate: dayjs(examDate).format("DD-MM-YYYY"),
           examName,
-          scholarshipValidation: dayjs(scholarshipValidation).format(
-            "DD-MM-YYYY"
-          ),
+          // scholarshipValidation: dayjs(scholarshipValidation).format(
+          //   "DD-MM-YYYY"
+          // ),
         });
 
         // await axios.post("/examList/addExam", {

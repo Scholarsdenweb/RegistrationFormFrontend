@@ -1,234 +1,3 @@
-// // src/context/AuthContext.js
-// import React, { createContext, useState, useContext } from "react";
-// import { useEffect } from "react";
-
-// // Create Context
-// const AuthContext = createContext();
-
-// // Custom hook to access auth context
-// export const useAuth = () => {
-//   return useContext(AuthContext);
-// };
-
-// // AuthProvider component to wrap around your app and provide auth context
-// export const AuthProvider = ({ children }) => {
-//   const [isAuthenticated, setIsAuthenticated] = useState(
-//     document.cookie.replace(
-//       /(?:(?:^|.*;\s*)token\s*\=\s*([^;]*).*$)|^.*$/,
-//       "$1"
-//     )
-//   );
-
-//   useEffect(() => {
-//     console.log("isAuthenticated", localStorage.getItem("token"));
-//   });
-//   // Example login function
-//   const login = () => setIsAuthenticated(true);
-
-//   // Example logout function
-//   const logout = () => setIsAuthenticated(false);
-
-//   return (
-//     <AuthContext.Provider value={{ isAuthenticated, login, logout }}>
-//       {children}
-//     </AuthContext.Provider>
-//   );
-// };
-
-// src/context/AuthContext.js
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// import React, {
-//   createContext,
-//   useState,
-//   useContext,
-//   useCallback,
-//   useEffect,
-// } from "react";
-// import axios from "../src/api/axios";
-
-// const AuthContext = createContext();
-
-// export const useAuth = () => {
-//   const context = useContext(AuthContext);
-//   if (!context) {
-//     throw new Error("useAuth must be used within AuthProvider");
-//   }
-//   return context;
-// };
-
-// export const AuthProvider = ({ children }) => {
-//   const [isAuthenticated, setIsAuthenticated] = useState(false);
-//   const [user, setUser] = useState(null);
-//   const [loading, setLoading] = useState(true);
-//   const [error, setError] = useState(null);
-
-//   const checkAuth = useCallback(async () => {
-//     try {
-//       setLoading(true);
-//       // Backend should validate the HttpOnly cookie
-//       // This endpoint verifies the token without exposing it
-//       const response = await axios.get("/auth/verify");
-
-//       console.log("responzzse from chcekAuth", response);
-
-//       if (response?.data?.authenticated) {
-//         setIsAuthenticated(true);
-//         setUser(response.data.user);
-//       } else {
-//         setIsAuthenticated(false);
-//         setUser(null);
-//       }
-//     } catch (err) {
-//       console.error("Auth verification failed:", err);
-//       setIsAuthenticated(false);
-//       setUser(null);
-//     } finally {
-//       setLoading(false);
-//     }
-//   });
-
-//   // Check authentication status on mount
-//   useEffect(() => {
-//     checkAuth();
-//   }, []);
-
-//   // Login function
-//   const login = useCallback(async (credentials) => {
-//     try {
-//       setLoading(true);
-//       setError(null);
-
-//       const response = await axios.post("/auth/login", credentials, {
-//         withCredentials: true, // Allow cookies to be sent/received
-//       });
-
-//       // Backend sets HttpOnly cookie automatically
-//       setIsAuthenticated(true);
-//       setUser(response.data.user);
-//       return response.data;
-//     } catch (err) {
-//       const errorMessage = err.response?.data?.message || "Login failed";
-//       setError(errorMessage);
-//       setIsAuthenticated(false);
-//       throw err;
-//     } finally {
-//       setLoading(false);
-//     }
-//   }, []);
-
-//   // Logout function
-//   const logout = useCallback(async () => {
-//     try {
-//       setLoading(true);
-//       // Tell backend to clear the HttpOnly cookie
-//       const response = await axios.post("/auth/logout");
-
-//       console.log("response from logout", response);
-
-//       setIsAuthenticated(false);
-//       setUser(null);
-//       setError(null);
-//     } catch (err) {
-//       console.error("Logout failed:", err);
-//       // Clear state anyway
-//       setIsAuthenticated(false);
-//       setUser(null);
-//     } finally {
-//       setLoading(false);
-//     }
-//   }, []);
-
-//   // Refresh token function
-//   const refreshToken = useCallback(async () => {
-//     try {
-//       const response = await axios.post(
-//         "/auth/refresh",
-//         {},
-//         {
-//           withCredentials: true,
-//         }
-//       );
-
-//       if (response.data.isAuthenticated) {
-//         setIsAuthenticated(true);
-//         setUser(response.data.user);
-//         return true;
-//       }
-//       return false;
-//     } catch (err) {
-//       console.error("Token refresh failed:", err);
-//       setIsAuthenticated(false);
-//       setUser(null);
-//       return false;
-//     }
-//   }, []);
-
-//   // Setup axios interceptor to handle 401 responses
-//   useEffect(() => {
-//     const interceptor = axios.interceptors.response.use(
-//       (response) => response,
-//       async (error) => {
-//         const originalRequest = error.config;
-
-//         // If 401 and haven't already tried to refresh
-//         if (error.response?.status === 401 && !originalRequest._retry) {
-//           originalRequest._retry = true;
-
-//           try {
-//             const success = await refreshToken();
-//             if (success) {
-//               // Retry original request
-//               return axios(originalRequest);
-//             }
-//           } catch (refreshError) {
-//             // Refresh failed, redirect to login
-//             setIsAuthenticated(false);
-//             setUser(null);
-//             window.location.href = "/";
-//           }
-//         }
-
-//         return Promise.reject(error);
-//       }
-//     );
-
-//     return () => axios.interceptors.response.eject(interceptor);
-//   }, [refreshToken]);
-
-//   const value = {
-//     isAuthenticated,
-//     user,
-//     loading,
-//     error,
-//     login,
-//     logout,
-//     refreshToken,
-//     checkAuth
-//   };
-
-//   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
-// };
-
-
-
-
-
-
-
-// context/AuthContext.js
 import React, {
   createContext,
   useState,
@@ -244,6 +13,15 @@ export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {
     throw new Error("useAuth must be used within AuthProvider");
+  }
+  return context;
+};
+
+export const useAdminAuth = () => {
+  const context = useContext(AuthContext);
+
+  if (!context) {
+    throw new Error("useAdminAuth must be used within AuthProvider");
   }
   return context;
 };
@@ -303,6 +81,28 @@ export const AuthProvider = ({ children }) => {
     }
   }, []);
 
+  const adminAuthLogin = useCallback(async (credentials) => {
+    try {
+      setLoading(true);
+      setError(null);
+      const response = await axios.post("/auth/admin_login", credentials, {
+        withCredentials: true,
+      });
+
+      console.log("response from adminAuthLogin", response);
+      setIsAuthenticated(true);
+      setUser(response.data.user);
+      return response.data;
+    } catch (err) {
+      const errorMessage = err.response?.data?.message || "Login failed";
+      setError(errorMessage);
+      setIsAuthenticated(false);
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
   const logout = useCallback(async () => {
     try {
       setLoading(true);
@@ -329,7 +129,7 @@ export const AuthProvider = ({ children }) => {
         {},
         {
           withCredentials: true,
-        }
+        },
       );
 
       if (response.data.isAuthenticated) {
@@ -382,7 +182,7 @@ export const AuthProvider = ({ children }) => {
         // ===== DON'T LOGOUT FOR OTHER ERRORS =====
         // Just pass the error through
         return Promise.reject(error);
-      }
+      },
     );
 
     return () => axios.interceptors.response.eject(interceptor);
@@ -394,6 +194,7 @@ export const AuthProvider = ({ children }) => {
     loading,
     error,
     login,
+    adminAuthLogin,
     logout,
     refreshToken,
     checkAuth,
@@ -401,17 +202,6 @@ export const AuthProvider = ({ children }) => {
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
-
-
-
-
-
-
-
-
-
-
-
 
 // ------------------------------------------
 // Backend Implementation Example (Node.js/Express)

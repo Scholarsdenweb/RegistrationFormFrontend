@@ -15,7 +15,8 @@ const AllStudentResult = () => {
   // Fetch available exam dates
   const fetchAllDates = async () => {
     try {
-      const response = await axios.get("/employees/getAllDates");
+      const response = await axios.get("/employees/allDates");
+      console.log("Fetched dates:", response.data);
       setAllDates(response.data);
     } catch (error) {
       toast.error("Error fetching dates. Please try again.");
@@ -90,7 +91,7 @@ const AllStudentResult = () => {
 
           {/* Main Content */}
           <div className="col-span-6 px-9 py-8 mb-3 mr-5 h-full bg-white rounded-3xl flex flex-col items-center justify-center gap-6 shadow-lg">
-            <h1 className="text-3xl font-bold text-gray-700">All Studen Result Download</h1>
+            <h1 className="text-3xl font-bold text-gray-700">All Student Result Download</h1>
 
             {/* Date Selection Dropdown */}
             <div className="w-72">

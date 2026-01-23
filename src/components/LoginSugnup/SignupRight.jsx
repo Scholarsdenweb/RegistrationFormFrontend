@@ -23,7 +23,8 @@ export default function SignupRight({ logoSrc }) {
 
   // State management
   const phoneRegex = /^\+91[0-9]{10}$/;
-  const [codeVerified, setCodeVerified] = useState(false);
+  const [codeVerified, setCodeVerified] = useState(true);
+  // const [codeVerified, setCodeVerified] = useState(false);
   const [isSubmittingForm, setIsSubmittingForm] = useState(false);
   const [codeEntered, setCodeEntered] = useState(false);
   const [showReloading, setShowReloading] = useState(false);
@@ -173,7 +174,8 @@ export default function SignupRight({ logoSrc }) {
           return;
         }
 
-        const otpVerified = await checkVerificationCode();
+        const otpVerified = true;
+        // const otpVerified = await checkVerificationCode();
         if (!otpVerified) {
           setCodeVerified(false);
           setCodeEntered(false);
@@ -533,11 +535,11 @@ export default function SignupRight({ logoSrc }) {
           )}
 
           {/* Submit Button */}
-          {showCodeBox && (
+          {/* {showCodeBox && ( */}
             <button
               type="button"
               onClick={onSubmit}
-              disabled={isSubmittingForm || !code || code.length < 4}
+              // disabled={isSubmittingForm || !code || code.length < 4}
               className={`w-full font-bold py-3 rounded-lg transition-all text-sm shadow-lg flex items-center justify-center gap-2 ${
                 isSubmittingForm || !code || code.length < 4
                   ? "bg-gray-300 cursor-not-allowed text-gray-600"
@@ -556,7 +558,7 @@ export default function SignupRight({ logoSrc }) {
                 </>
               )}
             </button>
-          )}
+          {/* )} */}
 
           {/* Resend OTP */}
           {showCodeBox && !codeVerified && (
