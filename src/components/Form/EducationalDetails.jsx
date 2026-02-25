@@ -484,13 +484,13 @@ const EducationalDetailsForm = () => {
 
   // Redux state selectors
   const { formData, boards, loading, dataExist } = useSelector(
-    (state) => state.educationalDetails
+    (state) => state.educationalDetails,
   );
 
   const { userData } = useSelector((state) => state.userDetails);
 
   const { formData: batchRelatedDetails } = useSelector(
-    (state) => state.batchDetails
+    (state) => state.batchDetails,
   );
 
   // Component state
@@ -535,7 +535,7 @@ const EducationalDetailsForm = () => {
   const validateForm = (
     formData,
     setErrorState,
-    additionalValidations = {}
+    additionalValidations = {},
   ) => {
     const formErrors = {};
     let isValid = true;
@@ -565,7 +565,6 @@ const EducationalDetailsForm = () => {
 
     console.log("Submit function nis running");
 
-
     const isEducationalValid = validateForm(formData, setEducationalErrors);
 
     console.log("ISEducationValid", isEducationalValid);
@@ -573,7 +572,7 @@ const EducationalDetailsForm = () => {
     if (isEducationalValid) {
       try {
         const response = dispatch(
-          updateEducationalDetails({ Class: dataForClassInput()[0] })
+          updateEducationalDetails({ Class: dataForClassInput()[0] }),
         );
         console.log("response", response);
 
@@ -583,7 +582,7 @@ const EducationalDetailsForm = () => {
             educationalFormData: formData,
             educationalDataExist: dataExist,
             // setEducationalFormSubmit,
-          })
+          }),
         ).unwrap();
 
         console.log("Submission result:", result);
@@ -629,7 +628,7 @@ const EducationalDetailsForm = () => {
     value,
     handleChange,
     additionalProps = {},
-    errorsState
+    errorsState,
   ) => {
     const isPercentage = key === "Percentage";
 
@@ -768,7 +767,7 @@ const EducationalDetailsForm = () => {
     const dataLength = batchRelatedDetails?.classForAdmission.split(" ").length;
     console.log(
       "batchRelatedDetails?.classForAdmission.split",
-      batchRelatedDetails?.classForAdmission.split(" ").length
+      batchRelatedDetails?.classForAdmission.split(" ").length,
     );
 
     console.log("Data for classInput", batchRelatedDetails);
@@ -802,7 +801,7 @@ const EducationalDetailsForm = () => {
     value,
     handleChange,
     options,
-    errorsState
+    errorsState,
   ) => {
     return (
       <div
@@ -826,7 +825,7 @@ const EducationalDetailsForm = () => {
         >
           <option value="" disabled>{`Select ${key.replace(
             /([A-Z])/g,
-            " $1"
+            " $1",
           )}`}</option>
           {options &&
             options.map((option) => (
@@ -913,21 +912,23 @@ const EducationalDetailsForm = () => {
                     formData[key],
                     (e) => handleChange(e, updateEducationalDetails, formData),
                     key === "YearOfPassing"
-                      ? ["2025", "2024", "2023"]
+                      ? Array.from({ length: 4 }, (_, i) =>
+                          (new Date().getFullYear() - i).toString(),
+                        )
                       : key === "Class"
-                      ? dataForClassInput()
-                      : boards
-                      ? boards.map((board) => board.name)
-                      : [],
-                    educationalErrors
+                        ? dataForClassInput()
+                        : boards
+                          ? boards.map((board) => board.name)
+                          : [],
+                    educationalErrors,
                   )
                 : renderInputField(
                     key,
                     formData[key],
                     (e) => handleChange(e, updateEducationalDetails, formData),
                     {},
-                    educationalErrors
-                  )
+                    educationalErrors,
+                  ),
             )}
 
             {/* Info Card */}

@@ -1,5 +1,3 @@
-
-
 import React, { useState, useEffect } from "react";
 import axios from "../../api/axios";
 import {
@@ -40,8 +38,12 @@ const BasicDetailsForm = () => {
   const [basicDetailsError, setBasicDetailsError] = useState({});
   const [showReloading, setShowReloading] = useState(false);
   const [submitMessage, setSubmitMessage] = useState("");
+  const [popup, setPopup] = useState({ message: "", type: "" });
 
-
+  const showPopup = (msg, type) => {
+    setPopup({ message: msg, type });
+    setTimeout(() => setPopup({ message: "", type: "" }), 3000); // auto-dismiss after 3s
+  };
 
   const pathLocation = location.pathname;
 
@@ -172,7 +174,7 @@ const BasicDetailsForm = () => {
         setSubmitMessage(
           typeof error.response.data === "string"
             ? error.response.data
-            : "An error occurred while submitting the form."
+            : "An error occurred while submitting the form.",
         );
       } else {
         setSubmitMessage("An error occurred. Please try again.");
@@ -408,7 +410,7 @@ const BasicDetailsForm = () => {
               <UploadDocumentField
                 documentUrl={documentUrl}
                 setDocumentUrl={setDocumentUrl}
-                showPopup={(msg, type) => console.log(msg, type)}
+                showPopup={showPopup}
               />
               {basicDetailsError.profilePicture && (
                 <div className="flex items-center gap-2 text-red-500 text-xs mt-3">
@@ -451,6 +453,21 @@ const BasicDetailsForm = () => {
           </form>
         </div>
       </div>
+
+      {popup.message && (
+        <div
+          className={`fixed top-5 right-5 z-50 flex items-center gap-3 px-5 py-3 rounded-xl shadow-lg text-white text-sm font-medium transition-all duration-300 ${
+            popup.type === "success" ? "bg-green-500" : "bg-red-500"
+          }`}
+        >
+          {popup.type === "success" ? (
+            <CheckCircle size={18} />
+          ) : (
+            <AlertCircle size={18} />
+          )}
+          {popup.message}
+        </div>
+      )}
     </div>
   );
 };
