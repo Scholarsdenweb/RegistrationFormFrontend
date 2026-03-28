@@ -23,8 +23,8 @@ export default function SignupRight({ logoSrc }) {
 
   // State management
   const phoneRegex = /^\+91[0-9]{10}$/;
-  // const [codeVerified, setCodeVerified] = useState(true);
-  const [codeVerified, setCodeVerified] = useState(false);
+  const [codeVerified, setCodeVerified] = useState(true);
+  // const [codeVerified, setCodeVerified] = useState(false);
   const [isSubmittingForm, setIsSubmittingForm] = useState(false);
   const [codeEntered, setCodeEntered] = useState(false);
   const [showReloading, setShowReloading] = useState(false);
@@ -174,8 +174,8 @@ export default function SignupRight({ logoSrc }) {
           return;
         }
 
-        // const otpVerified = true;
-        const otpVerified = await checkVerificationCode();
+        const otpVerified = true;
+        // const otpVerified = await checkVerificationCode();
         if (!otpVerified) {
           setCodeVerified(false);
           setCodeEntered(false);
@@ -392,7 +392,7 @@ export default function SignupRight({ logoSrc }) {
                 />
               </div>
 
-              {!showCodeBox && !codeVerified && (
+              {/* {!showCodeBox && !codeVerified && ( */}
                 <button
                   type="button"
                   onClick={verifyPhoneNo}
@@ -412,7 +412,7 @@ export default function SignupRight({ logoSrc }) {
                     <span>Send OTP</span>
                   )}
                 </button>
-              )}
+              {/* )} */}
 
               {codeVerified && (
                 <div className="flex items-center justify-center px-4 py-2.5 bg-emerald-50 border-2 border-emerald-500 rounded-lg">
@@ -535,16 +535,16 @@ export default function SignupRight({ logoSrc }) {
           )}
 
           {/* Submit Button */}
-          {showCodeBox && (
+          {/* {showCodeBox && ( */}
             <button
               type="button"
               onClick={onSubmit}
-              disabled={isSubmittingForm || !code || code.length < 4}
-              className={`w-full font-bold py-3 rounded-lg transition-all text-sm shadow-lg flex items-center justify-center gap-2 ${
-                isSubmittingForm || !code || code.length < 4
-                  ? "bg-gray-300 cursor-not-allowed text-gray-600"
-                  : "bg-gradient-to-r from-[#c61d23] to-[#a01818] hover:from-[#b01820] hover:to-[#8f1515] text-white hover:shadow-xl"
-              }`}
+              // disabled={isSubmittingForm || !code || code.length < 4}
+              // className={`w-full font-bold py-3 rounded-lg transition-all text-sm shadow-lg flex items-center justify-center gap-2 ${
+              //   isSubmittingForm || !code || code.length < 4
+              //     ? "bg-gray-300 cursor-not-allowed text-gray-600"
+              //     : "bg-gradient-to-r from-[#c61d23] to-[#a01818] hover:from-[#b01820] hover:to-[#8f1515] text-white hover:shadow-xl"
+              // }`}
             >
               {isSubmittingForm ? (
                 <>
@@ -558,7 +558,7 @@ export default function SignupRight({ logoSrc }) {
                 </>
               )}
             </button>
-           )} 
+           {/* )}  */}
 
           {/* Resend OTP */}
           {showCodeBox && !codeVerified && (
