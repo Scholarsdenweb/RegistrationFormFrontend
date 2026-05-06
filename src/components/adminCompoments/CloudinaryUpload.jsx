@@ -360,8 +360,8 @@ const CloudinaryUpload = () => {
   const errorCount = uploadResults.filter((r) => r.status === "error").length;
 
   return (
-    <div className="col-span-6 px-9 py-8 mb-3 mr-5 h-full bg-white rounded-3xl flex flex-col items-center justify-center gap-6 shadow-lg">
-      <h2 className="text-2xl font-bold mb-2">Upload Files to Cloudinary</h2>
+    <div className="w-full min-h-[70vh] bg-white rounded-2xl flex flex-col items-center justify-center gap-6 shadow-lg p-6 sm:p-8">
+      <h2 className="text-xl sm:text-2xl font-bold mb-2 text-center">Upload Files to Cloudinary</h2>
       <div
         className={`w-full max-w-lg border-2 ${
           dragActive
@@ -381,7 +381,7 @@ const CloudinaryUpload = () => {
           onChange={handleFileChange}
           className="hidden"
         />
-        <span className="text-gray-500 text-lg">
+        <span className="text-gray-500 text-sm sm:text-lg text-center px-3">
           {files.length > 0
             ? `${files.length} file${files.length > 1 ? "s" : ""} selected`
             : dragActive
@@ -427,7 +427,7 @@ const CloudinaryUpload = () => {
       </button>
       {uploadResults.length > 0 && (
         <div className="mt-4 w-full max-w-lg">
-          <div className="flex justify-between items-center mb-2">
+          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 mb-2">
             <h3 className="text-lg font-semibold">Upload Summary</h3>
             <button
               onClick={clearResults}
@@ -448,7 +448,7 @@ const CloudinaryUpload = () => {
             {uploadResults.map((result, index) => (
               <div
                 key={index}
-                className={`flex items-center gap-4 p-3 rounded-lg ${
+                className={`flex flex-col sm:flex-row sm:items-center gap-4 p-3 rounded-lg ${
                   result.status === "success"
                     ? "bg-green-50 border border-green-200"
                     : "bg-red-50 border border-red-200"

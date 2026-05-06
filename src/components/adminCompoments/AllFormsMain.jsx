@@ -248,11 +248,11 @@ const AllFormsMain = () => {
     return (
       <div
         key={index}
-        className="bg-white h-48 p-4 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 cursor-pointer"
+        className="bg-white/95 h-48 p-4 rounded-xl border border-gray-100 shadow-sm hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 cursor-pointer"
         onClick={onClick}
       >
         <div className="space-y-1">
-          <h4 className="font-semibold">Student Name: {studentName}</h4>
+          <h4 className="font-semibold text-gray-800">Student Name: {studentName}</h4>
           <h4>Father Name: {family?.FatherName}</h4>
           <h4>Class: {batch?.classForAdmission}</h4>
           <h4>Subject: {batch?.subjectCombination}</h4>
@@ -342,7 +342,7 @@ const AllFormsMain = () => {
   };
 
   return (
-    <div className="flex flex-col col-span-5 h-full  ">
+    <div className="w-full">
       {isLoading && (
         <div className="fixed inset-0 z-50 backdrop-blur-sm bg-black bg-opacity-10 flex items-center justify-center">
           <div className="w-12 h-12 border-4 border-blue-500 border-dashed rounded-full animate-spin"></div>
@@ -353,7 +353,7 @@ const AllFormsMain = () => {
         <Sidebar />
       </div> */}
 
-      <div className="col-span-10 max-w-7xl w-full pr-4 py-6 bg-[#fdf5f6] overflow-auto h-screen">
+      <div className="w-full py-2 sm:py-4">
         {/* <h2 className="text-3xl font-semibold text-center text-white mb-8">
           Admin Dashboard
         </h2> */}
@@ -379,15 +379,11 @@ const AllFormsMain = () => {
 
         <div className="mb-8">
           {/* <span className="bg-[#ffdd00] p-2 rounded-sm ">{`Filter Applied on ${filterApplied}`}</span> */}
-          {filterValue != "all" && (
-            <span className="p-2 text-white rounded-sm">{filterApplied()}</span>
-          )}
-
-          <div className="w-full mt-2 p-4 bg-gray-100 rounded-xl ">
+          <div className="w-full mt-2 p-3 sm:p-4 bg-white/85 border border-white rounded-2xl shadow-[0_16px_40px_rgba(157,23,33,0.06)]">
             <div className="overflow-x-auto">
-              <div className="max-h-60 overflow-y-auto border border-gray-200 rounded-md shadow-md">
+              <div className="max-h-72 overflow-y-auto border border-gray-200 rounded-xl shadow-sm">
                 <table className="min-w-full bg-white">
-                  <thead className="bg-[#c61d23] text-white sticky top-0 z-10">
+                  <thead className="bg-gradient-to-r from-[#c61d23] to-[#8f1515] text-white sticky top-0 z-10">
                     <tr>
                       <th className="py-3 px-4 text-left border-b">
                         StudentID
@@ -416,7 +412,7 @@ const AllFormsMain = () => {
                             onClick={() =>
                               fetchStudentDetails(student.student_id)
                             }
-                            className="hover:bg-green-50 transition duration-150 ease-in-out"
+                            className="hover:bg-rose-50 transition duration-150 ease-in-out cursor-pointer"
                           >
                             <td className="py-2 px-4 border-b">
                               {student?.StudentsId}
@@ -447,16 +443,17 @@ const AllFormsMain = () => {
                 </table>
               </div>
               <button
-                className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition"
+                className="mt-4 bg-gradient-to-r from-[#0b8f4d] to-[#0a7b43] text-white px-4 py-2 rounded-lg hover:opacity-95 transition w-full sm:w-auto font-semibold shadow"
                 onClick={() => downloadExcelForSDAT(showFilteredData)}
               >
                 Download as Excel
               </button>
             </div>
           </div>
-          <div className="flex justify-end text-white mt-2 mr-3">
-            <h2 className="mr-2">Total Count : </h2>
-            <span>{showFilteredData.length}</span>
+          <div className="flex justify-end mt-3 mr-1 sm:mr-3">
+            <span className="px-3 py-1.5 rounded-full bg-[#fcecee] text-[#8f1515] text-sm font-semibold border border-[#f7c8cc]">
+              Total Count: {showFilteredData.length}
+            </span>
           </div>
         </div>
 
@@ -475,9 +472,9 @@ const AllFormsMain = () => {
 
         {/* Modal */}
         {isModalOpen && selectedStudent && (
-          <div className="fixed inset-0 bg-gray-500 bg-opacity-50 flex justify-center items-center z-50">
-            <div className="bg-white p-6 rounded-lg w-3/4 max-w-3xl overflow-auto max-h-[90vh]">
-              <h3 className="text-2xl font-semibold mb-4">Student Details</h3>
+          <div className="fixed inset-0 bg-gray-500 bg-opacity-50 flex justify-center items-center z-50 p-3 sm:p-6">
+            <div className="bg-white p-4 sm:p-6 rounded-lg w-full max-w-3xl overflow-auto max-h-[90vh]">
+              <h3 className="text-xl sm:text-2xl font-semibold mb-4">Student Details</h3>
               <div className="space-y-3">
                 <p>
                   <strong>Name:</strong> {selectedStudent.studentName}
@@ -490,7 +487,7 @@ const AllFormsMain = () => {
                   {selectedStudent.contactNumber}
                 </p>
                 {selectedStudent.profilePicture && (
-                  <div className="my-4 flex gap-4 items-center">
+                  <div className="my-4 flex flex-col sm:flex-row gap-3 sm:gap-4 sm:items-center">
                     <p>Profile Picture</p>
                     <button
                       onClick={() =>
@@ -503,7 +500,7 @@ const AllFormsMain = () => {
                   </div>
                 )}
                 {selectedStudent.admitCard && (
-                  <div className="my-4 flex gap-4 items-center">
+                  <div className="my-4 flex flex-col sm:flex-row gap-3 sm:gap-4 sm:items-center">
                     <p>Admit Card</p>
                     <button
                       onClick={() =>

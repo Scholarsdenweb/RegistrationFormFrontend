@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "../../api/axios";
 import Sidebar from "./AdminLoginSignup/Sidebar";
+import AdminHeader from "./AdminHeader";
 // import Navbar from "../Form/Navbar";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
@@ -139,19 +140,18 @@ const AddExamDate = () => {
   const maxDate = dayjs().add(3, "month").format("YYYY-MM-DD");
 
   return (
-    <div className="w-full h-full overflow-auto bg-[#fdf5f6]">
-      <div className="grid grid-cols-7 h-full">
-        {/* Sidebar */}
-        <div className="col-span-2">
+    <div className="w-full min-h-screen bg-gradient-to-br from-[#fff8f8] via-[#fdf5f6] to-[#f6ecee]">
+      <div className="grid grid-cols-1 lg:grid-cols-12 min-h-screen">
+        <div className="lg:col-span-3 xl:col-span-2">
           <Sidebar />
         </div>
 
-        <div className="flex flex-col col-span-5 h-full py-6">
-          {/* <Navbar /> */}
+        <div className="lg:col-span-9 xl:col-span-10 p-4 pt-16 lg:pt-6 sm:p-6">
+          <AdminHeader title="Exam Date Management" subtitle="Create, edit, and maintain upcoming exam schedules." />
 
           {/* Main Content */}
-          <div className="col-span-6 px-9 py-8 mb-3 mr-5 h-full bg-white rounded-3xl flex flex-col items-center justify-center gap-6 shadow-lg">
-            <h1 className="text-3xl font-bold text-gray-700">
+          <div className="w-full min-h-[70vh] bg-white/90 rounded-3xl border border-white flex flex-col items-center justify-center gap-6 shadow-[0_20px_50px_rgba(157,23,33,0.08)] p-6 sm:p-10">
+            <h1 className="text-2xl sm:text-3xl font-extrabold text-gray-800 text-center tracking-tight">
               {editingDate ? "✏️ Edit Exam Date" : "📅 Add Exam Date"}
             </h1>
 
@@ -164,7 +164,7 @@ const AddExamDate = () => {
 
             {/* Date Input */}
             <form
-              className="flex flex-col gap-4 w-full max-w-md"
+              className="flex flex-col gap-4 w-full max-w-md bg-[#faf7f7] border border-gray-200 rounded-2xl p-4"
               onSubmit={(e) => {
                 e.preventDefault(); // Prevent the form from submitting the traditional way
                 addDate(); // Call the addDate function
@@ -172,7 +172,7 @@ const AddExamDate = () => {
             >
               <input
                 type="date"
-                className="p-3 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500"
+                className="p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#c61d23]/30"
                 value={examDate}
                 min={minDate}
                 max={maxDate}
@@ -191,7 +191,7 @@ const AddExamDate = () => {
                 id="AddExamDate"
                 value={examName || ""} // Ensure examName is defined or defaults to an empty string
                 onChange={(e) => setExamName(e.target.value)} // Use the correct function to update state
-                className="w-full border-2 text-black py-3 px-4 focus:outline-none appearance-none"
+                className="w-full border border-gray-300 rounded-lg text-black py-3 px-4 focus:outline-none focus:ring-2 focus:ring-[#c61d23]/30 appearance-none bg-white"
               >
                 <option value="" className="bg-white text-black" disabled>
                   Select Exam
@@ -209,7 +209,7 @@ const AddExamDate = () => {
                 className={`p-3 text-white rounded-lg shadow-md transition-all duration-300 ${
                   loading
                     ? "bg-gray-400 cursor-not-allowed"
-                    : "bg-blue-600 hover:bg-blue-700"
+                    : "bg-gradient-to-r from-[#c61d23] to-[#8f1515] hover:opacity-95"
                 }`}
                 type="submit"
                 disabled={loading}
@@ -223,11 +223,11 @@ const AddExamDate = () => {
             </form>
 
             {/* Exam Date List */}
-            <div className="w-full mt-4 p-4 bg-gray-100 rounded-lg shadow-inner ">
+            <div className="w-full mt-4 p-3 sm:p-4 bg-white border border-gray-200 rounded-2xl shadow-sm">
               <h2 className="text-lg font-semibold text-gray-600 p-2">
                 📅 Upcoming Exam Dates
               </h2>
-              <div className="overflow-auto h-60 border p-3 rounded-md">
+              <div className="overflow-auto h-60 border border-gray-200 p-3 rounded-xl bg-[#fcfbfb]">
                 {loading ? (
                   <div className="flex justify-center">
                     <div className="w-10 h-10 border-4 border-blue-500 border-dashed rounded-full animate-spin"></div>
@@ -236,7 +236,7 @@ const AddExamDate = () => {
                   allDates.map((date, index) => (
                     <div
                       key={index}
-                      className="flex justify-between items-center p-3 bg-white shadow rounded-md mt-2 transition-all duration-300 hover:bg-gray-50"
+                      className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 p-3 bg-white shadow-sm border border-gray-100 rounded-xl mt-2 transition-all duration-300 hover:shadow-md"
                     >
                       <p className="text-gray-700 font-medium">
                         {date.examDate}
@@ -246,13 +246,13 @@ const AddExamDate = () => {
                       </p>
                       <div className="flex gap-4">
                         <button
-                          className="text-sm bg-yellow-500 text-black px-3 py-1 rounded-lg shadow hover:bg-yellow-600 transition-all"
+                          className="text-sm bg-[#fff4de] text-[#7c5200] border border-[#f7d7a2] px-3 py-1 rounded-lg hover:bg-[#ffeac4] transition-all"
                           onClick={() => handleEdit(date)}
                         >
                           ✏️ Edit
                         </button>
                         <button
-                          className="text-sm bg-red-500 text-white px-3 py-1 rounded-lg shadow hover:bg-red-600 transition-all"
+                          className="text-sm bg-[#fde9ea] text-[#9f1239] border border-[#f5c9cc] px-3 py-1 rounded-lg hover:bg-[#fbdadd] transition-all"
                           onClick={() => confirmDelete(date._id)}
                         >
                           🗑️ Delete

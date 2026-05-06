@@ -143,13 +143,6 @@ const PaymentProcessing = ({ razorpay_payment_id, onGiveUp }) => {
             Check Again
           </button>
 
-          {/* Contact support */}
-          <button
-            onClick={onGiveUp}
-            className="flex items-center justify-center gap-2 px-6 py-3 border border-gray-200 bg-white text-gray-700 font-semibold rounded-lg"
-          >
-            Contact Support
-          </button>
         </div>
       </div>
     );

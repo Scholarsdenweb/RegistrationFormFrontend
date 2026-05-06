@@ -51,17 +51,16 @@ const AddStudentRegistartionComponent = () => {
   };
 
   return (
-    <div className="w-full h-full bg-[#fdf5f6] overflow-auto min-h-screen">
+    <div className="w-full min-h-screen bg-[#fdf5f6]">
       <ToastContainer position="top-right" autoClose={3000} />
 
-      <div className="grid grid-cols-7 h-full">
-        {/* Sidebar */}
-        <div className="col-span-2">
+      <div className="grid grid-cols-1 lg:grid-cols-12 min-h-screen">
+        <div className="lg:col-span-3 xl:col-span-2">
           <Sidebar />
         </div>
 
         {/* Main Content */}
-        <div className="flex flex-col col-span-5 py-6 pr-5">
+        <div className="lg:col-span-9 xl:col-span-10 p-4 sm:p-6">
         <AddStudentRegistrationMain/>
         </div>
       </div>

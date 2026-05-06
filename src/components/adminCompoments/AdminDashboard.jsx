@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Sidebar from "./AdminLoginSignup/Sidebar";
+import AdminHeader from "./AdminHeader";
 // import Navbar from "../Form/Navbar";
 import axios from "../../api/axios";
 
@@ -66,28 +67,30 @@ const AdminDashboard = () => {
   };
 
   return (
-    <div className="w-full h-full bg-[#fdf5f6]">
-      <div className="grid grid-cols-7 h-full">
-        {/* Left Sidebar */}
-        <div className="col-span-2">
+    <div className="w-full min-h-screen bg-gradient-to-br from-[#fff8f8] via-[#fdf5f6] to-[#f6ecee]">
+      <div className="grid grid-cols-1 lg:grid-cols-12 min-h-screen">
+        <div className="lg:col-span-3 xl:col-span-2">
           <Sidebar />
         </div>
 
-        <div className="flex flex-col col-span-5 h-full py-6">
-          {/* <Navbar /> */}
+        <div className="lg:col-span-9 xl:col-span-10 p-4 pt-16 lg:pt-6 sm:p-6">
+          <AdminHeader title="Result Processing" subtitle="Upload CSV files and generate student results with progress tracking." />
 
           {/* Main Content Area */}
-          <div className="col-span-6 px-9 py-8 mb-3 mr-5 h-full bg-white rounded-3xl shadow-lg flex flex-col items-center justify-center gap-6 overflow-auto">
-            <h2 className="text-2xl font-bold text-gray-700 mb-4">
+          <div className="w-full min-h-[70vh] bg-white/90 rounded-3xl border border-white shadow-[0_20px_50px_rgba(157,23,33,0.08)] flex flex-col items-center justify-center gap-6 p-6 sm:p-10 overflow-auto">
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-gray-800 mb-1 text-center tracking-tight">
               Upload CSV File 📂
             </h2>
+            <p className="text-sm text-gray-500 text-center -mt-2">
+              Upload a CSV to generate student results in one flow.
+            </p>
 
             {/* File Input */}
             <input
               type="file"
               accept=".csv"
               onChange={handleFileChange}
-              className="p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+              className="w-full max-w-md p-3 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-[#c61d23]/30"
             />
 
             {/* Upload Button with Animation */}
@@ -96,7 +99,7 @@ const AdminDashboard = () => {
               className={`px-6 py-2 rounded-md text-white font-semibold transition-all duration-300 ${
                 loading
                   ? "bg-gray-400 cursor-not-allowed"
-                  : "bg-blue-500 hover:bg-blue-600"
+                  : "bg-gradient-to-r from-[#c61d23] to-[#8f1515] hover:from-[#b01a20] hover:to-[#7e1212]"
               }`}
               disabled={loading}
             >
@@ -117,9 +120,9 @@ const AdminDashboard = () => {
 
             {/* Progress Bar */}
             {progress.total > 0 && (
-              <div className="w-1/2 bg-gray-300 rounded-md h-4 relative mt-4">
+              <div className="w-full max-w-md bg-gray-200 rounded-full h-4 relative mt-4 overflow-hidden">
                 <div
-                  className="bg-blue-500 h-4 rounded-md transition-all duration-500"
+                  className="bg-gradient-to-r from-[#c61d23] to-[#f97316] h-4 rounded-full transition-all duration-500"
                   style={{
                     width: `${(progress.current / progress.total) * 100}%`,
                   }}

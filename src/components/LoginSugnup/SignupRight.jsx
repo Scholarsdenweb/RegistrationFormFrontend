@@ -587,19 +587,6 @@ export default function SignupRight({ logoSrc }) {
           )}
         </div>
 
-        {/* Footer */}
-
-        <div className="text-center mt-4">
-          <p className="text-xs text-gray-600">
-            Need help?{" "}
-            <Link
-              to="/registration/contactUsPage"
-              className="text-[#c61d23] hover:text-[#a01818] font-bold hover:underline cursor-pointer transition-colors"
-            >
-              Contact Support
-            </Link>
-          </p>
-        </div>
       </div>
     </div>
   );
