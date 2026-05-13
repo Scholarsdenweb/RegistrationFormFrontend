@@ -1,204 +1,162 @@
-import React, { useEffect, useState, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { FiDownload, FiEye, FiFileText, FiImage, FiUser, FiX } from "react-icons/fi";
 import axios from "../../api/axios";
-import { useNavigate } from "react-router-dom";
-// import Sidebar from "./Sidebar";
-import PaginatedList from "../../utils/PaginatedList";
 import { downloadExcelForSDAT } from "../DownloadExcelFile/ExcelFileDownload";
-import StudentFilterPanel from "./StudentFilterPanel"; // Adjust path as needed
+import StudentFilterPanel from "./StudentFilterPanel";
+
+const classFilterOptions = [
+  "VI",
+  "VII",
+  "VIII",
+  "IX",
+  "X",
+  "XI Engineering",
+  "XII Engineering",
+  "XII Passed Engineering",
+  "XI Medical",
+  "XII Medical",
+  "XII Passed Medical",
+];
+
+const formatDate = (value) => {
+  if (!value) return "-";
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return value;
+  return date.toLocaleDateString("en-IN", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  });
+};
+
+const DetailItem = ({ label, value }) => (
+  <div className="rounded-lg border border-gray-200 bg-gray-50 p-3">
+    <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">{label}</p>
+    <p className="mt-1 break-words text-sm font-semibold text-gray-900">{value || "-"}</p>
+  </div>
+);
 
 const AllFormsMain = () => {
   const [contactNumber, setContactNumber] = useState("");
   const [selectedStudent, setSelectedStudent] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showImage, setShowImage] = useState(false);
+  const [showImageUrl, setShowImageUrl] = useState("");
   const [inputValue, setInputValue] = useState("");
   const [classValue, setClassValue] = useState("");
-  const [filterValue, setFilterValue] = useState("");
-  const [showFilteredData, setShowFilteredData] = useState([]);
-  const [showImageUrl, setShowImageUrl] = useState("");
+  const [filterValue, setFilterValue] = useState("all");
+  const [students, setStudents] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [sortOrder, setSortOrder] = useState("asc"); // 'asc' or 'desc'
+  const [sortOrder, setSortOrder] = useState("asc");
   const [startingDate, setStartingDate] = useState("");
   const [lastDate, setLastDate] = useState("");
-  const history = useNavigate();
+  const [errorMessage, setErrorMessage] = useState("");
 
-  const classFilterOptions = [
-    "VI",
-    "VII",
-    "VIII",
-    "IX",
-    "X",
-    "XI Engineering",
-    "XII Engineering",
-    "XII Passed Engineering",
-    "XI Medical",
-    "XII Medical",
-    "XII Passed Medical",
-  ];
+  const paidCount = useMemo(
+    () => students.filter((student) => String(student.paymentId || "").trim()).length,
+    [students],
+  );
 
-  // Handle sort order change
-  const handleSortChange = (order) => {
-    console.log("handleSortChange", order);
-    setSortOrder(order);
-    // Re-fetch data with new sort order
-    if (filterValue === "class") {
-      fetchFilteredData({
-        filterBy: "class",
-        class: classValue,
-        sortOrder: order,
-      });
-    } else if (filterValue === "id") {
-      fetchFilteredData({
-        filterBy: "id",
-        studentId: inputValue,
-        sortOrder: order,
-      });
-    } else if (filterValue === "name") {
-      fetchFilteredData({
-        filterBy: "name",
-        name: inputValue,
-        sortOrder: order,
-      });
-    } else {
-      fetchAllStudents(order);
+  const classCount = useMemo(() => {
+    return new Set(students.map((student) => student.classForAdmission).filter(Boolean)).size;
+  }, [students]);
+
+  const filterApplied = () => {
+    const filters = [];
+    if (inputValue) filters.push(`Name: ${inputValue}`);
+    if (classValue) filters.push(`Class: ${classValue}`);
+    if (startingDate && lastDate) {
+      filters.push(`Date: ${formatDate(startingDate)} to ${formatDate(lastDate)}`);
     }
+    return filters.length ? `Showing ${filters.join(" | ")}` : "No filters applied";
   };
 
-  const getCookieValue = (name) => {
-    return document.cookie
-      .split("; ")
-      .find((row) => row.startsWith(name + "="))
-      ?.split("=")[1];
-  };
-
-  // Unified filter function
   const fetchFilteredData = async (filterParams = {}) => {
     setIsLoading(true);
-    console.log("filterParams from fetchFilteredData", filterParams, sortOrder);
-    console.log(
-      "filterParams from alldata",
-      filterParams.class,
-      filterParams.name,
-      filterParams.startingDate,
-      filterParams.lastDate,
-      filterParams.sortOrder,
-      sortOrder
-    );
+    setErrorMessage("");
 
-    const phone = getCookieValue("phone");
     try {
-      // const response = await axios.post("/students/filter", filterParams);
       const response = await axios.post("students/filter", {
         filterBy: "multiple",
-        class: filterParams.class || classValue,
-        name: filterParams.name || inputValue,
-        // studentId : filterParams.studentId ,
-
-        startingDate: filterParams.startingDate || startingDate,
-        lastDate: filterParams.lastDate || lastDate,
-        sortOrder: filterParams.sortOrder,
+        class: filterParams.class ?? classValue,
+        name: filterParams.name ?? inputValue,
+        startingDate: filterParams.startingDate ?? startingDate,
+        lastDate: filterParams.lastDate ?? lastDate,
+        sortOrder: filterParams.sortOrder ?? sortOrder,
       });
 
-      console.log("Filtered students:", response.data);
-      setShowFilteredData(response.data);
-      setFilterValue("multiple");
-
-      console.log("Filter for all response", response);
-      setShowFilteredData(response.data);
-      setFilterValue(filterParams.filterBy);
+      setStudents(response.data || []);
+      setFilterValue(filterParams.filterBy || "multiple");
     } catch (error) {
       console.error("Error filtering students:", error);
+      setErrorMessage("Unable to load SDAT forms. Please try again.");
     } finally {
       setIsLoading(false);
     }
   };
 
-  // Debounced filter function
-  const debouncedFilter = useMemo(() => debounce(fetchFilteredData, 500), []);
+  const fetchAllStudents = (order = sortOrder) => {
+    setIsLoading(true);
+    setErrorMessage("");
 
-  // Handle class filter change
-  const handleChangeClassFilter = async (e) => {
-    const selectedClass = e.target.value;
-    if (selectedClass === "Select Class") {
-      fetchAllStudents();
-      return;
-    }
-    setClassValue(selectedClass);
-    fetchFilteredData({ filterBy: "class", class: selectedClass, sortOrder });
+    axios
+      .post("students/filter", {
+        filterBy: "all",
+        sortOrder: order,
+      })
+      .then((response) => {
+        setStudents(response.data || []);
+        setFilterValue("all");
+      })
+      .catch((error) => {
+        console.error("Error fetching students:", error);
+        setErrorMessage("Unable to load SDAT forms. Please try again.");
+      })
+      .finally(() => setIsLoading(false));
   };
 
-  // Handle name/ID search
-  const handleSearchChange = (e) => {
-    const value = e.target.value;
-    console.log("value.length,,,,,,,,,,,,,,,,,,,,,,", value.length);
-    // if (value.length < 1) {
-    //   console.log("value.length.................", value.length);
-    //    setInputValue(value);
-    //   fetchAllStudents({ order: sortOrder });
-    //   return;
-    // } else {
-    setInputValue(value);
-    console.log("VAle from handleSearchChange", value);
-
-    // Determine if input is likely an ID (numeric)
-    const isIdSearch = /^\d+$/.test(value);
-
-    // if (isIdSearch) {
-    //   debouncedFilter({ filterBy: "id", studentId: value, sortOrder });
-    // } else {
-    debouncedFilter({ filterBy: "name", name: value, sortOrder });
-    // }
-    // }
-  };
-  const filerByDate = async () => {
-    const response = await axios.post("students/fetchDataByDateRange", {
-      startingDate,
-      lastDate,
-    });
-
-    console.log("filterByDate response", response);
-
-    setShowFilteredData(response.data.data);
-
-    // setShowFilteredData(response.data.data);
-    setFilterValue("daterangeData");
-  };
-
-  // Fetch all students when no filter is applied
-  const fetchAllStudents = (order) => {
-    fetchFilteredData({ filterBy: "all", sortOrder: order });
-  };
-
-  // Initialize with all students
   useEffect(() => {
     const phoneFromCookie = document.cookie
       .split("; ")
       .find((row) => row.startsWith("phone="))
       ?.split("=")[1];
 
-    if (phoneFromCookie) {
-      setContactNumber(phoneFromCookie);
-    }
-
+    if (phoneFromCookie) setContactNumber(phoneFromCookie);
     fetchAllStudents(sortOrder);
   }, []);
 
-  const handleCardClick = (student, basic, batch, family) => {
-    setSelectedStudent({
-      ...student,
-      ...basic,
-      ...batch,
-      ...family,
-    });
-    setIsModalOpen(true);
+  useEffect(() => {
+    if (!isModalOpen && !showImage) return;
+
+    const originalOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    return () => {
+      document.body.style.overflow = originalOverflow;
+    };
+  }, [isModalOpen, showImage]);
+
+  const handleSortChange = (order) => {
+    setSortOrder(order);
+    if (filterValue === "all") {
+      fetchAllStudents(order);
+    } else {
+      fetchFilteredData({ filterBy: "multiple", sortOrder: order });
+    }
+  };
+
+  const handleSearchChange = (event) => {
+    setInputValue(event.target.value);
   };
 
   const fetchStudentDetails = async (studentId) => {
+    if (!studentId) return;
+    setIsLoading(true);
+    setErrorMessage("");
+
     try {
-      setIsLoading(true);
       const response = await axios.get(`/students/${studentId}`);
       const student = response.data;
-
       setSelectedStudent({
         ...student,
         ...student.basicDetails,
@@ -206,11 +164,10 @@ const AllFormsMain = () => {
         ...student.familyDetails,
         ...student.educationalDetails,
       });
-
       setIsModalOpen(true);
     } catch (error) {
       console.error("Error fetching student details:", error);
-      // You might want to add error handling UI here
+      setErrorMessage("Unable to fetch this student form.");
     } finally {
       setIsLoading(false);
     }
@@ -221,405 +178,220 @@ const AllFormsMain = () => {
     setSelectedStudent(null);
   };
 
-  const convertToDate = (isoString) => {
-    if (!isoString) return "";
-    const date = new Date(isoString);
-    return date.toLocaleString("en-GB", {
-      weekday: "long",
-      year: "numeric",
-      month: "numeric",
-      day: "numeric",
-    });
-  };
-
-  const onClickShowImage = (imageUrl) => {
-    setShowImage(true);
-    setShowImageUrl(imageUrl);
-  };
-
-  const renderStudentCard = (student, index, onClick) => {
-    const {
-      studentName,
-      basicDetails: basic = {},
-      batchDetails: batch = {},
-      familyDetails: family = {},
-    } = student;
-
-    return (
-      <div
-        key={index}
-        className="bg-white/95 h-48 p-4 rounded-xl border border-gray-100 shadow-sm hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 cursor-pointer"
-        onClick={onClick}
-      >
-        <div className="space-y-1">
-          <h4 className="font-semibold text-gray-800">Student Name: {studentName}</h4>
-          <h4>Father Name: {family?.FatherName}</h4>
-          <h4>Class: {batch?.classForAdmission}</h4>
-          <h4>Subject: {batch?.subjectCombination}</h4>
-          <h4>Exam: {basic?.examName}</h4>
-          <h4>Exam Date: {basic?.examDate}</h4>
-        </div>
-      </div>
-    );
-  };
-
-  const handleLogout = () => {
-    document.cookie = "phone=; max-age=0; path=/";
-    history("/adminsignup");
-  };
-
-  function formatDate(dateString) {
-    const date = new Date(dateString);
-
-    const day = date.getDate();
-    const year = date.getFullYear().toString().slice(-2); // get last two digits of year
-    const monthNames = [
-      "Jan",
-      "Feb",
-      "Mar",
-      "Apr",
-      "May",
-      "Jun",
-      "Jul",
-      "Aug",
-      "Sep",
-      "Oct",
-      "Nov",
-      "Dec",
-    ];
-    const month = monthNames[date.getMonth()];
-
-    // Add ordinal suffix to day
-    const getOrdinal = (n) => {
-      if (n > 3 && n < 21) return n + "th";
-      switch (n % 10) {
-        case 1:
-          return n + "st";
-        case 2:
-          return n + "nd";
-        case 3:
-          return n + "rd";
-        default:
-          return n + "th";
-      }
-    };
-
-    return `${getOrdinal(day)} ${month} ${year}`;
-  }
-
-  console.log(formatDate("2025-05-11")); // Output: "11th May 25"
-
-  const filterApplied = () => {
-    const filters = [];
-
-    if (startingDate && lastDate) {
-      filters.push(
-        `Date Range: ${formatDate(startingDate)} to ${formatDate(lastDate)}`
-      );
-    }
-
-    if (classValue) {
-      filters.push(`Class: ${classValue}`);
-    }
-
-    // if (inputValue) {
-    //   filters.push(`Student ID: ${inputValue}`);
-    // }
-
-    if (inputValue) {
-      filters.push(`Student Name: ${inputValue}`);
-    }
-
-    if (filterValue === "all") {
-      return "Showing all students";
-    }
-
-    if (filters.length === 0) {
-      return "No filters applied";
-    }
-
-    return `Showing Data for ${filters.join(" | ")}`;
-  };
-
   return (
-    <div className="w-full">
+    <div className="space-y-5">
       {isLoading && (
-        <div className="fixed inset-0 z-50 backdrop-blur-sm bg-black bg-opacity-10 flex items-center justify-center">
-          <div className="w-12 h-12 border-4 border-blue-500 border-dashed rounded-full animate-spin"></div>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/10 backdrop-blur-sm">
+          <div className="h-12 w-12 animate-spin rounded-full border-4 border-[#c61d23] border-t-transparent" />
         </div>
       )}
 
-      {/* <div className="col-span-2 w-full bg-[#c61d23]">
-        <Sidebar />
-      </div> */}
+      <StudentFilterPanel
+        classValue={classValue}
+        setClassValue={setClassValue}
+        inputValue={inputValue}
+        setInputValue={setInputValue}
+        handleSearchChange={handleSearchChange}
+        sortOrder={sortOrder}
+        handleSortChange={handleSortChange}
+        startingDate={startingDate}
+        setStartingDate={setStartingDate}
+        lastDate={lastDate}
+        setLastDate={setLastDate}
+        fetchFilteredData={fetchFilteredData}
+        fetchAllStudents={fetchAllStudents}
+        classFilterOptions={classFilterOptions}
+        filterApplied={filterApplied}
+        filterValue={filterValue}
+      />
 
-      <div className="w-full py-2 sm:py-4">
-        {/* <h2 className="text-3xl font-semibold text-center text-white mb-8">
-          Admin Dashboard
-        </h2> */}
+      <section className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="border border-gray-200 bg-white p-4 shadow-sm">
+          <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">Total Forms</p>
+          <p className="mt-1 text-2xl font-bold text-gray-900">{students.length}</p>
+        </div>
+        <div className="border border-gray-200 bg-white p-4 shadow-sm">
+          <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">Paid Forms</p>
+          <p className="mt-1 text-2xl font-bold text-emerald-600">{paidCount}</p>
+        </div>
+        <div className="border border-gray-200 bg-white p-4 shadow-sm">
+          <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">Classes</p>
+          <p className="mt-1 text-2xl font-bold text-[#c61d23]">{classCount}</p>
+        </div>
+      </section>
 
-        <StudentFilterPanel
-          classValue={classValue}
-          setClassValue={setClassValue}
-          inputValue={inputValue}
-          setInputValue={setInputValue}
-          handleChangeClassFilter={handleChangeClassFilter}
-          handleSearchChange={handleSearchChange}
-          sortOrder={sortOrder}
-          handleSortChange={handleSortChange}
-          startingDate={startingDate}
-          setStartingDate={setStartingDate}
-          lastDate={lastDate}
-          setLastDate={setLastDate}
-          fetchFilteredData={fetchFilteredData}
-          classFilterOptions={classFilterOptions}
-          filterApplied={filterApplied}
-          filterValue={filterValue}
-        />
+      {errorMessage && (
+        <div className="border border-red-200 bg-red-50 px-4 py-3 text-sm font-semibold text-red-700">
+          {errorMessage}
+        </div>
+      )}
 
-        <div className="mb-8">
-          {/* <span className="bg-[#ffdd00] p-2 rounded-sm ">{`Filter Applied on ${filterApplied}`}</span> */}
-          <div className="w-full mt-2 p-3 sm:p-4 bg-white/85 border border-white rounded-2xl shadow-[0_16px_40px_rgba(157,23,33,0.06)]">
-            <div className="overflow-x-auto">
-              <div className="max-h-72 overflow-y-auto border border-gray-200 rounded-xl shadow-sm">
-                <table className="min-w-full bg-white">
-                  <thead className="bg-gradient-to-r from-[#c61d23] to-[#8f1515] text-white sticky top-0 z-10">
-                    <tr>
-                      <th className="py-3 px-4 text-left border-b">
-                        StudentID
-                      </th>
-                      <th className="py-3 px-4 text-left border-b">Name</th>
-                      <th className="py-3 px-4 text-left border-b">Class</th>
-                      <th className="py-3 px-4 text-left border-b">Date</th>
-                      <th className="py-3 px-4 text-left border-b">
-                        Payment Id
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody className="w-full">
-                    {
-                      // isLoading ? (
-                      //   <tr>
-                      //     <td colSpan="4" className="py-4 text-center">
-                      //       Loading...
-                      //     </td>
-                      //   </tr>
-                      // ) :
-                      showFilteredData.length > 0 ? (
-                        showFilteredData.map((student, index) => (
-                          <tr
-                            key={index}
-                            onClick={() =>
-                              fetchStudentDetails(student.student_id)
-                            }
-                            className="hover:bg-rose-50 transition duration-150 ease-in-out cursor-pointer"
-                          >
-                            <td className="py-2 px-4 border-b">
-                              {student?.StudentsId}
-                            </td>
-                            <td className="py-2 px-4 border-b">
-                              {student?.studentName}
-                            </td>
-                            <td className="py-2 px-4 border-b">
-                              {student?.classForAdmission}
-                            </td>
-                            <td className="py-2 px-4 border-b">
-                              {formatDate(student?.createdAt?.split("T")[0])}
-                            </td>
-                            <td className="py-2 px-4 border-b">
-                              {student?.paymentId}
-                            </td>
-                          </tr>
-                        ))
-                      ) : (
-                        <tr>
-                          <td colSpan="4" className="py-4 text-center">
-                            No students found
-                          </td>
-                        </tr>
-                      )
-                    }
-                  </tbody>
-                </table>
-              </div>
-              <button
-                className="mt-4 bg-gradient-to-r from-[#0b8f4d] to-[#0a7b43] text-white px-4 py-2 rounded-lg hover:opacity-95 transition w-full sm:w-auto font-semibold shadow"
-                onClick={() => downloadExcelForSDAT(showFilteredData)}
-              >
-                Download as Excel
-              </button>
-            </div>
+      <section className="bg-white border border-gray-200 shadow-sm">
+        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3 border-b border-gray-200 p-4 sm:p-5">
+          <div>
+            <h2 className="text-lg font-bold text-gray-900">Student Forms</h2>
+            <p className="text-sm text-gray-500">{filterValue === "all" ? "Showing all students" : filterApplied()}</p>
           </div>
-          <div className="flex justify-end mt-3 mr-1 sm:mr-3">
-            <span className="px-3 py-1.5 rounded-full bg-[#fcecee] text-[#8f1515] text-sm font-semibold border border-[#f7c8cc]">
-              Total Count: {showFilteredData.length}
-            </span>
-          </div>
+          <button
+            type="button"
+            onClick={() => downloadExcelForSDAT(students)}
+            disabled={!students.length}
+            className={`inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-sm font-semibold text-white ${
+              students.length ? "bg-emerald-600 hover:bg-emerald-700" : "bg-gray-400 cursor-not-allowed"
+            }`}
+          >
+            <FiDownload /> Download Excel
+          </button>
         </div>
 
-        <PaginatedList
-          apiEndpoint="/adminData/getData"
-          queryParams={{ contactNumber }}
-          renderItem={renderStudentCard}
-          itemsPerPage={1}
-          handleCardClick={(student) => {
-            const basic = student.basicDetails || {};
-            const batch = student.batchDetails || {};
-            const family = student.familyDetails || {};
-            handleCardClick(student, basic, batch, family);
-          }}
-        />
-
-        {/* Modal */}
-        {isModalOpen && selectedStudent && (
-          <div className="fixed inset-0 bg-gray-500 bg-opacity-50 flex justify-center items-center z-50 p-3 sm:p-6">
-            <div className="bg-white p-4 sm:p-6 rounded-lg w-full max-w-3xl overflow-auto max-h-[90vh]">
-              <h3 className="text-xl sm:text-2xl font-semibold mb-4">Student Details</h3>
-              <div className="space-y-3">
-                <p>
-                  <strong>Name:</strong> {selectedStudent.studentName}
-                </p>
-                <p>
-                  <strong>Email:</strong> {selectedStudent.email}
-                </p>
-                <p>
-                  <strong>Contact Number:</strong>{" "}
-                  {selectedStudent.contactNumber}
-                </p>
-                {selectedStudent.profilePicture && (
-                  <div className="my-4 flex flex-col sm:flex-row gap-3 sm:gap-4 sm:items-center">
-                    <p>Profile Picture</p>
-                    <button
-                      onClick={() =>
-                        onClickShowImage(selectedStudent.profilePicture)
-                      }
-                      className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
-                    >
-                      View Image
-                    </button>
-                  </div>
-                )}
-                {selectedStudent.admitCard && (
-                  <div className="my-4 flex flex-col sm:flex-row gap-3 sm:gap-4 sm:items-center">
-                    <p>Admit Card</p>
-                    <button
-                      onClick={() =>
-                        window.open(selectedStudent.admitCard, "_blank")
-                      }
-                      className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
-                    >
-                      View Admit Card
-                    </button>
-                  </div>
-                )}
-
-                {showImage && (
-                  <div className="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center z-50">
-                    <div className="relative">
-                      <img
-                        src={showImageUrl}
-                        alt="Profile"
-                        className="max-w-full max-h-screen rounded"
-                      />
-
-                      <button
-                        onClick={() => setShowImage(false)}
-                        className="absolute top-2 right-2 px-3 py-1 bg-red-600 text-white rounded-full hover:bg-red-700"
+        <div className="overflow-x-auto">
+          <table className="min-w-full text-sm">
+            <thead className="bg-gray-50 text-left text-xs uppercase tracking-wide text-gray-500">
+              <tr>
+                <th className="px-4 py-3 font-bold">Student ID</th>
+                <th className="px-4 py-3 font-bold">Name</th>
+                <th className="px-4 py-3 font-bold">Class</th>
+                <th className="px-4 py-3 font-bold">Registered</th>
+                <th className="px-4 py-3 font-bold">Payment</th>
+                <th className="px-4 py-3 font-bold text-right">Action</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-gray-100">
+              {students.length > 0 ? (
+                students.map((student, index) => (
+                  <tr key={`${student.student_id}-${index}`} className="hover:bg-[#fff8f8]">
+                    <td className="px-4 py-3 font-semibold text-gray-900">{student.StudentsId || "-"}</td>
+                    <td className="px-4 py-3 text-gray-700">{student.studentName || "-"}</td>
+                    <td className="px-4 py-3 text-gray-700">{student.classForAdmission || "-"}</td>
+                    <td className="px-4 py-3 text-gray-600">{formatDate(student.createdAt)}</td>
+                    <td className="px-4 py-3">
+                      <span
+                        className={`inline-flex rounded-full px-2.5 py-1 text-xs font-bold ${
+                          student.paymentId
+                            ? "bg-emerald-50 text-emerald-700"
+                            : "bg-red-50 text-red-700"
+                        }`}
                       >
-                        ✕
+                        {student.paymentId ? "Paid" : "Pending"}
+                      </span>
+                    </td>
+                    <td className="px-4 py-3 text-right">
+                      <button
+                        type="button"
+                        onClick={() => fetchStudentDetails(student.student_id)}
+                        className="inline-flex items-center justify-center gap-2 rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm font-semibold text-gray-700 hover:border-[#c61d23] hover:text-[#c61d23]"
+                      >
+                        <FiEye /> View
                       </button>
-                    </div>
-                  </div>
-                )}
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan={6} className="px-4 py-12 text-center text-gray-500">
+                    No SDAT forms found for the current filters.
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+      </section>
 
-                <p>
-                  <strong>Father Name:</strong> {selectedStudent.FatherName}
-                </p>
-                <p>
-                  <strong>Father Contact:</strong>{" "}
-                  {selectedStudent.FatherContactNumber}
-                </p>
-                <p>
-                  <strong>Father Occupation:</strong>{" "}
-                  {selectedStudent.FatherOccupation}
-                </p>
-                <p>
-                  <strong>Mother Name:</strong> {selectedStudent.MotherName}
-                </p>
-                <p>
-                  <strong>Mother Contact:</strong>{" "}
-                  {selectedStudent.MotherContactNumber}
-                </p>
-                <p>
-                  <strong>Mother Occupation:</strong>{" "}
-                  {selectedStudent.MotherOccupation}
-                </p>
-                <p>
-                  <strong>Class for Admission:</strong>{" "}
-                  {selectedStudent.classForAdmission}
-                </p>
-                <p>
-                  <strong>Subject Combination:</strong>{" "}
-                  {selectedStudent.program}
-                </p>
-                <p>
-                  <strong>Exam Name:</strong> {selectedStudent.examName}
-                </p>
-                <p>
-                  <strong>Exam Date:</strong> {selectedStudent.examDate}
-                </p>
-                <p>
-                  <strong>DOB:</strong> {convertToDate(selectedStudent.dob)}
-                </p>
-                <p>
-                  <strong>Created At:</strong>{" "}
-                  {convertToDate(selectedStudent.created_at)}
-                </p>
+      {isModalOpen && selectedStudent && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
+          <div className="max-h-[90vh] w-full max-w-5xl overflow-auto bg-white shadow-xl">
+            <div className="sticky top-0 z-10 flex items-center justify-between border-b border-gray-200 bg-white px-5 py-4">
+              <div>
+                <h3 className="text-xl font-bold text-gray-900">Student Details</h3>
+                <p className="text-sm text-gray-500">{selectedStudent.studentName || "Student form"}</p>
               </div>
-              <div className="flex justify-end mt-4">
-                <button
-                  onClick={closeModal}
-                  className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600"
-                >
-                  Close
-                </button>
+              <button
+                type="button"
+                onClick={closeModal}
+                className="rounded-lg p-2 text-gray-500 hover:bg-gray-100 hover:text-gray-900"
+              >
+                <FiX />
+              </button>
+            </div>
+
+            <div className="p-5">
+              <div className="mb-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 rounded-lg border border-gray-200 bg-gray-50 p-4">
+                <div className="flex items-center gap-3">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#fff5f5] text-[#c61d23]">
+                    <FiUser size={24} />
+                  </div>
+                  <div>
+                    <p className="font-bold text-gray-900">{selectedStudent.studentName || "-"}</p>
+                    <p className="text-sm text-gray-500">{selectedStudent.StudentsId || "No Student ID"}</p>
+                  </div>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {selectedStudent.profilePicture && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setShowImage(true);
+                        setShowImageUrl(selectedStudent.profilePicture);
+                      }}
+                      className="inline-flex items-center gap-2 rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm font-semibold text-gray-700 hover:border-[#c61d23] hover:text-[#c61d23]"
+                    >
+                      <FiImage /> Profile
+                    </button>
+                  )}
+                  {selectedStudent.admitCard && (
+                    <button
+                      type="button"
+                      onClick={() => window.open(selectedStudent.admitCard, "_blank")}
+                      className="inline-flex items-center gap-2 rounded-lg bg-[#c61d23] px-3 py-2 text-sm font-semibold text-white hover:bg-[#a8191e]"
+                    >
+                      <FiFileText /> Admit Card
+                    </button>
+                  )}
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3">
+                <DetailItem label="Email" value={selectedStudent.email} />
+                <DetailItem label="Contact Number" value={selectedStudent.contactNumber} />
+                <DetailItem label="Class for Admission" value={selectedStudent.classForAdmission} />
+                <DetailItem label="Program" value={selectedStudent.program} />
+                <DetailItem label="Exam Name" value={selectedStudent.examName} />
+                <DetailItem label="Exam Date" value={selectedStudent.examDate} />
+                <DetailItem label="DOB" value={formatDate(selectedStudent.dob)} />
+                <DetailItem label="Father Name" value={selectedStudent.FatherName} />
+                <DetailItem label="Father Contact" value={selectedStudent.FatherContactNumber} />
+                <DetailItem label="Father Occupation" value={selectedStudent.FatherOccupation} />
+                <DetailItem label="Mother Name" value={selectedStudent.MotherName} />
+                <DetailItem label="Mother Contact" value={selectedStudent.MotherContactNumber} />
+                <DetailItem label="Mother Occupation" value={selectedStudent.MotherOccupation} />
+                <DetailItem label="School" value={selectedStudent.SchoolName} />
+                <DetailItem label="Board" value={selectedStudent.Board} />
+                <DetailItem label="Percentage" value={selectedStudent.Percentage} />
+                <DetailItem label="Payment ID" value={selectedStudent.paymentId} />
+                <DetailItem label="Created At" value={formatDate(selectedStudent.createdAt || selectedStudent.created_at)} />
               </div>
             </div>
           </div>
-        )}
+        </div>
+      )}
 
-        {/* Logout */}
-        {/* <div className="mt-6 flex justify-end">
-          <button
-            onClick={handleLogout}
-            className="px-6 py-2 bg-red-500 text-white rounded-full hover:bg-red-600"
-          >
-            Logout
-          </button>
-        </div> */}
-      </div>
+      {showImage && (
+        <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/80 p-4">
+          <div className="relative">
+            <img src={showImageUrl} alt="Profile" className="max-h-[90vh] max-w-full rounded-lg" />
+            <button
+              type="button"
+              onClick={() => setShowImage(false)}
+              className="absolute right-2 top-2 rounded-full bg-red-600 px-3 py-1 text-white hover:bg-red-700"
+            >
+              x
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
-
-// Debounce utility function
-function debounce(func, delay) {
-  let timeoutId;
-  let abortController;
-
-  return function (...args) {
-    clearTimeout(timeoutId);
-    if (abortController) {
-      abortController.abort();
-    }
-
-    abortController = new AbortController();
-    const signal = abortController.signal;
-
-    timeoutId = setTimeout(() => {
-      func.apply(this, [...args, signal]);
-    }, delay);
-  };
-}
 
 export default AllFormsMain;

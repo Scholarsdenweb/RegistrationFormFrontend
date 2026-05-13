@@ -14,7 +14,7 @@ const CloudinaryComponents = () => {
         </div>
 
         {/* Right Content Area */}
-        <div className="lg:col-span-9 xl:col-span-10 p-4 sm:p-6">
+        <div className="lg:col-span-9 xl:col-span-10 p-4 pt-16 lg:pt-6 sm:p-6">
           {/* <Navbar /> */}
 
           <CloudinaryUpload />

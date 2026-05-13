@@ -16,17 +16,16 @@ const Sidebar = () => {
 
   const navItems = [
     { to: "/admin/dashboard", label: "Upload Result" },
-    { to: "/admin/allStudents", label: "All Results" },
     { to: "/admin/addExamDate", label: "Add Exam Date" },
     { to: "/admin/downloadResult", label: "Download Result" },
     { to: "/admin/CloudinaryUpload", label: "Upload Student Pictures" },
-    { to: "/admin/allForms", label: "All Rise Forms" },
+    { to: "/admin/allForms", label: "All SDAT Forms" },
     { to: "/admin/amount", label: "Amount" },
-    { to: "/admin/add-student-registration", label: "Add Student Registration" },
+    { to: "/admin/offline-registration-upload", label: "Offline Registration Upload" },
   ];
 
   const navContent = (
-    <div className="px-4 py-4 lg:px-5 lg:py-6 h-full flex flex-col justify-between">
+    <div className="px-4 py-4 lg:px-5 lg:py-6 h-full flex flex-col justify-between overflow-y-auto">
         <div className="space-y-4 lg:space-y-6">
           <div className="flex items-center gap-3 lg:flex-col lg:items-center lg:gap-2">
             <img className="w-12 h-12 lg:w-16 lg:h-16" src={ScholarsDenLogo} alt="Scholars Den Logo" />
@@ -82,7 +81,7 @@ const Sidebar = () => {
       )}
 
       <div
-        className={`fixed inset-y-0 left-0 z-50 w-72 bg-gradient-to-b from-[#fff7f8] to-[#f8ecee] text-black border-r border-gray-200 transform transition-transform duration-300 lg:static lg:transform-none lg:w-full lg:h-screen ${
+        className={`fixed inset-y-0 left-0 z-50 w-72 bg-gradient-to-b from-[#fff7f8] to-[#f8ecee] text-black border-r border-gray-200 transform transition-transform duration-300 lg:sticky lg:top-0 lg:transform-none lg:w-full lg:h-screen ${
           isOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
         }`}
       >

@@ -2,7 +2,6 @@ import React from "react";
 import Sidebar from "./AdminLoginSignup/Sidebar";
 import AdminHeader from "./AdminHeader";
 import { ToastContainer } from "react-toastify";
-import CloudinaryUpload from "./CloudinaryUpload";
 import AllFormsMain from "./AllFormsMain";
 
 const AllFormsComponents = () => {

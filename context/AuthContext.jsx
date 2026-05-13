@@ -152,6 +152,16 @@ export const AuthProvider = ({ children }) => {
       (response) => response,
       async (error) => {
         const originalRequest = error.config;
+        const requestUrl = originalRequest?.url || "";
+        const isLoginRequest =
+          requestUrl.includes("/auth/login") ||
+          requestUrl.includes("/auth/employee_login") ||
+          requestUrl.includes("/auth/student_login") ||
+          requestUrl.includes("/auth/admin_login");
+
+        if (isLoginRequest) {
+          return Promise.reject(error);
+        }
 
         // ===== ONLY HANDLE 401 ERRORS =====
         if (error.response?.status === 401 && !originalRequest._retry) {

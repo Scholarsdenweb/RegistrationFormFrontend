@@ -24,7 +24,6 @@ import FormDetailPage from "./components/FormDetailPage";
 import Spinner from "./api/Spinner";
 import Payment from "./components/Payment";
 import Result from "./components/Result";
-import AllStudentResult from "./components/adminCompoments/AllStudentResult";
 import AddExamDate from "./components/adminCompoments/AddExamDate";
 import DownloadResult from "./components/adminCompoments/DownloadResult";
 import CloudinaryUpload from "./components/adminCompoments/CloudinaryUpload";
@@ -44,8 +43,18 @@ import AllFormsComponents from "./components/adminCompoments/AllFormsComponents"
 import RiseFee from "./components/adminCompoments/RiseFee/RiseFee";
 import LockNavigation from "./utils/LockNavigator";
 import Amount from "./components/adminCompoments/Amount";
-import AddStudentRegistartionComponent from "./components/adminCompoments/AddStudentRegistration/AddStudentRegistartionComponent";
 import PaymentSuccess from "./components/PaymentSuccessMessage";
+import OfflineRegistrationUpload from "./components/adminCompoments/OfflineRegistrationUpload";
+
+const TabletShell = ({ children }) => (
+  <div className="min-h-screen w-full lg:flex lg:justify-center">
+    <div className="min-h-screen w-full lg:max-w-[834px]">
+      {children}
+    </div>
+  </div>
+);
+
+const tablet = (element) => <TabletShell>{element}</TabletShell>;
 
 function App() {
   return (
@@ -56,14 +65,10 @@ function App() {
           <div className="p-0 m-0">
             <Routes>
               {/* <Route path="/" element={<Login />} /> */}
-              <Route path="/admin" element={<AdminLogin />} />
+              <Route path="/admin" element={tablet(<AdminLogin />)} />
               <Route
                 path="/admin/dashboard"
                 element={<AdminPrivateRoute component={AdminDashboard} />}
-              />
-              <Route
-                path="/admin/allStudents"
-                element={<AdminPrivateRoute component={AllStudentResult} />}
               />
               <Route
                 path="/admin/addExamDate"
@@ -90,14 +95,12 @@ function App() {
                 element={<AdminPrivateRoute component={Amount} />}
               />
               <Route
-                path="/admin/add-student-registration"
-                element={
-                  <AdminPrivateRoute component={AddStudentRegistartionComponent} />
-                }
+                path="/admin/offline-registration-upload"
+                element={<AdminPrivateRoute component={OfflineRegistrationUpload} />}
               />
-              <Route path="/facedetection" element={<FaceDetectionUpload />} />
+              <Route path="/facedetection" element={tablet(<FaceDetectionUpload />)} />
 
-              <Route path="/" element={<Signup />} />
+              <Route path="/" element={tablet(<Signup />)} />
 
               {/* <Route
                 path="/registration/existingStudent"
@@ -105,65 +108,65 @@ function App() {
               /> */}
               <Route
                 path="/registration/existingStudent"
-                element={<PrivateRoute component={ExistingStudent} />}
+                element={tablet(<PrivateRoute component={ExistingStudent} />)}
               />
               <Route
                 path="/registration/existingenquiry"
-                element={
+                element={tablet(
                   <PrivateRoute
                     component={ShowEnquiryOFExistingStudentDetails}
                   />
-                }
+                )}
               />
 
               <Route
                 path="/registration/basicDetailsForm"
-                element={<PrivateRoute component={BasicDetailsForm} />}
+                element={tablet(<PrivateRoute component={BasicDetailsForm} />)}
               />
             
               <Route
                 path="/registration/batchDetailsForm"
-                element={<PrivateRoute component={BatchRelatedDetailsForm} />}
+                element={tablet(<PrivateRoute component={BatchRelatedDetailsForm} />)}
               />
 
 
               
               <Route
                 path="/registration/familyDetailsForm"
-                element={<PrivateRoute component={FamilyDetails} />}
+                element={tablet(<PrivateRoute component={FamilyDetails} />)}
 
               />
 
 
                 <Route
                 path="/registration/educationalDetailsForm"
-                element={<PrivateRoute component={EducationalDetailsForm} />}
+                element={tablet(<PrivateRoute component={EducationalDetailsForm} />)}
               />
 
                 <Route
                 path="/registration/success"
-                element={<PrivateRoute component={PaymentSuccess} />}
+                element={tablet(<PrivateRoute component={PaymentSuccess} />)}
               />
 
               <Route
                 path="/registration/selfieCapture"
-                element={<SelfieCapture />}
+                element={tablet(<SelfieCapture />)}
               />
               <Route
                 path="/registration/termsAndCondition"
-                element={<TermsAndConditionPage />}
+                element={tablet(<TermsAndConditionPage />)}
               />
               <Route
                 path="/registration/contactUsPage"
-                element={<ContactUsPage />}
+                element={tablet(<ContactUsPage />)}
               />
               <Route
                 path="/registration/privacyPolicy"
-                element={<PrivacyPolicy />}
+                element={tablet(<PrivacyPolicy />)}
               />
               <Route
                 path="/registration/cancellationsAndRefunds"
-                element={<CancellationsAndRefunds />}
+                element={tablet(<CancellationsAndRefunds />)}
               />
 
             
@@ -174,14 +177,14 @@ function App() {
               /> */}
               <Route
                 path="/dashboard"
-                element={<PrivateRoute component={Dashboard} />}
+                element={tablet(<PrivateRoute component={Dashboard} />)}
               />
               {/* <Route path="/examDetails" element={<ExamDetails />} /> */}
-              <Route path="/showMessage" element={<ShowMessage />} />
-              <Route path="/forgetPassword" element={<ForgotPassword />} />
+              <Route path="/showMessage" element={tablet(<ShowMessage />)} />
+              <Route path="/forgetPassword" element={tablet(<ForgotPassword />)} />
               <Route
                 path="/reset-password/:token"
-                element={<ResetPassword />}
+                element={tablet(<ResetPassword />)}
               />
               {/* <Route path="result" element={<ResultPage />} /> */}
               {/* <Route
@@ -194,7 +197,7 @@ function App() {
               /> */}
               <Route
                 path="/registration/payment"
-                element={<PrivateRoute component={Payment} />}
+                element={tablet(<PrivateRoute component={Payment} />)}
               />
               {/* <Route
                 path="/payment/success/:payment_id"
@@ -204,7 +207,7 @@ function App() {
                 path="/result"
                 element={<PrivateRoute component={Result} />}
               /> */}
-              <Route path="/spinner" element={<Spinner />} />
+              <Route path="/spinner" element={tablet(<Spinner />)} />
             </Routes>
           </div>
         </Router>

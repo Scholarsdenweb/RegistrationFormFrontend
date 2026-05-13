@@ -1,303 +1,322 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { FiCalendar, FiEdit2, FiPlus, FiRefreshCcw, FiX } from "react-icons/fi";
+import dayjs from "dayjs";
+import customParseFormat from "dayjs/plugin/customParseFormat";
 import axios from "../../api/axios";
 import Sidebar from "./AdminLoginSignup/Sidebar";
 import AdminHeader from "./AdminHeader";
-// import Navbar from "../Form/Navbar";
-import dayjs from "dayjs";
-import customParseFormat from "dayjs/plugin/customParseFormat";
+
 dayjs.extend(customParseFormat);
 
+const emptyForm = {
+  examDate: "",
+  examName: "",
+};
+
+const formatForApi = (value) => dayjs(value).format("DD-MM-YYYY");
+
+const formatForInput = (value = "") => {
+  const normalized = String(value).replace(/\./g, "-");
+  const parsed = dayjs(normalized, ["DD-MM-YYYY", "DD.MM.YYYY", "YYYY-MM-DD"], true);
+  return parsed.isValid() ? parsed.format("YYYY-MM-DD") : "";
+};
+
+const formatForDisplay = (value = "") => {
+  const normalized = String(value).replace(/\./g, "-");
+  const parsed = dayjs(normalized, ["DD-MM-YYYY", "DD.MM.YYYY", "YYYY-MM-DD"], true);
+  return parsed.isValid() ? parsed.format("DD MMM YYYY") : value || "-";
+};
+
 const AddExamDate = () => {
-  const [examDate, setExamDate] = useState("");
-  // const [scholarshipValidation, setScholarshipValidation] = useState("");
   const [allDates, setAllDates] = useState([]);
+  const [formData, setFormData] = useState(emptyForm);
   const [editingDate, setEditingDate] = useState(null);
+  const [modalOpen, setModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
   const [message, setMessage] = useState("");
-  const [deleteModal, setDeleteModal] = useState(false);
-  const [dateToDelete, setDateToDelete] = useState(null);
+  const [errors, setErrors] = useState({});
 
-  const [examName, setExamName] = useState("");
+  const minDate = dayjs().format("YYYY-MM-DD");
+  const maxDate = dayjs().add(3, "month").format("YYYY-MM-DD");
 
-  const [errors, setErrors] = useState({
-    examDate: "",
-    examType: "",
-  });
-
-  const validateForm = () => {
-    const formErrors = {};
-    let isValid = true;
-
-    ["examDate", "examType"].forEach((field) => {
-      if (!field) {
-        // Capitalize the first letter of the field and add spaces before capital letters
-        const formattedField = field
-          .replace(/([A-Z])/g, " $1")
-          .replace(/^./, (str) => str.toUpperCase());
-        formErrors[field] = `${formattedField} is required`;
-        isValid = false;
-      }
-    });
-    setErrors(formErrors);
-    return isValid;
-  };
-
-  const addDate = async () => {
-    if (!validateForm()) return;
-
-    // Required to Change Because it may cause error Ex - secound request not run because of any error so we need to handle this issue
-    setLoading(true);
-    try {
-      if (editingDate) {
-        await axios.patch("/employees/editDate", {
-          _id: editingDate._id,
-          changedDate: dayjs(examDate).format("DD-MM-YYYY"),
-          newExamName: examName,
-        });
-        await axios.patch("/examList/updateExam");
-        setMessage("✅ Exam date updated successfully!");
-        setEditingDate(null);
-      } else {
-        console.log("ExamDate", examDate);
-        await axios.post("/employees/addExamDate", {
-          examDate: dayjs(examDate).format("DD-MM-YYYY"),
-          examName,
-          // scholarshipValidation: dayjs(scholarshipValidation).format(
-          //   "DD-MM-YYYY"
-          // ),
-        });
-
-        // await axios.post("/examList/addExam", {
-        //   examName
-        // })
-        setMessage("✅ Exam date added successfully!");
-      }
-
-      setExamDate("");
-      await fetchAllDates();
-    } catch (error) {
-      console.error("Error adding/editing date:", error);
-      setMessage("❌ Failed to update exam date.");
-    }
-    setLoading(false);
-  };
+  const upcomingCount = useMemo(() => {
+    return allDates.filter((item) => {
+      const parsed = dayjs(String(item.examDate).replace(/\./g, "-"), "DD-MM-YYYY", true);
+      return parsed.isValid() && !parsed.isBefore(dayjs().startOf("day"), "day");
+    }).length;
+  }, [allDates]);
 
   const fetchAllDates = async () => {
     setLoading(true);
     try {
-      const response = await axios.get("/employees/getAllDates");
-
-      console.log("response", response);
-
-      const filteredDates = response.data.filter((date) => {
-        const examDate = dayjs(date.examDate, "DD-MM-YYYY", true);
-
-        return {
-          examDate:
-            examDate.isValid() &&
-            examDate.isAfter(dayjs().startOf("day")) &&
-            examDate.isBefore(dayjs().add(3, "months").endOf("day")),
-          examName: date.examName,
-        };
-      });
-
-      setAllDates(filteredDates);
+      const response = await axios.get("/employees/allDates");
+      setAllDates(response.data || []);
     } catch (error) {
       console.error("Error fetching dates:", error);
+      setMessage("Failed to load exam dates.");
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   useEffect(() => {
     fetchAllDates();
   }, []);
 
-  const handleEdit = (date) => {
+  const openAddModal = () => {
+    setEditingDate(null);
+    setFormData(emptyForm);
+    setErrors({});
+    setModalOpen(true);
+  };
+
+  const openEditModal = (date) => {
     setEditingDate(date);
-    setExamDate(dayjs(date.examDate).format("YYYY-DD-MM"));
+    setFormData({
+      examDate: formatForInput(date.examDate),
+      examName: date.examName || "",
+    });
+    setErrors({});
+    setModalOpen(true);
   };
 
-  const confirmDelete = (id) => {
-    setDateToDelete(id);
-    setDeleteModal(true);
+  const closeModal = () => {
+    setModalOpen(false);
+    setEditingDate(null);
+    setFormData(emptyForm);
+    setErrors({});
   };
 
-  const deleteDate = async () => {
-    setLoading(true);
+  const validateForm = () => {
+    const nextErrors = {};
+    if (!formData.examDate) nextErrors.examDate = "Exam date is required.";
+    if (!formData.examName) nextErrors.examName = "Exam name is required.";
+
+    setErrors(nextErrors);
+    return Object.keys(nextErrors).length === 0;
+  };
+
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+    setErrors((prev) => ({ ...prev, [name]: "" }));
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    if (!validateForm()) return;
+
+    setSubmitting(true);
+    setMessage("");
+
     try {
-      await axios.delete(`/employees/deleteDate/${dateToDelete}`);
-      setMessage("✅ Exam date deleted successfully!");
-      setDeleteModal(false);
+      if (editingDate) {
+        await axios.patch("/employees/editDate", {
+          _id: editingDate._id,
+          changedDate: formatForApi(formData.examDate),
+          newExamName: formData.examName,
+        });
+        setMessage("Exam date updated successfully.");
+      } else {
+        await axios.post("/employees/addExamDate", {
+          examDate: formatForApi(formData.examDate),
+          examName: formData.examName,
+        });
+        setMessage("Exam date added successfully.");
+      }
+
+      closeModal();
       await fetchAllDates();
     } catch (error) {
-      console.error("Error deleting date:", error);
-      setMessage("❌ Failed to delete exam date.");
+      console.error("Error saving exam date:", error);
+      setMessage(error?.response?.data?.message || "Failed to save exam date.");
+    } finally {
+      setSubmitting(false);
     }
-    setLoading(false);
   };
 
-  const minDate = dayjs().format("YYYY-MM-DD");
-  const maxDate = dayjs().add(3, "month").format("YYYY-MM-DD");
-
   return (
-    <div className="w-full min-h-screen bg-gradient-to-br from-[#fff8f8] via-[#fdf5f6] to-[#f6ecee]">
+    <div className="w-full min-h-screen bg-[#f8f3f3]">
       <div className="grid grid-cols-1 lg:grid-cols-12 min-h-screen">
         <div className="lg:col-span-3 xl:col-span-2">
           <Sidebar />
         </div>
 
-        <div className="lg:col-span-9 xl:col-span-10 p-4 pt-16 lg:pt-6 sm:p-6">
-          <AdminHeader title="Exam Date Management" subtitle="Create, edit, and maintain upcoming exam schedules." />
+        <main className="lg:col-span-9 xl:col-span-10 p-4 pt-16 lg:pt-6 sm:p-6">
+          <AdminHeader
+            title="Exam Date Management"
+            subtitle="Create and maintain SDAT/RISE exam schedules."
+          />
 
-          {/* Main Content */}
-          <div className="w-full min-h-[70vh] bg-white/90 rounded-3xl border border-white flex flex-col items-center justify-center gap-6 shadow-[0_20px_50px_rgba(157,23,33,0.08)] p-6 sm:p-10">
-            <h1 className="text-2xl sm:text-3xl font-extrabold text-gray-800 text-center tracking-tight">
-              {editingDate ? "✏️ Edit Exam Date" : "📅 Add Exam Date"}
-            </h1>
+          <section className="bg-white border border-gray-200 shadow-sm">
+            <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 border-b border-gray-200 p-4 sm:p-6">
+              <div>
+                <h1 className="text-xl sm:text-2xl font-bold text-gray-900">Exam Dates</h1>
+                <p className="text-sm text-gray-500 mt-1">
+                  {allDates.length} total dates · {upcomingCount} upcoming
+                </p>
+              </div>
 
-            {/* Success/Error Message */}
-            {message && (
-              <p className="text-md font-medium text-green-600 bg-green-100 px-4 py-2 rounded-lg">
-                {message}
-              </p>
-            )}
-
-            {/* Date Input */}
-            <form
-              className="flex flex-col gap-4 w-full max-w-md bg-[#faf7f7] border border-gray-200 rounded-2xl p-4"
-              onSubmit={(e) => {
-                e.preventDefault(); // Prevent the form from submitting the traditional way
-                addDate(); // Call the addDate function
-              }}
-            >
-              <input
-                type="date"
-                className="p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#c61d23]/30"
-                value={examDate}
-                min={minDate}
-                max={maxDate}
-                onChange={(e) => setExamDate(e.target.value)}
-              />
-              {/* <input
-                type="date"
-                className="p-3 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500"
-                value={scholarshipValidation}
-                min={minDate}
-                max={maxDate}
-                onChange={(e) => setScholarshipValidation(e.target.value)}
-              /> */}
-              <select
-                name="AddExamDate"
-                id="AddExamDate"
-                value={examName || ""} // Ensure examName is defined or defaults to an empty string
-                onChange={(e) => setExamName(e.target.value)} // Use the correct function to update state
-                className="w-full border border-gray-300 rounded-lg text-black py-3 px-4 focus:outline-none focus:ring-2 focus:ring-[#c61d23]/30 appearance-none bg-white"
-              >
-                <option value="" className="bg-white text-black" disabled>
-                  Select Exam
-                </option>
-                <option value="SDAT" className="bg-white text-black">
-                  SDAT
-                </option>
-                <option value="RISE" className="bg-white text-black">
-                  RISE
-                </option>
-              </select>
-
-              {/* Add/Update Button */}
-              <button
-                className={`p-3 text-white rounded-lg shadow-md transition-all duration-300 ${
-                  loading
-                    ? "bg-gray-400 cursor-not-allowed"
-                    : "bg-gradient-to-r from-[#c61d23] to-[#8f1515] hover:opacity-95"
-                }`}
-                type="submit"
-                disabled={loading}
-              >
-                {loading
-                  ? "Processing..."
-                  : editingDate
-                  ? "Update Date"
-                  : "Add Date"}
-              </button>
-            </form>
-
-            {/* Exam Date List */}
-            <div className="w-full mt-4 p-3 sm:p-4 bg-white border border-gray-200 rounded-2xl shadow-sm">
-              <h2 className="text-lg font-semibold text-gray-600 p-2">
-                📅 Upcoming Exam Dates
-              </h2>
-              <div className="overflow-auto h-60 border border-gray-200 p-3 rounded-xl bg-[#fcfbfb]">
-                {loading ? (
-                  <div className="flex justify-center">
-                    <div className="w-10 h-10 border-4 border-blue-500 border-dashed rounded-full animate-spin"></div>
-                  </div>
-                ) : allDates.length > 0 ? (
-                  allDates.map((date, index) => (
-                    <div
-                      key={index}
-                      className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 p-3 bg-white shadow-sm border border-gray-100 rounded-xl mt-2 transition-all duration-300 hover:shadow-md"
-                    >
-                      <p className="text-gray-700 font-medium">
-                        {date.examDate}
-                      </p>
-                      <p className="text-gray-700 font-medium">
-                        {date.examName}
-                      </p>
-                      <div className="flex gap-4">
-                        <button
-                          className="text-sm bg-[#fff4de] text-[#7c5200] border border-[#f7d7a2] px-3 py-1 rounded-lg hover:bg-[#ffeac4] transition-all"
-                          onClick={() => handleEdit(date)}
-                        >
-                          ✏️ Edit
-                        </button>
-                        <button
-                          className="text-sm bg-[#fde9ea] text-[#9f1239] border border-[#f5c9cc] px-3 py-1 rounded-lg hover:bg-[#fbdadd] transition-all"
-                          onClick={() => confirmDelete(date._id)}
-                        >
-                          🗑️ Delete
-                        </button>
-                      </div>
-                    </div>
-                  ))
-                ) : (
-                  <p className="text-gray-500 text-center">
-                    No upcoming exam dates.
-                  </p>
-                )}
+              <div className="flex flex-col sm:flex-row gap-3">
+                <button
+                  type="button"
+                  onClick={fetchAllDates}
+                  className="inline-flex items-center justify-center gap-2 rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm font-semibold text-gray-700 hover:border-[#c61d23] hover:text-[#c61d23]"
+                >
+                  <FiRefreshCcw /> Refresh
+                </button>
+                <button
+                  type="button"
+                  onClick={openAddModal}
+                  className="inline-flex items-center justify-center gap-2 rounded-lg bg-[#c61d23] px-4 py-2.5 text-sm font-semibold text-white hover:bg-[#a8191e]"
+                >
+                  <FiPlus /> Add Exam Date
+                </button>
               </div>
             </div>
-          </div>
-        </div>
+
+            {message && (
+              <div className="mx-4 mt-4 rounded-lg border border-gray-200 bg-gray-50 px-4 py-3 text-sm font-semibold text-gray-700 sm:mx-6">
+                {message}
+              </div>
+            )}
+
+            <div className="p-4 sm:p-6">
+              {loading ? (
+                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-3">
+                  {Array.from({ length: 8 }).map((_, index) => (
+                    <div key={index} className="h-28 rounded-lg bg-gray-100 animate-pulse" />
+                  ))}
+                </div>
+              ) : allDates.length > 0 ? (
+                <div className="overflow-x-auto border border-gray-200">
+                  <table className="min-w-full text-sm">
+                    <thead className="bg-gray-50 text-left text-xs uppercase tracking-wide text-gray-500">
+                      <tr>
+                        <th className="px-4 py-3 font-bold">Exam</th>
+                        <th className="px-4 py-3 font-bold">Date</th>
+                        <th className="px-4 py-3 font-bold">Stored Format</th>
+                        <th className="px-4 py-3 font-bold text-right">Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-gray-100">
+                      {allDates.map((date) => (
+                        <tr key={date._id} className="hover:bg-[#fff8f8]">
+                          <td className="px-4 py-3">
+                            <span className="inline-flex items-center gap-2 rounded-full bg-[#fff5f5] px-3 py-1 text-xs font-bold text-[#c61d23]">
+                              <FiCalendar /> {date.examName || "-"}
+                            </span>
+                          </td>
+                          <td className="px-4 py-3 font-bold text-gray-900">
+                            {formatForDisplay(date.examDate)}
+                          </td>
+                          <td className="px-4 py-3 text-gray-500">{date.examDate || "-"}</td>
+                          <td className="px-4 py-3">
+                            <div className="flex justify-end gap-2">
+                              <button
+                                type="button"
+                                onClick={() => openEditModal(date)}
+                                className="inline-flex items-center gap-2 rounded-lg border border-[#f0c36d] bg-[#fff8e8] px-3 py-2 text-sm font-semibold text-[#7c5200] hover:bg-[#ffefc7]"
+                              >
+                                <FiEdit2 /> Edit
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              ) : (
+                <div className="rounded-lg border border-dashed border-gray-300 bg-gray-50 py-12 text-center">
+                  <p className="text-sm font-semibold text-gray-700">No exam dates have been added yet.</p>
+                  <button
+                    type="button"
+                    onClick={openAddModal}
+                    className="mt-4 inline-flex items-center justify-center gap-2 rounded-lg bg-[#c61d23] px-4 py-2 text-sm font-semibold text-white hover:bg-[#a8191e]"
+                  >
+                    <FiPlus /> Add First Exam Date
+                  </button>
+                </div>
+              )}
+            </div>
+          </section>
+        </main>
       </div>
 
-      {/* Delete Confirmation Modal */}
-      {deleteModal && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-40">
-          <div className="bg-white p-6 rounded-lg shadow-lg">
-            <h2 className="text-lg font-semibold text-gray-700">
-              ⚠️ Confirm Delete
-            </h2>
-            <p className="text-gray-600">
-              Are you sure you want to delete this exam date?
-            </p>
-            <div className="mt-4 flex justify-end gap-4">
+      {modalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4 sm:p-8">
+          <div className="w-full max-w-lg rounded-2xl bg-white shadow-xl">
+            <div className="flex items-center justify-between border-b border-gray-200 px-6 py-5 sm:px-8">
+              <div>
+                <h2 className="text-lg font-bold text-gray-900">
+                  {editingDate ? "Edit Exam Date" : "Add Exam Date"}
+                </h2>
+                <p className="text-sm text-gray-500">Fill the exam details and submit.</p>
+              </div>
               <button
-                className="bg-gray-300 px-4 py-2 rounded-md hover:bg-gray-400"
-                onClick={() => setDeleteModal(false)}
+                type="button"
+                onClick={closeModal}
+                className="rounded-lg p-2 text-gray-500 hover:bg-gray-100 hover:text-gray-900"
               >
-                Cancel
-              </button>
-              <button
-                className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600"
-                onClick={deleteDate}
-              >
-                Delete
+                <FiX />
               </button>
             </div>
+
+            <form onSubmit={handleSubmit} className="space-y-5 px-6 py-6 sm:px-8 sm:py-7">
+              <label className="block text-sm font-semibold text-gray-700">
+                Exam Date
+                <input
+                  type="date"
+                  name="examDate"
+                  value={formData.examDate}
+                  min={minDate}
+                  max={maxDate}
+                  onChange={handleChange}
+                  className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2.5 text-sm outline-none focus:border-[#c61d23] focus:ring-2 focus:ring-[#c61d23]/15"
+                />
+                {errors.examDate && <span className="mt-1 block text-xs text-red-600">{errors.examDate}</span>}
+              </label>
+
+              <label className="block text-sm font-semibold text-gray-700">
+                Exam Name
+                <select
+                  name="examName"
+                  value={formData.examName}
+                  onChange={handleChange}
+                  className="mt-1 w-full rounded-lg border border-gray-300 bg-white px-3 py-2.5 text-sm outline-none focus:border-[#c61d23] focus:ring-2 focus:ring-[#c61d23]/15"
+                >
+                  <option value="">Select exam</option>
+                  <option value="SDAT">SDAT</option>
+                  <option value="RISE">RISE</option>
+                </select>
+                {errors.examName && <span className="mt-1 block text-xs text-red-600">{errors.examName}</span>}
+              </label>
+
+              <div className="flex flex-col-reverse sm:flex-row sm:justify-end gap-3 pt-4">
+                <button
+                  type="button"
+                  onClick={closeModal}
+                  className="rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm font-semibold text-gray-700 hover:border-gray-400"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={submitting}
+                  className={`rounded-lg px-4 py-2.5 text-sm font-semibold text-white ${
+                    submitting ? "bg-gray-400 cursor-not-allowed" : "bg-[#c61d23] hover:bg-[#a8191e]"
+                  }`}
+                >
+                  {submitting ? "Saving..." : editingDate ? "Update Exam Date" : "Add Exam Date"}
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       )}
+
     </div>
   );
 };

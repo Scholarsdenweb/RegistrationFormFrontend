@@ -1,5 +1,4 @@
 import { useState } from "react";
-import axios from "../../../api/axios";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../../../context/AuthContext";
 import ScholarsDenLogo from "../../../assets/scholarsDenLogo.png";
@@ -54,13 +53,14 @@ export default function AdminLoginLeft() {
       setShowErrorMessage(false);
       setSubmitMessage("");
       try {
-        const response = await axios.post("/auth/employee_login", formData);
+        const response = await adminAuthLogin(formData);
         setSubmitMessage("Login successful!");
-        adminAuthLogin(formData);
-        document.cookie = `authToken=${response.data.token}`;
+        if (response?.token) {
+          document.cookie = `authToken=${response.token}`;
+        }
         navigate("/admin/dashboard");
       } catch (error) {
-        setSubmitMessage(error?.response?.data || "An error occurred");
+        setSubmitMessage(error?.response?.data?.message || "Invalid email or password");
         setShowErrorMessage(true);
       } finally {
         setLoading(false);
