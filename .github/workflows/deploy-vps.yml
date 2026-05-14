@@ -17,6 +17,7 @@ jobs:
       VPS_PORT: ${{ secrets.VPS_PORT }}
       VPS_SSH_KEY: ${{ secrets.VPS_SSH_KEY }}
       APP_DIR: /var/www/RegistrationFormFrontend
+      SSH_OPTS: -o StrictHostKeyChecking=accept-new -o IdentitiesOnly=yes -o PreferredAuthentications=publickey
 
     steps:
       - name: Checkout repository
@@ -48,20 +49,27 @@ jobs:
           mkdir -p ~/.ssh
           printf '%s\n' "$VPS_SSH_KEY" > ~/.ssh/vps_key
           chmod 600 ~/.ssh/vps_key
+          ssh-keygen -y -f ~/.ssh/vps_key >/dev/null
 
           touch ~/.ssh/known_hosts
           ssh-keyscan -T 20 -H -p "${VPS_PORT:-22}" "$VPS_HOST" >> ~/.ssh/known_hosts 2>/dev/null || true
 
+      - name: Test SSH connection
+        run: |
+          set -e
+          ssh -i ~/.ssh/vps_key -p "${VPS_PORT:-22}" $SSH_OPTS "$VPS_USER@$VPS_HOST" \
+            "echo SSH connection successful"
+
       - name: Upload build to VPS
         run: |
           set -e
-          scp -i ~/.ssh/vps_key -P "${VPS_PORT:-22}" -o StrictHostKeyChecking=accept-new frontend-dist.tar.gz \
+          scp -i ~/.ssh/vps_key -P "${VPS_PORT:-22}" $SSH_OPTS frontend-dist.tar.gz \
             "$VPS_USER@$VPS_HOST:/tmp/registration-frontend-dist.tar.gz"
 
       - name: Deploy on VPS
         run: |
           set -e
-          ssh -i ~/.ssh/vps_key -p "${VPS_PORT:-22}" -o StrictHostKeyChecking=accept-new "$VPS_USER@$VPS_HOST" << 'EOF'
+          ssh -i ~/.ssh/vps_key -p "${VPS_PORT:-22}" $SSH_OPTS "$VPS_USER@$VPS_HOST" << 'EOF'
             set -e
 
             APP_DIR="/var/www/RegistrationFormFrontend"
