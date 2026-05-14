@@ -19,7 +19,7 @@ Add these in GitHub:
 `Settings` -> `Secrets and variables` -> `Actions` -> `New repository secret`
 
 ```bash
-VPS_HOST=srv1287019
+VPS_HOST=<your VPS public IP address or public domain>
 VPS_USER=root
 VPS_PORT=22
 VPS_SSH_KEY=<private ssh key allowed to login to the VPS>
@@ -27,6 +27,8 @@ VITE_APP_API_URL=<frontend API base URL used during vite build>
 ```
 
 If SSH uses the default port, `VPS_PORT` can still be set to `22`.
+
+Use the VPS public IP address or a DNS name that GitHub Actions can resolve. Do not use only the local shell prompt hostname like `srv1287019` unless that hostname resolves publicly.
 
 ## How it deploys
 

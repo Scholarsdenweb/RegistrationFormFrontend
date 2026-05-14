@@ -40,21 +40,28 @@ jobs:
       - name: Configure SSH
         run: |
           set -e
+          if [ -z "$VPS_HOST" ] || [ -z "$VPS_USER" ] || [ -z "$VPS_SSH_KEY" ]; then
+            echo "Missing VPS_HOST, VPS_USER, or VPS_SSH_KEY GitHub secret."
+            exit 1
+          fi
+
           mkdir -p ~/.ssh
           printf '%s\n' "$VPS_SSH_KEY" > ~/.ssh/vps_key
           chmod 600 ~/.ssh/vps_key
-          ssh-keyscan -p "${VPS_PORT:-22}" "$VPS_HOST" >> ~/.ssh/known_hosts
+
+          touch ~/.ssh/known_hosts
+          ssh-keyscan -T 20 -H -p "${VPS_PORT:-22}" "$VPS_HOST" >> ~/.ssh/known_hosts 2>/dev/null || true
 
       - name: Upload build to VPS
         run: |
           set -e
-          scp -i ~/.ssh/vps_key -P "${VPS_PORT:-22}" frontend-dist.tar.gz \
+          scp -i ~/.ssh/vps_key -P "${VPS_PORT:-22}" -o StrictHostKeyChecking=accept-new frontend-dist.tar.gz \
             "$VPS_USER@$VPS_HOST:/tmp/registration-frontend-dist.tar.gz"
 
       - name: Deploy on VPS
         run: |
           set -e
-          ssh -i ~/.ssh/vps_key -p "${VPS_PORT:-22}" "$VPS_USER@$VPS_HOST" << 'EOF'
+          ssh -i ~/.ssh/vps_key -p "${VPS_PORT:-22}" -o StrictHostKeyChecking=accept-new "$VPS_USER@$VPS_HOST" << 'EOF'
             set -e
 
             APP_DIR="/var/www/RegistrationFormFrontend"
