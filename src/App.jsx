@@ -42,7 +42,6 @@ import CreateInvoice from "./components/CreateInvoice";
 import AllFormsComponents from "./components/adminCompoments/AllFormsComponents";
 import RiseFee from "./components/adminCompoments/RiseFee/RiseFee";
 import LockNavigation from "./utils/LockNavigator";
-import Amount from "./components/adminCompoments/Amount";
 import PaymentSuccess from "./components/PaymentSuccessMessage";
 import OfflineRegistrationUpload from "./components/adminCompoments/OfflineRegistrationUpload";
 
@@ -89,10 +88,6 @@ function App() {
               <Route
                 path="/admin/formFee"
                 element={<AdminPrivateRoute component={RiseFee} />}
-              />
-              <Route
-                path="/admin/amount"
-                element={<AdminPrivateRoute component={Amount} />}
               />
               <Route
                 path="/admin/offline-registration-upload"

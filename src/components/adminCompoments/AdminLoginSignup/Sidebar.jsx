@@ -20,7 +20,6 @@ const Sidebar = () => {
     { to: "/admin/downloadResult", label: "Download Result" },
     { to: "/admin/CloudinaryUpload", label: "Upload Student Pictures" },
     { to: "/admin/allForms", label: "All SDAT Forms" },
-    { to: "/admin/amount", label: "Amount" },
     { to: "/admin/offline-registration-upload", label: "Offline Registration Upload" },
   ];
 
